@@ -24,7 +24,7 @@ $ composer require --dev facile/facile-coding-standard
 ```php
 "scripts": {
   "cs-check": "php-cs-fixer fix --dry-run --diff",
-  "cs-fix": "php-cs-fixer fix"
+  "cs-fix": "php-cs-fixer fix --diff"
 }
 ```
 
