@@ -1,0 +1,13 @@
+{
+  "name": "facile/facile-coding-standard",
+  "description": "Facile.it coding standard",
+  "license": "MIT",
+  "keywords": [
+    "facile",
+    "facile.it",
+    "coding standard"
+  ],
+  "require": {
+    "friendsofphp/php-cs-fixer": "^2.0"
+  }
+}
