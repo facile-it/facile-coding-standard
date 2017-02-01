@@ -7,10 +7,10 @@ $config->setRules([
     '@PSR2' => true,
     'array_syntax' => ['syntax' => 'short'],
     'not_operator_with_successor_space' => true,
-    'binary_operator_spaces' => array(
+    'binary_operator_spaces' => [
         'align_double_arrow' => false,
         'align_equals' => false,
-    ),
+    ],
     'blank_line_after_namespace' => true,
     'blank_line_after_opening_tag' => true,
     'cast_spaces' => true,
@@ -23,14 +23,14 @@ $config->setRules([
     'native_function_casing' => true,
     'new_with_braces' => true,
     'no_empty_statement' => true,
-    'no_extra_consecutive_blank_lines' => array(
+    'no_extra_consecutive_blank_lines' => [
         'curly_brace_block',
         'extra',
         'parenthesis_brace_block',
         'square_brace_block',
         'throw',
         'use',
-    ),
+    ],
     'no_leading_import_slash' => true,
     'no_leading_namespace_whitespace' => true,
     'no_mixed_echo_print' => ['use' => 'echo'],
