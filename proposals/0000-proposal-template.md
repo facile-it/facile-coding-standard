@@ -1,4 +1,4 @@
-# Allow (most) keywords as argument labels
+# This should be like that
 
 * Author: Elviro Rocca
 * Status: **Awaiting review**
