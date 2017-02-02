@@ -16,7 +16,7 @@ Installation
 1. Install the module via composer by running:
 
 ```
-$ composer require --dev facile/facile-coding-standard
+$ composer require --dev facile-it/facile-coding-standard
 ```
 
 2. Add composer scripts into `composer.json`:
@@ -34,7 +34,7 @@ $ composer require --dev facile/facile-coding-standard
 <?php
 
 /** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile/facile-coding-standard/.php_cs';
+$config = include __DIR__ . '/vendor/facile-it/facile-coding-standard/.php_cs';
 
 $finder = PhpCsFixer\Finder::create();
 $finder->in([
@@ -55,7 +55,7 @@ Example:
 <?php
 
 /** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile/facile-coding-standard/.php_cs';
+$config = include __DIR__ . '/vendor/facile-it/facile-coding-standard/.php_cs';
 
 $finder = PhpCsFixer\Finder::create();
 $finder->in([
