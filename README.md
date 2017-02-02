@@ -1,86 +1,66 @@
 Facile.it Coding Standard
 -------------------------
 
-Repository with all coding standard ruleset.
+This is a repository containing a tool to enforce company coding style standards.
 
 
-Status
-======
+## Status
 
 Under development
 
+Currently consist of just a Bash wrapper for [PHP CS Fixer][PHP CS Fixer] and its ruleset.
 
-Installation
-============
+Future development could possibly include an [ESlint](http://eslint.org/) wrapper. 
 
-1. Install the module via composer by running:
+
+## Installation
+
+Currently, [Composer](https://getcomposer.org/) is the only supported installation tool.
 
 ```
 $ composer require --dev facile/facile-coding-standard
 ```
 
-2. Add composer scripts into `composer.json`:
+## Usage
 
-```php
-"scripts": {
-  "cs-check": "php-cs-fixer fix --dry-run --diff",
-  "cs-fix": "php-cs-fixer fix --diff"
-}
-```
-
-3. Create file `.php_cs.dist` on base path of your repository with the following content:
-
-```php
-<?php
-
-/** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile/facile-coding-standard/.php_cs';
-
-$finder = PhpCsFixer\Finder::create();
-$finder->in([
-    __DIR__.'/src', // source path
-]);
-
-$config->setFinder($finder);
-
-return $config;
+Invoke the script via CLI:
 
 ```
-
-Then you can customize `PhpCsFixer` configuration.
-
-Example:
-
-```php
-<?php
-
-/** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile/facile-coding-standard/.php_cs';
-
-$finder = PhpCsFixer\Finder::create();
-$finder->in([
-    __DIR__.'/src',
-    __DIR__.'/config',
-]);
-
-$config->setFinder($finder);
-
-// enable cache (default disabled)
-$config->setUsingCache(true);
-// set cache file
-$config->setCacheFile(__DIR__ . '/.php_cs.cache');
-// hide progress
-$config->setHideProgress(true);
-
-// Adding rules
-$rules = $config->getRules();
-$rules['ordered_imports'] = true;
-$config->setRules($rules);
-
-return $config;
-
+$ ./vendor/bin/cs-tool
 ```
 
-### PhpCsFixer configuration
+The default command is `check`, and it will:
 
-Seet [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
+- load the ruleset provided by this repo;
+- load a local `.php_cs` file if present (this will ignore the provided ruleset);
+- look for files into `src` and `test` directories;
+- perform a verbose *dry run* of the fixer.
+ 
+ 
+For clarity, the actual PHP-CS-Fixer command is printed just before being executed.
+
+You can also customise it further by adding options *after the desired command*:
+
+```
+$ ./vendor/bin/cs-tool check --rules=@SYMFONY --format=json
+```
+
+By the way, to actually fix stuff invoke the `fix` command
+
+```
+$ ./vendor/bin/cs-tool fix
+```
+
+Bear in mind that this will actually *edit* your files, so be responsible.
+
+
+### Contributions
+
+If you want to discuss the ruleset, please use the issue tracker of this repository.
+
+### Further informations
+
+For the moment, please refer to the official [PHP CS Fixer][PHP CS Fixer] documentation.
+
+
+[PHP CS Fixer]: https://github.com/FriendsOfPHP/PHP-CS-Fixer

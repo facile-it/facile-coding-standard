@@ -57,11 +57,20 @@ $config->setRules([
     'space_after_semicolon' => true,
     'standardize_not_equals' => true,
     'ternary_operator_spaces' => true,
-    'ternary_to_null_coalescing' => true,
     'trailing_comma_in_multiline_array' => true,
     'trim_array_spaces' => true,
     'unary_operator_spaces' => true,
     'whitespace_after_comma_in_array' => true,
 ]);
+
+$paths = array_filter(
+    [ getcwd() . '/src', getcwd() . '/test' ],
+    'is_dir'
+);
+
+$finder = PhpCsFixer\Finder::create();
+$finder->in($paths);
+
+$config->setFinder($finder);
 
 return $config;

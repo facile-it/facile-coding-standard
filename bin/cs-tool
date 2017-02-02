@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -e
+
+DEFAULT_CONFIG_PATH='./.php_cs'
+VENDOR_CONFIG_PATH='./vendor/facile-it/facile-coding-standard/.php_cs'
+
+if [[ ! -f ${DEFAULT_CONFIG_PATH} && -f ${VENDOR_CONFIG_PATH} ]]; then
+    CONFIG_PATH=${VENDOR_CONFIG_PATH}
+else
+    CONFIG_PATH=${DEFAULT_CONFIG_PATH}
+fi
+
+case $1 in
+    fix)
+        FIXER_ARGS="fix"
+        ;;
+    ''|check)
+        FIXER_ARGS="fix --diff --dry-run"
+        ;;
+    *)
+        echo "Unknown command '$1'"
+        echo "Valid commands are 'check' (default) and 'fix'."
+        exit 1
+esac
+
+if [[ $# -gt 0 ]]; then
+    shift
+fi
+
+FIXER_ARGS="${FIXER_ARGS} --config ${CONFIG_PATH} $@"
+FIXER_CMD="./vendor/bin/php-cs-fixer ${FIXER_ARGS}"
+
+echo ${FIXER_CMD}
+
+(${FIXER_CMD})
