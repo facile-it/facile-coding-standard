@@ -64,7 +64,7 @@ $config->setRules([
 ]);
 
 $paths = array_filter(
-    [ getcwd() . '/src', getcwd() . '/test' ],
+    [ getcwd() . '/src', getcwd() . '/test', getcwd() . '/tests' ],
     'is_dir'
 );
 
