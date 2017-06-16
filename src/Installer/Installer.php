@@ -1,0 +1,199 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Facile\CodingStandards\Installer;
+
+use Composer\Composer;
+use Composer\Factory;
+use Composer\IO\IOInterface;
+use Composer\Json\JsonFile;
+use Composer\Package\AliasPackage;
+use Composer\Package\BasePackage;
+use Facile\CodingStandards\Installer\Provider\SourcePaths\ComposerAutoloadProvider;
+use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
+use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
+
+class Installer
+{
+    /**
+     * @var IOInterface
+     */
+    private $io;
+    /**
+     * @var Composer
+     */
+    private $composer;
+    /**
+     * @var string
+     */
+    private $projectRoot;
+    /**
+     * @var array
+     */
+    private $composerDefinition;
+    /**
+     * @var JsonFile
+     */
+    private $composerJson;
+    /**
+     * @var BasePackage
+     */
+    private $rootPackage;
+    /**
+     * @var PhpCsConfigWriterInterface
+     */
+    private $phpCsWriter;
+
+    /**
+     * @throws \Exception
+     */
+    public function installCommands()
+    {
+        $this->io->write('<info>Setting up Facile.it Coding Standards</info>');
+        $this->requestCreateCsConfig();
+        $this->requestAddComposerScripts();
+        $this->composerJson->write($this->composerDefinition);
+    }
+
+    /**
+     * @param IOInterface $io
+     * @param Composer    $composer
+     * @param null|string $projectRoot
+     * @param null|string $composerPath
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
+    public function __construct(IOInterface $io, Composer $composer, $projectRoot = null, $composerPath = null)
+    {
+        $this->io = $io;
+        $this->composer = $composer;
+        // Get composer.json location
+        $composerFile = $composerPath ?: Factory::getComposerFile();
+        // Calculate project root from composer.json, if necessary
+        $this->projectRoot = $projectRoot ?: realpath(dirname($composerFile));
+        $this->projectRoot = rtrim($this->projectRoot, '/\\');
+        // Parse the composer.json
+        $this->parseComposerDefinition($composer, $composerFile);
+        $this->phpCsWriter = new PhpCsConfigWriter(
+            new ComposerAutoloadProvider($this->composer->getPackage()->getAutoload())
+        );
+    }
+
+    /**
+     * @param PhpCsConfigWriterInterface $phpCsWriter
+     */
+    public function setPhpCsWriter(PhpCsConfigWriterInterface $phpCsWriter)
+    {
+        $this->phpCsWriter = $phpCsWriter;
+    }
+
+    /**
+     * @param Composer $composer
+     * @param string   $composerFile
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
+    private function parseComposerDefinition(Composer $composer, $composerFile)
+    {
+        $this->composerJson = new JsonFile($composerFile);
+        $this->composerDefinition = $this->composerJson->read();
+        // Get root package
+        $this->rootPackage = $composer->getPackage();
+        while ($this->rootPackage instanceof AliasPackage) {
+            $this->rootPackage = $this->rootPackage->getAliasOf();
+        }
+    }
+
+    public function requestCreateCsConfig()
+    {
+        $destPath = $this->projectRoot.'/.php_cs.dist';
+
+        if (file_exists($destPath)) {
+            $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
+            $this->io->write(sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
+
+            return;
+        }
+
+        $question = [
+            sprintf(
+                "\n  <question>%s</question>\n",
+                'Do you want to create the CS configuration in your project root? (Y/n)'
+            ),
+            '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
+        ];
+        $answer = $this->io->askConfirmation($question, true);
+
+        if (! $answer) {
+            return;
+        }
+
+        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
+
+        $this->phpCsWriter->writeConfigFile($this->projectRoot.'/.php_cs.dist');
+    }
+
+    public function requestAddComposerScripts()
+    {
+        $scripts = [
+            'cs-check' => 'php-cs-fixer fix --dry-run --diff',
+            'cs-fix' => 'php-cs-fixer fix --diff',
+        ];
+
+        if (0 === count(array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
+            $this->io->write(sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
+
+            return;
+        }
+
+        $question = [
+            sprintf(
+                "\n  <question>%s</question>\n",
+                'Do you want to add scripts to composer.json? (Y/n)'
+            ),
+            "  <info>It will add two scripts:</info>\n",
+            "  - <info>cs-check</info>\n",
+            "  - <info>cs-fix</info>\n",
+            'Answer: ',
+        ];
+
+        $answer = $this->io->askConfirmation($question, true);
+
+        if (! $answer) {
+            return;
+        }
+
+        if (! array_key_exists('scripts', $this->composerDefinition)) {
+            $this->composerDefinition['scripts'] = [];
+        }
+
+        foreach ($scripts as $key => $command) {
+            if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
+                $this->io->write([
+                    sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    '  If you want, you can replace it manually with:',
+                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                ]);
+                continue;
+            }
+
+            $this->addComposerScript($key, $command);
+        }
+    }
+
+    /**
+     * @param string $composerCommand
+     * @param string $command
+     */
+    protected function addComposerScript(string $composerCommand, string $command)
+    {
+        if (! array_key_exists('scripts', $this->composerDefinition)) {
+            $this->composerDefinition['scripts'] = [];
+        }
+
+        $this->composerDefinition['scripts'][$composerCommand] = $command;
+    }
+}
