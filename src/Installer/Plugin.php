@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Facile\CodingStandards\Installer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\IO\IOInterface;
@@ -132,8 +133,12 @@ class Plugin implements EventSubscriberInterface, PluginInterface
             return;
         }
 
-        /** @var \Composer\DependencyResolver\Operation\InstallOperation $operation */
         $operation = $event->getOperation();
+
+        if (! $operation instanceof InstallOperation) {
+            return;
+        }
+
         $package = $operation->getPackage();
         $name = $package->getName();
 
