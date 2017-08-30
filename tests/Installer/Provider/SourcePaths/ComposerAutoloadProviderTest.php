@@ -2,7 +2,6 @@
 
 namespace Facile\CodingStandardsTest\Installer\Provider\SourcePaths;
 
-use Composer\Composer;
 use Facile\CodingStandards\Installer\Provider\SourcePaths\ComposerAutoloadProvider;
 use PHPUnit\Framework\TestCase;
 
