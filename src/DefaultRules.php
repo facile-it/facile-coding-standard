@@ -17,15 +17,23 @@ final class DefaultRules
         'array_syntax' => [
             'syntax' => 'short',
         ],
-        'not_operator_with_successor_space' => true,
         'binary_operator_spaces' => [
             'align_double_arrow' => false,
             'align_equals' => false,
         ],
         'blank_line_after_namespace' => true,
         'blank_line_after_opening_tag' => true,
-        'cast_spaces' => true,
-        'concat_space' => true,
+        'blank_line_before_statement' => [
+            'statements' => [
+                'return',
+            ],
+        ],
+        'cast_spaces' => [
+            'space' => 'single',
+        ],
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
         'declare_equal_normalize' => true,
         'function_typehint_space' => true,
         'include' => true,
@@ -33,6 +41,8 @@ final class DefaultRules
         'method_separation' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
+        'no_empty_comment' => true,
+        'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
         'no_extra_consecutive_blank_lines' => [
             'tokens' => [
@@ -59,8 +69,12 @@ final class DefaultRules
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
+        'not_operator_with_successor_space' => true,
         'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
+        'ordered_imports' => true,
+        'phpdoc_single_line_var_spacing' => true,
+        'phpdoc_trim' => true,
         'pre_increment' => true,
         'return_type_declaration' => true,
         'self_accessor' => true,
@@ -71,6 +85,7 @@ final class DefaultRules
         'space_after_semicolon' => true,
         'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
+        'ternary_to_null_coalescing' => true,
         'trailing_comma_in_multiline_array' => true,
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
