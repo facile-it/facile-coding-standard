@@ -19,12 +19,6 @@ use Composer\Json\JsonFile;
 class Plugin implements EventSubscriberInterface, PluginInterface
 {
     /**
-     * Project root in which to install.
-     *
-     * @var string
-     */
-    private $projectRoot;
-    /**
      * @var Installer
      */
     private $installer;
@@ -34,15 +28,10 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      *
      * Optionally accept the project root into which to install.
      *
-     * @param string    $projectRoot
      * @param Installer $installer
      */
-    public function __construct($projectRoot = '', Installer $installer = null)
+    public function __construct(Installer $installer = null)
     {
-        if (is_string($projectRoot) && ! empty($projectRoot) && is_dir($projectRoot)) {
-            $this->projectRoot = $projectRoot;
-        }
-
         $this->installer = $installer;
     }
 
@@ -113,7 +102,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
     public function getInstaller(Composer $composer, IOInterface $io): Installer
     {
         if (! $this->installer) {
-            $this->installer = new Installer($io, $composer, $this->projectRoot);
+            $this->installer = new Installer($io, $composer);
         }
 
         return $this->installer;

@@ -50,7 +50,7 @@ class InstallerTest extends TestCase
 
         $phpCsWriterMock->writeConfigFile(Argument::any())->shouldNotBeCalled();
         $ioMock->write(Argument::any())->shouldBeCalled();
-        $ioMock->askConfirmation()->shouldNotBeCalled();
+        $ioMock->askConfirmation(Argument::cetera())->shouldNotBeCalled();
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
 

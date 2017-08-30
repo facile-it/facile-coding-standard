@@ -3,6 +3,7 @@
 namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
@@ -36,6 +37,19 @@ class PluginTest extends TestCase
         $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
     }
 
+    public function testActive()
+    {
+        $plugin = new Plugin();
+
+        $composerMock = $this->prophesize(Composer::class);
+        $ioMock = $this->prophesize(IOInterface::class);
+
+        $plugin->activate($composerMock->reveal(), $ioMock->reveal());
+
+        // assert no exceptions
+        $this->assertTrue(true);
+    }
+
     public function testGetInstallerWithNew()
     {
         $plugin = new Plugin();
@@ -56,7 +70,7 @@ class PluginTest extends TestCase
         $ioMock = $this->prophesize(IOInterface::class);
         $installerMock = $this->prophesize(Installer::class);
 
-        $plugin = new Plugin(null, $installerMock->reveal());
+        $plugin = new Plugin($installerMock->reveal());
 
         $installer = $plugin->getInstaller($composerMock->reveal(), $ioMock->reveal());
 
@@ -64,9 +78,6 @@ class PluginTest extends TestCase
         $this->assertSame($installerMock->reveal(), $installer);
     }
 
-    /**
-     * @depends testGetPackageName
-     */
     public function testOnPostPackageInstall()
     {
         $eventMock = $this->prophesize(PackageEvent::class);
@@ -83,15 +94,12 @@ class PluginTest extends TestCase
         $operationMock->getPackage()->willReturn($packageMock->reveal());
         $packageMock->getName()->willReturn(self::PACKAGE_NAME);
 
-        $plugin = new Plugin(null, $installerMock->reveal());
+        $plugin = new Plugin($installerMock->reveal());
         $installerMock->installCommands()->shouldBeCalled();
 
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 
-    /**
-     * @depends testGetPackageName
-     */
     public function testOnPostPackageInstallInNoDevMode()
     {
         $eventMock = $this->prophesize(PackageEvent::class);
@@ -102,14 +110,29 @@ class PluginTest extends TestCase
         $eventMock->isDevMode()->willReturn(false);
         $installerMock->installCommands()->shouldNotBeCalled();
 
-        $plugin = new Plugin(null, $installerMock->reveal());
+        $plugin = new Plugin($installerMock->reveal());
 
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 
-    /**
-     * @depends testGetPackageName
-     */
+    public function testOnPostPackageInstallWithAnotherOperation()
+    {
+        $eventMock = $this->prophesize(PackageEvent::class);
+        $operationMock = $this->prophesize(OperationInterface::class);
+        $installerMock = $this->prophesize(Installer::class);
+        $composerMock = $this->prophesize(Composer::class);
+        $ioMock = $this->prophesize(IOInterface::class);
+
+        $eventMock->getOperation()->willReturn($operationMock->reveal());
+        $eventMock->isDevMode()->willReturn(true);
+        $eventMock->getComposer()->willReturn($composerMock->reveal());
+        $eventMock->getIO()->willReturn($ioMock->reveal());
+        $installerMock->installCommands()->shouldNotBeCalled();
+
+        $plugin = new Plugin($installerMock->reveal());
+        $plugin->onPostPackageInstall($eventMock->reveal());
+    }
+
     public function testOnPostPackageInstallWithAnotherPackage()
     {
         $eventMock = $this->prophesize(PackageEvent::class);
@@ -127,7 +150,7 @@ class PluginTest extends TestCase
         $packageMock->getName()->shouldBeCalled()->willReturn('foo');
         $installerMock->installCommands()->shouldNotBeCalled();
 
-        $plugin = new Plugin(null, $installerMock->reveal());
+        $plugin = new Plugin($installerMock->reveal());
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 }
