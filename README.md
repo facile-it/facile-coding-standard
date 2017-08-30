@@ -13,13 +13,20 @@ Under development
 Installation
 ============
 
-1. Install the module via composer by running:
+Currently, [Composer](https://getcomposer.org/) is the only supported installation tool.
 
 ```
 $ composer require --dev facile-it/facile-coding-standard
 ```
 
-2. Add composer scripts into `composer.json`:
+When you install it, a plugin will ask you some questions to setup your project automatically.
+
+The installer will add a `.php_cs.dist` file in your project root directory,
+then you can edit manually if you need some changes.
+
+The CS config will be configured to find your project files using composer autoload (psr-0, psr-4) sources.
+
+The installer will also add two scripts in your `composer.json`;
 
 ```php
 "scripts": {
@@ -28,57 +35,39 @@ $ composer require --dev facile-it/facile-coding-standard
 }
 ```
 
-3. Create file `.php_cs.dist` on base path of your repository with the following content:
+Configuration
+=============
+
+The installation configuration should be enough to use it.
+
+If you need to change the CS config file, we suggest to don't edit the main `.php_cs.dist` file.
+
+You can create a new file `.php_cs` with something like this:
 
 ```php
 <?php
 
-/** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile-it/facile-coding-standard/.php_cs';
+/** @var PhpCsFixer\Config $config */
+$config = require __DIR__ . '/.php_cs.dist';
 
-$finder = PhpCsFixer\Finder::create();
-$finder->in([
-    __DIR__.'/src', // source path
-]);
-
-$config->setFinder($finder);
+// change your configuration...
 
 return $config;
-
 ```
 
-Then you can customize `PhpCsFixer` configuration.
+Usage
+=====
 
-Example:
+To start code style check:
 
-```php
-<?php
+```
+$ composer cs-check
+```
 
-/** @var PhpCsFixer\ConfigInterface $config **/
-$config = include __DIR__ . '/vendor/facile-it/facile-coding-standard/.php_cs';
+To automatically fix code style:
 
-$finder = PhpCsFixer\Finder::create();
-$finder->in([
-    __DIR__.'/src',
-    __DIR__.'/config',
-]);
-
-$config->setFinder($finder);
-
-// enable cache (default disabled)
-$config->setUsingCache(true);
-// set cache file
-$config->setCacheFile(__DIR__ . '/.php_cs.cache');
-// hide progress
-$config->setHideProgress(true);
-
-// Adding rules
-$rules = $config->getRules();
-$rules['ordered_imports'] = true;
-$config->setRules($rules);
-
-return $config;
-
+```
+$ composer cs-fix
 ```
 
 ### PhpCsFixer configuration
