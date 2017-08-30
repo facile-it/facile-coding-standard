@@ -28,4 +28,14 @@ class ArrayProviderTest extends TestCase
             $paths
         );
     }
+
+    public function testGetSourcePathsWithInvalidProvider()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid source path provider provided');
+
+        $provider = new ArrayProvider(['test']);
+
+        $provider->getSourcePaths();
+    }
 }
