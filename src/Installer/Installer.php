@@ -10,6 +10,7 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
+use Facile\CodingStandards\Installer\Provider\SourcePaths\ArrayProvider;
 use Facile\CodingStandards\Installer\Provider\SourcePaths\ComposerAutoloadProvider;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
@@ -61,12 +62,18 @@ class Installer
      * @param Composer    $composer
      * @param null|string $projectRoot
      * @param null|string $composerPath
+     * @param null|PhpCsConfigWriterInterface $phpCsWriter
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function __construct(IOInterface $io, Composer $composer, $projectRoot = null, $composerPath = null)
-    {
+    public function __construct(
+        IOInterface $io,
+        Composer $composer,
+        $projectRoot = null,
+        $composerPath = null,
+        PhpCsConfigWriterInterface $phpCsWriter = null
+    ) {
         $this->io = $io;
         $this->composer = $composer;
         // Get composer.json location
@@ -76,8 +83,11 @@ class Installer
         $this->projectRoot = rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
-        $this->phpCsWriter = new PhpCsConfigWriter(
-            new ComposerAutoloadProvider($this->composer->getPackage()->getAutoload())
+        $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter(
+            new ArrayProvider([
+                new ComposerAutoloadProvider($this->composer->getPackage()->getAutoload()),
+                new ComposerAutoloadProvider($this->composer->getPackage()->getDevAutoload()),
+            ])
         );
     }
 

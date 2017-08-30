@@ -58,6 +58,7 @@ class PluginTest extends TestCase
         $packageMock = $this->prophesize(PackageInterface::class);
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
+        $packageMock->getDevAutoload()->willReturn([]);
 
         $installer = $plugin->getInstaller($composerMock->reveal(), $ioMock->reveal());
 

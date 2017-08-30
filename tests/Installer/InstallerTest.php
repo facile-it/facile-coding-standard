@@ -53,6 +53,7 @@ class InstallerTest extends TestCase
         $ioMock->askConfirmation(Argument::cetera())->shouldNotBeCalled();
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
+        $packageMock->getDevAutoload()->willReturn([]);
 
         $installer = new Installer(
             $ioMock->reveal(),
@@ -75,6 +76,7 @@ class InstallerTest extends TestCase
         $ioMock->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(false);
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
+        $packageMock->getDevAutoload()->willReturn([]);
 
         $installer = new Installer(
             $ioMock->reveal(),
@@ -98,6 +100,7 @@ class InstallerTest extends TestCase
         $ioMock->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(true);
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
+        $packageMock->getDevAutoload()->willReturn([]);
         $phpCsWriterMock->writeConfigFile($this->projectRoot . '/.php_cs.dist')->shouldBeCalled();
 
         $installer = new Installer(
