@@ -109,7 +109,7 @@ class Installer
 
     public function requestCreateCsConfig()
     {
-        $destPath = $this->projectRoot.'/.php_cs.dist';
+        $destPath = $this->projectRoot . '/.php_cs.dist';
 
         if (file_exists($destPath)) {
             $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
@@ -133,7 +133,7 @@ class Installer
 
         $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
 
-        $this->phpCsWriter->writeConfigFile($this->projectRoot.'/.php_cs.dist');
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
     }
 
     public function requestAddComposerScripts()

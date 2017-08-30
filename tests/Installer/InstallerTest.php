@@ -7,9 +7,9 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
-use PHPUnit\Framework\TestCase;
-use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 class InstallerTest extends TestCase
@@ -35,13 +35,13 @@ class InstallerTest extends TestCase
         $this->vfsRoot = vfsStream::setup();
 
         $this->projectRoot = $this->vfsRoot->url();
-        $this->composerFilePath = $this->vfsRoot->url().'/composer.json';
-        copy(__DIR__.'/../data/config/composer.json', $this->composerFilePath);
+        $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
+        copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
     }
 
     public function testRequestCreateCsConfigWithAlreadyExistingFile()
     {
-        touch($this->projectRoot.'/.php_cs.dist');
+        touch($this->projectRoot . '/.php_cs.dist');
 
         $packageMock = $this->prophesize(PackageInterface::class);
         $ioMock = $this->prophesize(IOInterface::class);
@@ -98,7 +98,7 @@ class InstallerTest extends TestCase
         $ioMock->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(true);
         $composerMock->getPackage()->willReturn($packageMock);
         $packageMock->getAutoload()->willReturn([]);
-        $phpCsWriterMock->writeConfigFile($this->projectRoot.'/.php_cs.dist')->shouldBeCalled();
+        $phpCsWriterMock->writeConfigFile($this->projectRoot . '/.php_cs.dist')->shouldBeCalled();
 
         $installer = new Installer(
             $ioMock->reveal(),

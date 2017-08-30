@@ -3,6 +3,7 @@
 namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
@@ -11,7 +12,6 @@ use Composer\Package\PackageInterface;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Plugin;
 use PHPUnit\Framework\TestCase;
-use Composer\DependencyResolver\Operation\InstallOperation;
 
 class PluginTest extends TestCase
 {

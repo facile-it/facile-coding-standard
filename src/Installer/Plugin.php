@@ -8,10 +8,10 @@ use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
-use Composer\IO\IOInterface;
-use Composer\Plugin\PluginInterface;
 use Composer\Installer\PackageEvents;
+use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\PluginInterface;
 
 /**
  * Facile coding standards installer.
@@ -45,7 +45,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      */
     public static function getPackageName(): string
     {
-        $composerJson = new JsonFile(dirname(__DIR__, 2).'/composer.json');
+        $composerJson = new JsonFile(dirname(__DIR__, 2) . '/composer.json');
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];
