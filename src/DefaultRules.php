@@ -77,7 +77,6 @@ final class DefaultRules
         'phpdoc_trim' => true,
         'pre_increment' => true,
         'return_type_declaration' => true,
-        'self_accessor' => true,
         'short_scalar_cast' => true,
         'single_blank_line_before_namespace' => true,
         'single_class_element_per_statement' => true,
