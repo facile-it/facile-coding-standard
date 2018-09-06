@@ -36,20 +36,20 @@ final class ComposerAutoloadProvider implements ProviderInterface
         $paths = [];
         $allowedAutoloads = ['psr-0', 'psr-4'];
         foreach ($this->autoload as $autoloadType => $autoload) {
-            if (! in_array($autoloadType, $allowedAutoloads, true)) {
+            if (! \in_array($autoloadType, $allowedAutoloads, true)) {
                 continue;
             }
 
-            if (! is_array($autoload)) {
+            if (! \is_array($autoload)) {
                 throw new \RuntimeException('Your composer autoloader section does not contain an array!');
             }
 
             foreach ($autoload as $autoloadPaths) {
-                if (! is_array($autoloadPaths)) {
+                if (! \is_array($autoloadPaths)) {
                     $autoloadPaths = [$autoloadPaths];
                 }
                 foreach ($autoloadPaths as $path) {
-                    if (in_array($path, $paths, true)) {
+                    if (\in_array($path, $paths, true)) {
                         continue;
                     }
 

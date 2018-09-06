@@ -27,8 +27,8 @@ class PhpCsConfigWriterTest extends TestCase
     {
         $provider = $this->prophesize(ProviderInterface::class);
 
-        mkdir($this->vfsRoot->url() . '/src');
-        mkdir($this->vfsRoot->url() . '/tests');
+        \mkdir($this->vfsRoot->url() . '/src');
+        \mkdir($this->vfsRoot->url() . '/tests');
 
         $provider->getSourcePaths()->willReturn([
             'src/',

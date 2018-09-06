@@ -45,7 +45,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      */
     public static function getPackageName(): string
     {
-        $composerJson = new JsonFile(dirname(__DIR__, 2) . '/composer.json');
+        $composerJson = new JsonFile(\dirname(__DIR__, 2) . '/composer.json');
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];

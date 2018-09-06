@@ -99,7 +99,7 @@ final class DefaultRules
      */
     public function __construct(array $additionalRules = [])
     {
-        $this->setRules(array_merge($this->rules, $additionalRules));
+        $this->setRules(\array_merge($this->rules, $additionalRules));
     }
 
     /**

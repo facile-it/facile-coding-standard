@@ -28,7 +28,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
      */
     public function writeConfigFile(string $filename)
     {
-        file_put_contents($filename, $this->createConfigSource());
+        \file_put_contents($filename, $this->createConfigSource());
     }
 
     /**
@@ -38,7 +38,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
     {
         $finderPaths = $this->sourcePathsProvider->getSourcePaths();
 
-        $finderPathsString = var_export($finderPaths, true);
+        $finderPathsString = \var_export($finderPaths, true);
 
         $contents = <<<FILE
 <?php
