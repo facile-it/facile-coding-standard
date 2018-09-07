@@ -40,6 +40,7 @@ final class DefaultRules
         'lowercase_cast' => true,
         'method_separation' => true,
         'native_function_casing' => true,
+        'native_function_invocation' => true,
         'new_with_braces' => true,
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
@@ -89,7 +90,6 @@ final class DefaultRules
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
-        'native_function_invocation' => true,
     ];
 
     /**
