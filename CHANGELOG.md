@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+## [0.3.0] - TBD
+## Changed
+- Bumped minimum required PHP version to 7.1
+- Bumped minimum php-cs-fixer to v2.13
+
 ## [0.2.0] - 2018-02-01
 ## Removed
 - Removed `self_accessor` (it became risky)
