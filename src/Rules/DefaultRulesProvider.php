@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Facile\CodingStandards;
+namespace Facile\CodingStandards\Rules;
 
 /**
  * Class Rules.
  */
-final class DefaultRules
+final class DefaultRulesProvider implements RulesProviderInterface
 {
     /**
      * @var array
      */
-    private $rules = [
+    private static $rules = [
         '@PSR2' => true,
         'align_multiline_comment' => true,
         'array_indentation' => true,
@@ -110,32 +110,12 @@ final class DefaultRules
     ];
 
     /**
-     * Rules constructor.
-     *
-     * @param array $additionalRules additional rules to override default rules
-     */
-    public function __construct(array $additionalRules = [])
-    {
-        $this->setRules(array_merge($this->rules, $additionalRules));
-    }
-
-    /**
-     * Set default rules.
-     *
-     * @param array $rules Default rules to set
-     */
-    public function setRules(array $rules)
-    {
-        $this->rules = $rules;
-    }
-
-    /**
      * Get default rules.
      *
      * @return array
      */
     public function getRules(): array
     {
-        return $this->rules;
+        return static::$rules;
     }
 }

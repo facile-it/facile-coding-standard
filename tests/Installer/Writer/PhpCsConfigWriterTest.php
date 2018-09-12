@@ -2,7 +2,6 @@
 
 namespace Facile\CodingStandardsTest\Installer\Writer;
 
-use Facile\CodingStandards\Installer\Provider\SourcePaths\ProviderInterface;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -23,20 +22,13 @@ class PhpCsConfigWriterTest extends TestCase
         $this->vfsRoot = vfsStream::setup();
     }
 
-    public function testWriteConfigFile()
+    public function testWriteConfigFile(): void
     {
-        $provider = $this->prophesize(ProviderInterface::class);
-
         mkdir($this->vfsRoot->url() . '/src');
         mkdir($this->vfsRoot->url() . '/tests');
 
-        $provider->getSourcePaths()->willReturn([
-            'src/',
-            'tests/',
-        ]);
-
         $filename = $this->vfsRoot->url() . '/.php_cs.dist';
-        $writer = new PhpCsConfigWriter($provider->reveal());
+        $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename);
 

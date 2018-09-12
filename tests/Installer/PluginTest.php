@@ -15,15 +15,15 @@ use PHPUnit\Framework\TestCase;
 
 class PluginTest extends TestCase
 {
-    const PACKAGE_NAME = 'facile-it/facile-coding-standard';
+    private const PACKAGE_NAME = 'facile-it/facile-coding-standard';
 
-    public function testGetPackageName()
+    public function testGetPackageName(): void
     {
         $packageName = Plugin::getPackageName();
         $this->assertEquals(self::PACKAGE_NAME, $packageName);
     }
 
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $plugin = new Plugin();
         $events = Plugin::getSubscribedEvents();

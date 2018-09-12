@@ -11,12 +11,13 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 
 /**
  * Facile coding standards installer.
  */
-class Plugin implements EventSubscriberInterface, PluginInterface
+class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
     /**
      * @var Installer
@@ -45,7 +46,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      */
     public static function getPackageName(): string
     {
-        $composerJson = new JsonFile(dirname(__DIR__, 2) . '/composer.json');
+        $composerJson = new JsonFile(\dirname(__DIR__, 2) . '/composer.json');
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];
@@ -138,5 +139,12 @@ class Plugin implements EventSubscriberInterface, PluginInterface
 
         $installer = $this->getInstaller($event->getComposer(), $event->getIO());
         $installer->installCommands();
+    }
+
+    public function getCapabilities()
+    {
+        return [
+            \Composer\Plugin\Capability\CommandProvider::class => CommandProvider::class,
+        ];
     }
 }
