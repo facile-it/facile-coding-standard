@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Facile\CodingStandards\Rules;
 
 /**
- * Class Rules.
+ * Class DefaultRulesProvider.
  */
 final class DefaultRulesProvider implements RulesProviderInterface
 {

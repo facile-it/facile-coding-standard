@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards\Rules;
 
+/**
+ * Class CompositeRulesProvider
+ */
 final class CompositeRulesProvider implements RulesProviderInterface
 {
     /**
