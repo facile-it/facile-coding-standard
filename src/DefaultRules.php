@@ -46,6 +46,7 @@ final class DefaultRules
         'method_separation' => true,
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
+        'native_function_invocation' => true,
         'new_with_braces' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
@@ -116,7 +117,7 @@ final class DefaultRules
      */
     public function __construct(array $additionalRules = [])
     {
-        $this->setRules(array_merge($this->rules, $additionalRules));
+        $this->setRules(\array_merge($this->rules, $additionalRules));
     }
 
     /**

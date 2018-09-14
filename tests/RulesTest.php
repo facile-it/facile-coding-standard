@@ -20,8 +20,8 @@ class RulesTest extends TestCase
 
         // get first rule
         $rulesDefinition = $rules->getRules();
-        $rulesDefinitionKeys = array_keys($rulesDefinition);
-        $ruleKey = array_shift($rulesDefinitionKeys);
+        $rulesDefinitionKeys = \array_keys($rulesDefinition);
+        $ruleKey = \array_shift($rulesDefinitionKeys);
         $this->assertArrayHasKey($ruleKey, $rulesDefinition);
 
         $overridedRules = new DefaultRules([$ruleKey => 'foobar']);

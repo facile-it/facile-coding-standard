@@ -37,12 +37,12 @@ class InstallerTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
+        \copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
     }
 
     public function testRequestCreateCsConfigWithAlreadyExistingFile()
     {
-        touch($this->projectRoot . '/.php_cs.dist');
+        \touch($this->projectRoot . '/.php_cs.dist');
 
         $packageMock = $this->prophesize(PackageInterface::class);
         $ioMock = $this->prophesize(IOInterface::class);
