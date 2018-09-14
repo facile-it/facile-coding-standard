@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards;
 
-use Composer\Factory;
-
 class AutoloadPathProvider
 {
     /**
@@ -31,7 +29,7 @@ class AutoloadPathProvider
      */
     public function __construct(?string $composerFile = null, ?string $projectRoot = null, bool $dev = true)
     {
-        $this->composerPath = $composerFile ?: Factory::getComposerFile();
+        $this->composerPath = $composerFile ?: trim(getenv('COMPOSER')) ?: './composer.json';
         $this->projectRoot = $projectRoot ?: realpath(\dirname($this->composerPath));
         $this->projectRoot = rtrim($this->projectRoot, '/\\');
         $this->dev = $dev;
