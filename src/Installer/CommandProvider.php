@@ -12,6 +12,7 @@ class CommandProvider implements CommandProviderCapability
     {
         return [
             new Command\CsFix(),
+            new Command\CsCheck(),
         ];
     }
 }

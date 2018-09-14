@@ -10,11 +10,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
-class CsFix extends BaseCommand
+class CsCheck extends BaseCommand
 {
     protected function configure()
     {
-        $this->setName('facile-cs-fix')
+        $this->setName('facile-cs-check')
             ->setDescription('Execute php-cs-fixer')
             ->setDefinition([
                 new InputArgument(
@@ -25,7 +25,7 @@ class CsFix extends BaseCommand
             ])
             ->setHelp(
                 <<<EOT
-Facile Coding Standards - FIX
+Facile Coding Standards - CHECK
 
 
 EOT
@@ -37,9 +37,13 @@ EOT
     {
         $args = [
             'exec',
+            '--',
             'php-cs-fixer',
             'fix',
+            '--dry-run',
+            '--diff',
         ];
+
         if ($input->getArgument('args')) {
             $args = \array_merge($args, $input->getArgument('args'));
         }
