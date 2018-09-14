@@ -21,26 +21,32 @@ class Installer
      * @var IOInterface
      */
     private $io;
+
     /**
      * @var Composer
      */
     private $composer;
+
     /**
      * @var string
      */
     private $projectRoot;
+
     /**
      * @var array
      */
     private $composerDefinition;
+
     /**
      * @var JsonFile
      */
     private $composerJson;
+
     /**
      * @var BasePackage
      */
     private $rootPackage;
+
     /**
      * @var PhpCsConfigWriterInterface
      */

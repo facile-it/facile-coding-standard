@@ -18,6 +18,7 @@ class InstallerTest extends TestCase
      * @var string
      */
     private $composerFilePath;
+
     /**
      * @var
      */

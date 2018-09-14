@@ -15,6 +15,7 @@ final class DefaultRules
     private $rules = [
         '@PSR2' => true,
         'align_multiline_comment' => true,
+        'array_indentation' => true,
         'array_syntax' => [
             'syntax' => 'short',
         ],
@@ -32,6 +33,8 @@ final class DefaultRules
         'cast_spaces' => [
             'space' => 'single',
         ],
+        'class_attributes_separation' => true,
+        'compact_nullable_typehint' => true,
         'concat_space' => [
             'spacing' => 'one',
         ],
@@ -39,7 +42,9 @@ final class DefaultRules
         'function_typehint_space' => true,
         'include' => true,
         'lowercase_cast' => true,
+        'method_chaining_indentation' => true,
         'method_separation' => true,
+        'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
         'no_blank_lines_after_phpdoc' => true,
