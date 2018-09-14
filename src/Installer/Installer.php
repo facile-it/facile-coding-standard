@@ -21,11 +21,6 @@ class Installer
     private $io;
 
     /**
-     * @var Composer
-     */
-    private $composer;
-
-    /**
      * @var string
      */
     private $projectRoot;
@@ -133,7 +128,7 @@ class Installer
             ),
             '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
         ];
-        $answer = $this->io->askConfirmation($question, true);
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
 
         if (! $answer) {
             return;
@@ -162,13 +157,13 @@ class Installer
                 "\n  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
-            "  <info>It will add two scripts:</info>\n",
-            "  - <info>cs-check</info>\n",
-            "  - <info>cs-fix</info>\n",
+            '  <info>It will add two scripts:</info>',
+            '  - <info>cs-check</info>',
+            '  - <info>cs-fix</info>',
             'Answer: ',
         ];
 
-        $answer = $this->io->askConfirmation($question, true);
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
 
         if (! $answer) {
             return;
