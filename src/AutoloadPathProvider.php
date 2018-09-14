@@ -29,8 +29,8 @@ class AutoloadPathProvider
      */
     public function __construct(?string $composerFile = null, ?string $projectRoot = null, bool $dev = true)
     {
-        $this->composerPath = $composerFile ?: trim(getenv('COMPOSER')) ?: './composer.json';
-        $this->projectRoot = $projectRoot ?: realpath(\dirname($this->composerPath));
+        $this->composerPath = $composerFile ?: \trim(\getenv('COMPOSER') ?: '') ?: './composer.json';
+        $this->projectRoot = $projectRoot ?: \realpath(\dirname($this->composerPath));
         $this->projectRoot = rtrim($this->projectRoot, '/\\');
         $this->dev = $dev;
     }
