@@ -27,9 +27,9 @@ final class ComposerAutoloadProvider implements ProviderInterface
     /**
      * Get PHP CS source paths.
      *
-     * @return array
-     *
      * @throws \RuntimeException
+     *
+     * @return array
      */
     public function getSourcePaths(): array
     {

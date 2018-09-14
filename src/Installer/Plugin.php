@@ -38,10 +38,10 @@ class Plugin implements EventSubscriberInterface, PluginInterface
     /**
      * Return this package name.
      *
-     * @return string
-     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public static function getPackageName(): string
     {
@@ -94,10 +94,10 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      * @param Composer    $composer
      * @param IOInterface $io
      *
-     * @return Installer
-     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @return Installer
      */
     public function getInstaller(Composer $composer, IOInterface $io): Installer
     {

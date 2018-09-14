@@ -16,6 +16,7 @@ final class ArrayProvider implements ProviderInterface
 
     /**
      * ArrayProvider constructor.
+     *
      * @param array|ProviderInterface[] $providers
      */
     public function __construct(array $providers)
@@ -45,8 +46,10 @@ final class ArrayProvider implements ProviderInterface
 
     /**
      * @param mixed $provider
-     * @return ProviderInterface
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return ProviderInterface
      */
     private function validateProvider($provider): ProviderInterface
     {
