@@ -41,7 +41,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 \$finder = PhpCsFixer\Finder::create();
 
 /*
- * You can set manually these paths. 
+ * You can set manually these paths:
  */
 \$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
 \$finder->in(\$autoloadPathProvider->getPaths());
