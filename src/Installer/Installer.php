@@ -10,6 +10,8 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
+use Composer\Package\PackageInterface;
+use Composer\Semver\Semver;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 
@@ -46,17 +48,6 @@ class Installer
     private $phpCsWriter;
 
     /**
-     * @throws \Exception
-     */
-    public function installCommands(): void
-    {
-        $this->io->write('<info>Setting up Facile.it Coding Standards</info>');
-        $this->requestCreateCsConfig();
-        $this->requestAddComposerScripts();
-        $this->composerJson->write($this->composerDefinition);
-    }
-
-    /**
      * @param IOInterface $io
      * @param Composer    $composer
      * @param null|string $projectRoot
@@ -82,6 +73,68 @@ class Installer
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function installCommands(): void
+    {
+        $this->io->write('<info>Setting up Facile.it Coding Standards</info>');
+        $this->requestCreateCsConfig();
+        $this->requestAddComposerScripts();
+        $this->composerJson->write($this->composerDefinition);
+    }
+
+    /**
+     * Check if we need to do some upgrades
+     *
+     * @param PackageInterface $currentPackage
+     * @param PackageInterface $targetPackage
+     */
+    public function checkUpgrade(PackageInterface $currentPackage, PackageInterface $targetPackage): void
+    {
+        if (false === $this->isBcBreak($currentPackage, $targetPackage)) {
+            return;
+        }
+
+        $question = [
+            '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
+            \sprintf(
+                '  <question>%s</question>',
+                'Do you want to write the new configuration? (Y/n)'
+            ),
+        ];
+
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+
+        if (! $answer) {
+            return;
+        }
+
+        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
+    }
+
+    private function isBcBreak(PackageInterface $currentPackage, PackageInterface $targetPackage): bool
+    {
+        if ($targetPackage->getFullPrettyVersion() === $currentPackage->getFullPrettyVersion()) {
+            return false;
+        }
+
+        $constraint = $currentPackage->getVersion();
+        if (0 !== \strpos($constraint, 'dev-')) {
+            $constraint = '^' . $constraint;
+        }
+
+        if ($targetPackage->getVersion() && Semver::satisfies($targetPackage->getVersion(), $constraint)) {
+            // it needs an immediate semver-compliant upgrade
+            return false;
+        }
+
+        // it needs an upgrade but has potential BC breaks so is not urgent
+        return true;
     }
 
     /**
@@ -123,11 +176,12 @@ class Installer
 
         $question = [
             \sprintf(
-                "\n  <question>%s</question>\n",
+                "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
             '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
         ];
+
         $answer = $this->io->askConfirmation(\implode("\n", $question), true);
 
         if (! $answer) {
@@ -154,7 +208,7 @@ class Installer
 
         $question = [
             \sprintf(
-                "\n  <question>%s</question>\n",
+                "  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
             '  <info>It will add two scripts:</info>',

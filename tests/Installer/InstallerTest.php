@@ -4,9 +4,11 @@ namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
+use Facile\CodingStandardsTest\Util;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +22,7 @@ class InstallerTest extends TestCase
     private $composerFilePath;
 
     /**
-     * @var
+     * @var string
      */
     private $projectRoot;
 
@@ -37,80 +39,189 @@ class InstallerTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        \copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
+        \file_put_contents($this->composerFilePath, Util::getComposerContent());
+    }
+
+    public function invalidUpgradeProvider(): array
+    {
+        return [
+            [['0.1.0.0', '0.1.0'], ['0.1.0.0', '0.1.0']],
+            [['0.1.0.0', '0.1.0'], ['0.1.1.0', '0.1.1']],
+            [['1.1.0.0', '1.1.0'], ['1.2.0.0', '1.2.0']],
+            [['dev-master', 'dev-master'], ['dev-master', 'dev-master']],
+            [['dev-master#12345', 'dev-master'], ['dev-master#12345', 'dev-master']],
+            [['dev-master#12345', 'dev-master'], ['dev-master#12346', 'dev-master']],
+        ];
+    }
+
+    public function validUpgradeProvider(): array
+    {
+        return [
+            [['0.1.0.0', '0.1.0'], ['0.2.0.0', '0.2.0']],
+            [['0.1.0.0', '0.1.0'], ['1.0.0.0', '1.0.0']],
+            [['1.0.0.0', '1.0.0'], ['2.0.0.0', '2.0.0']],
+            [['dev-master', 'dev-master'], ['dev-feature', 'dev-feature']],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidUpgradeProvider
+     *
+     * @param array $currentPackageV
+     * @param array $targetPackageV
+     */
+    public function testCheckUpgradeTestNotNecessary(array $currentPackageV, array $targetPackageV): void
+    {
+        $currentPackage = new Package('dummy', $currentPackageV[0], $currentPackageV[1]);
+        $targetPackage = new Package('dummy', $targetPackageV[0], $targetPackageV[1]);
+
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
+
+        $installer = new Installer(
+            $io->reveal(),
+            $composer->reveal(),
+            $this->projectRoot,
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
+        );
+
+        $io->askConfirmation(Argument::cetera())
+            ->shouldNotBeCalled();
+
+        $installer->checkUpgrade($currentPackage, $targetPackage);
+    }
+
+    /**
+     * @dataProvider validUpgradeProvider
+     *
+     * @param array $currentPackageV
+     * @param array $targetPackageV
+     */
+    public function testCheckUpgradeTestNecessary(array $currentPackageV, array $targetPackageV): void
+    {
+        $currentPackage = new Package('dummy', $currentPackageV[0], $currentPackageV[1]);
+        $targetPackage = new Package('dummy', $targetPackageV[0], $targetPackageV[1]);
+
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
+
+        $installer = new Installer(
+            $io->reveal(),
+            $composer->reveal(),
+            $this->projectRoot,
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
+        );
+
+        $io->askConfirmation(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(false);
+
+        $installer->checkUpgrade($currentPackage, $targetPackage);
+    }
+
+    public function testCheckUpgrade(): void
+    {
+        $currentPackage = new Package('dummy', '0.1.0', '0.1.0');
+        $targetPackage = new Package('dummy', '0.2.0', '0.2.0');
+
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
+
+        $installer = new Installer(
+            $io->reveal(),
+            $composer->reveal(),
+            $this->projectRoot,
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
+        );
+
+        $io->askConfirmation(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn(true);
+
+        $io->write(Argument::type('string'))->shouldBeCalled();
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist')
+            ->shouldBeCalled();
+
+        $installer->checkUpgrade($currentPackage, $targetPackage);
     }
 
     public function testRequestCreateCsConfigWithAlreadyExistingFile(): void
     {
         \touch($this->projectRoot . '/.php_cs.dist');
 
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $phpCsWriterMock = $this->prophesize(PhpCsConfigWriterInterface::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
 
-        $phpCsWriterMock->writeConfigFile(Argument::any())->shouldNotBeCalled();
-        $ioMock->write(Argument::any())->shouldBeCalled();
-        $ioMock->askConfirmation(Argument::cetera())->shouldNotBeCalled();
-        $composerMock->getPackage()->willReturn($packageMock);
-        $packageMock->getAutoload()->willReturn([]);
-        $packageMock->getDevAutoload()->willReturn([]);
+        $phpCsWriter->writeConfigFile(Argument::any())->shouldNotBeCalled();
+        $io->write(Argument::any())->shouldBeCalled();
+        $io->askConfirmation(Argument::cetera())->shouldNotBeCalled();
+        $composer->getPackage()->willReturn($package);
+        $package->getAutoload()->willReturn([]);
+        $package->getDevAutoload()->willReturn([]);
 
         $installer = new Installer(
-            $ioMock->reveal(),
-            $composerMock->reveal(),
+            $io->reveal(),
+            $composer->reveal(),
             $this->projectRoot,
-            $this->composerFilePath
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
         );
-        $installer->setPhpCsWriter($phpCsWriterMock->reveal());
         $installer->requestCreateCsConfig();
     }
 
     public function testRequestCreateCsConfigWithAnswerNo(): void
     {
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $phpCsWriterMock = $this->prophesize(PhpCsConfigWriterInterface::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
 
-        $phpCsWriterMock->writeConfigFile(Argument::any())->shouldNotBeCalled();
-        $ioMock->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(false);
-        $composerMock->getPackage()->willReturn($packageMock);
-        $packageMock->getAutoload()->willReturn([]);
-        $packageMock->getDevAutoload()->willReturn([]);
+        $phpCsWriter->writeConfigFile(Argument::any())->shouldNotBeCalled();
+        $io->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(false);
+        $composer->getPackage()->willReturn($package);
+        $package->getAutoload()->willReturn([]);
+        $package->getDevAutoload()->willReturn([]);
 
         $installer = new Installer(
-            $ioMock->reveal(),
-            $composerMock->reveal(),
+            $io->reveal(),
+            $composer->reveal(),
             $this->projectRoot,
-            $this->composerFilePath
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
         );
-        $installer->setPhpCsWriter($phpCsWriterMock->reveal());
 
         $installer->requestCreateCsConfig();
     }
 
     public function testRequestCreateCsConfig(): void
     {
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $phpCsWriterMock = $this->prophesize(PhpCsConfigWriterInterface::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
 
-        $ioMock->write(Argument::any())->shouldBeCalled();
-        $ioMock->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(true);
-        $composerMock->getPackage()->willReturn($packageMock);
-        $packageMock->getAutoload()->willReturn([]);
-        $packageMock->getDevAutoload()->willReturn([]);
-        $phpCsWriterMock->writeConfigFile($this->projectRoot . '/.php_cs.dist')->shouldBeCalled();
+        $io->write(Argument::any())->shouldBeCalled();
+        $io->askConfirmation(Argument::any(), true)->shouldBeCalled()->willReturn(true);
+        $composer->getPackage()->willReturn($package);
+        $package->getAutoload()->willReturn([]);
+        $package->getDevAutoload()->willReturn([]);
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist')->shouldBeCalled();
 
         $installer = new Installer(
-            $ioMock->reveal(),
-            $composerMock->reveal(),
+            $io->reveal(),
+            $composer->reveal(),
             $this->projectRoot,
-            $this->composerFilePath
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
         );
-        $installer->setPhpCsWriter($phpCsWriterMock->reveal());
 
         $installer->requestCreateCsConfig();
     }

@@ -6,6 +6,7 @@ namespace Facile\CodingStandards\Installer;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
@@ -73,7 +74,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
     {
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'onPostPackageInstall',
-            PackageEvents::POST_PACKAGE_UPDATE => 'onPostPackageInstall',
+            PackageEvents::POST_PACKAGE_UPDATE => 'onPostPackageUpdate',
         ];
     }
 
@@ -106,6 +107,44 @@ class Plugin implements EventSubscriberInterface, PluginInterface
         }
 
         return $this->installer;
+    }
+
+    /**
+     * @param PackageEvent $event
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function onPostPackageUpdate(PackageEvent $event): void
+    {
+        if (! $event->isDevMode()) {
+            // Do nothing in production mode.
+            return;
+        }
+
+        $operation = $event->getOperation();
+
+        if (! $operation instanceof UpdateOperation) {
+            return;
+        }
+
+        $package = $operation->getInitialPackage();
+        $name = $package->getName();
+
+        if ($name !== self::getPackageName()) {
+            // we are not updating it
+            return;
+        }
+
+        $installer = $this->getInstaller($event->getComposer(), $event->getIO());
+
+        if (false === \method_exists($installer, 'checkUpgrade')) {
+            // it's an old version
+            return;
+        }
+
+        $installer->checkUpgrade($operation->getInitialPackage(), $operation->getTargetPackage());
     }
 
     /**

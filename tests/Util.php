@@ -1,3 +1,14 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Facile\CodingStandardsTest;
+
+class Util
+{
+    public static function getComposerContent(): string
+    {
+        return <<<'JSON'
 {
   "name": "facile-it/facile-coding-standard-test",
   "description": "Facile coding standard test",
@@ -34,4 +45,8 @@
       ]
     }
   }
+}
+
+JSON;
+    }
 }

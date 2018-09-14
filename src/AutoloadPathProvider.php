@@ -63,21 +63,32 @@ class AutoloadPathProvider
     private function getAutoloadPaths(array $autoload): array
     {
         $keys = ['psr-0', 'psr-4', 'classmap'];
-        $autoload = \array_intersect_key($autoload, \array_flip($keys));
+        $autoloads = \array_intersect_key($autoload, \array_flip($keys));
 
-        $autoloadPaths = [];
-        foreach ($autoload as $paths) {
-            if (\is_array($paths)) {
-                $autoloadPaths = \array_merge($autoloadPaths, \array_values($paths));
-            } elseif (\is_string($paths)) {
-                $autoloadPaths[] = $paths;
-            }
-        }
+        $autoloadPaths = $this->reduceAutoload($autoloads);
 
         $autoloadPaths = \array_filter($autoloadPaths, function (string $path) {
             return \is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path);
         });
 
         return $autoloadPaths;
+    }
+
+    private function reduceAutoload(array $autoload): array
+    {
+        return \array_reduce(
+            $autoload,
+            \Closure::fromCallable([$this, 'autoloadReducer']),
+            []
+        );
+    }
+
+    private function autoloadReducer(array $carry, $item): array
+    {
+        if (\is_array($item)) {
+            return \array_merge($carry, $this->reduceAutoload($item));
+        }
+
+        return \array_merge($carry, [$item]);
     }
 }
