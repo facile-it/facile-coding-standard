@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Facile\CodingStandards\Installer\Command;
+
+use Composer\Command\BaseCommand;
+use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
+use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+
+class CreateConfigCommand extends BaseCommand
+{
+    /**
+     * @var PhpCsConfigWriterInterface
+     */
+    private $configWriter;
+
+    /**
+     * @return PhpCsConfigWriterInterface
+     */
+    public function getConfigWriter(): PhpCsConfigWriterInterface
+    {
+        if (! $this->configWriter) {
+            $this->configWriter = new PhpCsConfigWriter();
+        }
+
+        return $this->configWriter;
+    }
+
+    /**
+     * @param PhpCsConfigWriterInterface $configWriter
+     */
+    public function setConfigWriter(PhpCsConfigWriterInterface $configWriter): void
+    {
+        $this->configWriter = $configWriter;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setName('facile-cs-create-config')
+            ->setDescription('Write the facile-coding-standard configuration for php-cs-fixer')
+            ->setDefinition([
+                new InputOption('no-dev', '-n', InputOption::VALUE_NONE, 'Do not include autoload-dev directories'),
+                new InputOption('no-risky', '-r', InputOption::VALUE_NONE, 'Do not include risky rules'),
+            ])
+            ->setHelp(<<<HELP
+Write config file in <comment>.php_cs.dist</comment>.
+HELP
+)
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $configWriter = $this->getConfigWriter();
+
+        $configWriter->writeConfigFile(
+            '.php_cs.dist',
+            $input->getOption('no-dev'),
+            $input->getOption('no-risky')
+        );
+
+        return 0;
+    }
+}

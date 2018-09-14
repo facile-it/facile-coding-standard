@@ -12,12 +12,13 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 
 /**
  * Facile coding standards installer.
  */
-class Plugin implements EventSubscriberInterface, PluginInterface
+class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
     /**
      * @var Installer
@@ -177,5 +178,30 @@ class Plugin implements EventSubscriberInterface, PluginInterface
 
         $installer = $this->getInstaller($event->getComposer(), $event->getIO());
         $installer->installCommands();
+    }
+
+    /**
+     * Method by which a Plugin announces its API implementations, through an array
+     * with a special structure.
+     *
+     * The key must be a string, representing a fully qualified class/interface name
+     * which Composer Plugin API exposes.
+     * The value must be a string as well, representing the fully qualified class name
+     * of the implementing class.
+     *
+     * @tutorial
+     *
+     * return array(
+     *     'Composer\Plugin\Capability\CommandProvider' => 'My\CommandProvider',
+     *     'Composer\Plugin\Capability\Validator'       => 'My\Validator',
+     * );
+     *
+     * @return string[]
+     */
+    public function getCapabilities(): array
+    {
+        return [
+            \Composer\Plugin\Capability\CommandProvider::class => CommandProvider::class,
+        ];
     }
 }

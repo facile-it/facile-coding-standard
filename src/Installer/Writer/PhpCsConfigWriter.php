@@ -7,19 +7,33 @@ namespace Facile\CodingStandards\Installer\Writer;
 final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 {
     /**
-     * @param string $filename
+     * @param null|string $filename
+     * @param bool $noDev
+     * @param bool $noRisky
      */
-    public function writeConfigFile(string $filename): void
+    public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
     {
-        \file_put_contents($filename, $this->createConfigSource());
+        $filename = $filename ?: '.php_cs.dist';
+        \file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
     }
 
     /**
+     * @param bool $noDev
+     * @param bool $noRisky
+     *
      * @return string
      */
-    private function createConfigSource(): string
+    private function createConfigSource(bool $noDev = false, bool $noRisky = false): string
     {
-        $contents = <<<FILE
+        $rulesProviderConfig = $this->createRulesProviderConfig($noRisky);
+
+        $autoloadPathProvider = '$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();';
+
+        if ($noDev) {
+            $autoloadPathProvider = '$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider(null, null, false);';
+        }
+
+        return <<<FILE
 <?php
 
 /*
@@ -27,23 +41,17 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
  * These rules will be added to default rules or will override them if the same key already exists.
  */
  
-\$additionalRules = [];
-\$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
-    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
-    // new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
-    new Facile\CodingStandards\Rules\ArrayRulesProvider(\$additionalRules)
-]);
+$rulesProviderConfig
 
 \$config = PhpCsFixer\Config::create();
 \$config->setRules(\$rulesProvider->getRules());
-\$config->setRiskyAllowed(false);
 
 \$finder = PhpCsFixer\Finder::create();
 
 /*
  * You can set manually these paths:
  */
-\$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
+$autoloadPathProvider
 \$finder->in(\$autoloadPathProvider->getPaths());
 
 \$config->setFinder(\$finder);
@@ -51,7 +59,27 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 return \$config;
 
 FILE;
+    }
 
-        return $contents;
+    private function createRulesProviderConfig(bool $noRisky = false): string
+    {
+        $providersLine = [
+            '    new Facile\CodingStandards\Rules\DefaultRulesProvider(),',
+        ];
+
+        if (false === $noRisky) {
+            $providersLine[] = '    new Facile\CodingStandards\Rules\RiskyRulesProvider(),';
+        }
+
+        $providersLine[] = '    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),';
+
+        $providersLine = \implode("\n", $providersLine);
+
+        return <<<TEXT
+\$additionalRules = [];
+\$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+$providersLine
+]);
+TEXT;
     }
 }

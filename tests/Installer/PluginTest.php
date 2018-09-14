@@ -6,10 +6,14 @@ use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Plugin\Capable;
+use Composer\Plugin\PluginInterface;
+use Facile\CodingStandards\Installer\CommandProvider;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Plugin;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +32,8 @@ class PluginTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $plugin = new Plugin();
+        $this->assertInstanceOf(PluginInterface::class, $plugin);
+        $this->assertInstanceOf(EventSubscriberInterface::class, $plugin);
         $events = Plugin::getSubscribedEvents();
 
         $this->assertCount(2, $events);
@@ -218,5 +224,17 @@ class PluginTest extends TestCase
 
         $plugin = new Plugin($installer->reveal());
         $plugin->onPostPackageInstall($event->reveal());
+    }
+
+    public function testCapabilities(): void
+    {
+        $plugin = new Plugin();
+
+        $this->assertInstanceOf(Capable::class, $plugin);
+
+        $capabilities = $plugin->getCapabilities();
+
+        $this->assertArrayHasKey(\Composer\Plugin\Capability\CommandProvider::class, $capabilities);
+        $this->assertSame(CommandProvider::class, $capabilities[\Composer\Plugin\Capability\CommandProvider::class]);
     }
 }
