@@ -15,7 +15,7 @@ class PhpCsConfigWriterTest extends TestCase
      */
     private $vfsRoot;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,8 +24,8 @@ class PhpCsConfigWriterTest extends TestCase
 
     public function testWriteConfigFile(): void
     {
-        mkdir($this->vfsRoot->url() . '/src');
-        mkdir($this->vfsRoot->url() . '/tests');
+        \mkdir($this->vfsRoot->url() . '/src');
+        \mkdir($this->vfsRoot->url() . '/tests');
 
         $filename = $this->vfsRoot->url() . '/.php_cs.dist';
         $writer = new PhpCsConfigWriter();

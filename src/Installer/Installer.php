@@ -77,8 +77,8 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: realpath(\dirname($composerFile));
-        $this->projectRoot = rtrim($this->projectRoot, '/\\');
+        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerFile));
+        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
@@ -114,15 +114,15 @@ class Installer
     {
         $destPath = $this->projectRoot . '/.php_cs.dist';
 
-        if (file_exists($destPath)) {
-            $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
-            $this->io->write(sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
+        if (\file_exists($destPath)) {
+            $this->io->write(\sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
+            $this->io->write(\sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
 
             return;
         }
 
         $question = [
-            sprintf(
+            \sprintf(
                 "\n  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
@@ -134,7 +134,7 @@ class Installer
             return;
         }
 
-        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
     }
@@ -146,14 +146,14 @@ class Installer
             'cs-fix' => 'php-cs-fixer fix --diff',
         ];
 
-        if (0 === \count(array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
-            $this->io->write(sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
+        if (0 === \count(\array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
+            $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
         }
 
         $question = [
-            sprintf(
+            \sprintf(
                 "\n  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
@@ -169,16 +169,16 @@ class Installer
             return;
         }
 
-        if (! array_key_exists('scripts', $this->composerDefinition)) {
+        if (! \array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 
         foreach ($scripts as $key => $command) {
             if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
                 $this->io->write([
-                    sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    \sprintf('  <error>Another script "%s" exists!</error>', $key),
                     '  If you want, you can replace it manually with:',
-                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                    \sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
                 ]);
                 continue;
             }
@@ -193,7 +193,7 @@ class Installer
      */
     protected function addComposerScript(string $composerCommand, string $command): void
     {
-        if (! array_key_exists('scripts', $this->composerDefinition)) {
+        if (! \array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 

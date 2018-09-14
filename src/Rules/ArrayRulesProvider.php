@@ -13,6 +13,7 @@ final class ArrayRulesProvider implements RulesProviderInterface
 
     /**
      * ArrayRulesProvider constructor.
+     *
      * @param array $rules
      */
     public function __construct(array $rules)

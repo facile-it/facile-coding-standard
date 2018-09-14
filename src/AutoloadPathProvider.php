@@ -23,6 +23,7 @@ class AutoloadPathProvider
 
     /**
      * AutoloadPathProvider constructor.
+     *
      * @param null|string $composerFile
      * @param null|string $projectRoot
      * @param bool $dev
@@ -31,7 +32,7 @@ class AutoloadPathProvider
     {
         $this->composerPath = $composerFile ?: \trim(\getenv('COMPOSER') ?: '') ?: './composer.json';
         $this->projectRoot = $projectRoot ?: \realpath(\dirname($this->composerPath));
-        $this->projectRoot = rtrim($this->projectRoot, '/\\');
+        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         $this->dev = $dev;
     }
 

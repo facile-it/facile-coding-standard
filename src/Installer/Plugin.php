@@ -69,7 +69,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'onPostPackageInstall',
@@ -86,7 +86,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
     }
 
@@ -115,7 +115,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function onPostPackageInstall(PackageEvent $event)
+    public function onPostPackageInstall(PackageEvent $event): void
     {
         if (! $event->isDevMode()) {
             // Do nothing in production mode.

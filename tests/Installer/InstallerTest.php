@@ -29,7 +29,7 @@ class InstallerTest extends TestCase
      */
     private $vfsRoot;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -37,12 +37,12 @@ class InstallerTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
+        \copy(__DIR__ . '/../data/config/composer.json', $this->composerFilePath);
     }
 
-    public function testRequestCreateCsConfigWithAlreadyExistingFile()
+    public function testRequestCreateCsConfigWithAlreadyExistingFile(): void
     {
-        touch($this->projectRoot . '/.php_cs.dist');
+        \touch($this->projectRoot . '/.php_cs.dist');
 
         $packageMock = $this->prophesize(PackageInterface::class);
         $ioMock = $this->prophesize(IOInterface::class);
@@ -66,7 +66,7 @@ class InstallerTest extends TestCase
         $installer->requestCreateCsConfig();
     }
 
-    public function testRequestCreateCsConfigWithAnswerNo()
+    public function testRequestCreateCsConfigWithAnswerNo(): void
     {
         $packageMock = $this->prophesize(PackageInterface::class);
         $ioMock = $this->prophesize(IOInterface::class);
@@ -90,7 +90,7 @@ class InstallerTest extends TestCase
         $installer->requestCreateCsConfig();
     }
 
-    public function testRequestCreateCsConfig()
+    public function testRequestCreateCsConfig(): void
     {
         $packageMock = $this->prophesize(PackageInterface::class);
         $ioMock = $this->prophesize(IOInterface::class);

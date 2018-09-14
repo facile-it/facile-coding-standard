@@ -11,7 +11,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
      */
     public function writeConfigFile(string $filename): void
     {
-        file_put_contents($filename, $this->createConfigSource());
+        \file_put_contents($filename, $this->createConfigSource());
     }
 
     /**
@@ -30,6 +30,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 \$additionalRules = [];
 \$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    // new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
     new Facile\CodingStandards\Rules\ArrayRulesProvider(\$additionalRules)
 ]);
 

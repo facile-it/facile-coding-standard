@@ -33,11 +33,11 @@ class PluginTest extends TestCase
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_INSTALL, $events);
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_UPDATE, $events);
 
-        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
-        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
+        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
+        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
     }
 
-    public function testActive()
+    public function testActive(): void
     {
         $plugin = new Plugin();
 
@@ -50,7 +50,7 @@ class PluginTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testGetInstallerAfterSetter()
+    public function testGetInstallerAfterSetter(): void
     {
         $composerMock = $this->prophesize(Composer::class);
         $ioMock = $this->prophesize(IOInterface::class);
@@ -64,7 +64,7 @@ class PluginTest extends TestCase
         $this->assertSame($installerMock->reveal(), $installer);
     }
 
-    public function testOnPostPackageInstall()
+    public function testOnPostPackageInstall(): void
     {
         $eventMock = $this->prophesize(PackageEvent::class);
         $operationMock = $this->prophesize(InstallOperation::class);
@@ -86,7 +86,7 @@ class PluginTest extends TestCase
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 
-    public function testOnPostPackageInstallInNoDevMode()
+    public function testOnPostPackageInstallInNoDevMode(): void
     {
         $eventMock = $this->prophesize(PackageEvent::class);
         $operationMock = $this->prophesize(InstallOperation::class);
@@ -101,7 +101,7 @@ class PluginTest extends TestCase
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 
-    public function testOnPostPackageInstallWithAnotherOperation()
+    public function testOnPostPackageInstallWithAnotherOperation(): void
     {
         $eventMock = $this->prophesize(PackageEvent::class);
         $operationMock = $this->prophesize(OperationInterface::class);
@@ -119,7 +119,7 @@ class PluginTest extends TestCase
         $plugin->onPostPackageInstall($eventMock->reveal());
     }
 
-    public function testOnPostPackageInstallWithAnotherPackage()
+    public function testOnPostPackageInstallWithAnotherPackage(): void
     {
         $eventMock = $this->prophesize(PackageEvent::class);
         $operationMock = $this->prophesize(InstallOperation::class);

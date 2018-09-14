@@ -13,6 +13,7 @@ final class CompositeRulesProvider implements RulesProviderInterface
 
     /**
      * CompositeRulesProvider constructor.
+     *
      * @param iterable|RulesProviderInterface[] $providers
      */
     public function __construct(iterable $providers)
