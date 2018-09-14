@@ -50,21 +50,6 @@ class PluginTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testGetInstallerWithNew()
-    {
-        $plugin = new Plugin();
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $composerMock->getPackage()->willReturn($packageMock);
-        $packageMock->getAutoload()->willReturn([]);
-        $packageMock->getDevAutoload()->willReturn([]);
-
-        $installer = $plugin->getInstaller($composerMock->reveal(), $ioMock->reveal());
-
-        $this->assertInstanceOf(Installer::class, $installer);
-    }
-
     public function testGetInstallerAfterSetter()
     {
         $composerMock = $this->prophesize(Composer::class);
