@@ -29,8 +29,7 @@
     "autoload": {
         "psr-4": {
             "Facile\\CodingStandards\\": "src/"
-        },
-        "files": ["src/Rules/ArrayRulesProvider.php"]
+        }
     },
     "autoload-dev": {
         "psr-4": {
