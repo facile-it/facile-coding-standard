@@ -10,7 +10,6 @@ use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 class CreateConfigCommand extends BaseCommand
 {
@@ -39,7 +38,7 @@ class CreateConfigCommand extends BaseCommand
         $this->configWriter = $configWriter;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('facile-cs-create-config')
@@ -48,7 +47,8 @@ class CreateConfigCommand extends BaseCommand
                 new InputOption('no-dev', '-n', InputOption::VALUE_NONE, 'Do not include autoload-dev directories'),
                 new InputOption('no-risky', '-r', InputOption::VALUE_NONE, 'Do not include risky rules'),
             ])
-            ->setHelp(<<<HELP
+            ->setHelp(
+                <<<HELP
 Write config file in <comment>.php_cs.dist</comment>.
 HELP
 )

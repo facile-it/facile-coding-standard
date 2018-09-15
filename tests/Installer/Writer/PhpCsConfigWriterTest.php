@@ -3,7 +3,6 @@
 namespace Facile\CodingStandardsTest\Installer\Writer;
 
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
-use Facile\CodingStandardsTest\Util;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;

@@ -12,7 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateConfigCommandTest extends TestCase
 {
-
     public function testGetConfigWriter(): void
     {
         $command = new CreateConfigCommand();
@@ -34,6 +33,7 @@ class CreateConfigCommandTest extends TestCase
      * @param array $args
      * @param bool $noDev
      * @param bool $noRisky
+     *
      * @throws \Exception
      */
     public function testExecute(array $args, bool $noDev, bool $noRisky): void
