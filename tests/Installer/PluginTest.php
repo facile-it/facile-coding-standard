@@ -5,27 +5,35 @@ namespace Facile\CodingStandardsTest\Installer;
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\OperationInterface;
+use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Plugin\Capable;
+use Composer\Plugin\PluginInterface;
+use Facile\CodingStandards\Installer\CommandProvider;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Plugin;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 
 class PluginTest extends TestCase
 {
-    const PACKAGE_NAME = 'facile-it/facile-coding-standard';
+    private const PACKAGE_NAME = 'facile-it/facile-coding-standard';
 
-    public function testGetPackageName()
+    public function testGetPackageName(): void
     {
         $packageName = Plugin::getPackageName();
         $this->assertEquals(self::PACKAGE_NAME, $packageName);
     }
 
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         $plugin = new Plugin();
+        $this->assertInstanceOf(PluginInterface::class, $plugin);
+        $this->assertInstanceOf(EventSubscriberInterface::class, $plugin);
         $events = Plugin::getSubscribedEvents();
 
         $this->assertCount(2, $events);
@@ -33,125 +41,200 @@ class PluginTest extends TestCase
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_INSTALL, $events);
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_UPDATE, $events);
 
-        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
-        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
+        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
+        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
     }
 
-    public function testActive()
+    public function testActive(): void
     {
         $plugin = new Plugin();
 
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
 
-        $plugin->activate($composerMock->reveal(), $ioMock->reveal());
+        $plugin->activate($composer->reveal(), $io->reveal());
 
         // assert no exceptions
         $this->assertTrue(true);
     }
 
-    public function testGetInstallerWithNew()
+    public function testGetInstallerAfterSetter(): void
+    {
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+        $installer = $this->prophesize(Installer::class);
+
+        $plugin = new Plugin($installer->reveal());
+
+        $installerInstance = $plugin->getInstaller($composer->reveal(), $io->reveal());
+
+        $this->assertInstanceOf(Installer::class, $installerInstance);
+        $this->assertSame($installer->reveal(), $installerInstance);
+    }
+
+    public function testOnPostPackageUpdate(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(UpdateOperation::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $targetPackage = $this->prophesize(PackageInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $operation->getInitialPackage()->willReturn($package->reveal());
+        $operation->getTargetPackage()->willReturn($targetPackage->reveal());
+        $package->getName()->willReturn(self::PACKAGE_NAME);
+
+        $plugin = new Plugin($installer->reveal());
+        $installer->checkUpgrade($package, $targetPackage)->shouldBeCalled();
+
+        $plugin->onPostPackageUpdate($event->reveal());
+    }
+
+    public function testOnPostPackageUpdateInNoDevMode(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(UpdateOperation::class);
+        $installer = $this->prophesize(Installer::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(false);
+        $installer->checkUpgrade(Argument::cetera())->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+
+        $plugin->onPostPackageUpdate($event->reveal());
+    }
+
+    public function testOnPostPackageUpdateWithAnotherOperation(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(OperationInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $installer->checkUpgrade(Argument::cetera())->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+        $plugin->onPostPackageUpdate($event->reveal());
+    }
+
+    public function testOnPostPackageUpdateWithAnotherPackage(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(UpdateOperation::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $operation->getInitialPackage()->willReturn($package->reveal());
+        $package->getName()->shouldBeCalled()->willReturn('foo');
+        $installer->checkUpgrade(Argument::cetera())->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+        $plugin->onPostPackageUpdate($event->reveal());
+    }
+
+    public function testOnPostPackageInstall(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(InstallOperation::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $operation->getPackage()->willReturn($package->reveal());
+        $package->getName()->willReturn(self::PACKAGE_NAME);
+
+        $plugin = new Plugin($installer->reveal());
+        $installer->installCommands()->shouldBeCalled();
+
+        $plugin->onPostPackageInstall($event->reveal());
+    }
+
+    public function testOnPostPackageInstallInNoDevMode(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(InstallOperation::class);
+        $installer = $this->prophesize(Installer::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(false);
+        $installer->installCommands()->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+
+        $plugin->onPostPackageInstall($event->reveal());
+    }
+
+    public function testOnPostPackageInstallWithAnotherOperation(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(OperationInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $installer->installCommands()->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+        $plugin->onPostPackageInstall($event->reveal());
+    }
+
+    public function testOnPostPackageInstallWithAnotherPackage(): void
+    {
+        $event = $this->prophesize(PackageEvent::class);
+        $operation = $this->prophesize(InstallOperation::class);
+        $package = $this->prophesize(PackageInterface::class);
+        $installer = $this->prophesize(Installer::class);
+        $composer = $this->prophesize(Composer::class);
+        $io = $this->prophesize(IOInterface::class);
+
+        $event->getOperation()->willReturn($operation->reveal());
+        $event->isDevMode()->willReturn(true);
+        $event->getComposer()->willReturn($composer->reveal());
+        $event->getIO()->willReturn($io->reveal());
+        $operation->getPackage()->willReturn($package->reveal());
+        $package->getName()->shouldBeCalled()->willReturn('foo');
+        $installer->installCommands()->shouldNotBeCalled();
+
+        $plugin = new Plugin($installer->reveal());
+        $plugin->onPostPackageInstall($event->reveal());
+    }
+
+    public function testCapabilities(): void
     {
         $plugin = new Plugin();
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $composerMock->getPackage()->willReturn($packageMock);
-        $packageMock->getAutoload()->willReturn([]);
-        $packageMock->getDevAutoload()->willReturn([]);
 
-        $installer = $plugin->getInstaller($composerMock->reveal(), $ioMock->reveal());
+        $this->assertInstanceOf(Capable::class, $plugin);
 
-        $this->assertInstanceOf(Installer::class, $installer);
-    }
+        $capabilities = $plugin->getCapabilities();
 
-    public function testGetInstallerAfterSetter()
-    {
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-        $installerMock = $this->prophesize(Installer::class);
-
-        $plugin = new Plugin($installerMock->reveal());
-
-        $installer = $plugin->getInstaller($composerMock->reveal(), $ioMock->reveal());
-
-        $this->assertInstanceOf(Installer::class, $installer);
-        $this->assertSame($installerMock->reveal(), $installer);
-    }
-
-    public function testOnPostPackageInstall()
-    {
-        $eventMock = $this->prophesize(PackageEvent::class);
-        $operationMock = $this->prophesize(InstallOperation::class);
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $installerMock = $this->prophesize(Installer::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-
-        $eventMock->getOperation()->willReturn($operationMock->reveal());
-        $eventMock->isDevMode()->willReturn(true);
-        $eventMock->getComposer()->willReturn($composerMock->reveal());
-        $eventMock->getIO()->willReturn($ioMock->reveal());
-        $operationMock->getPackage()->willReturn($packageMock->reveal());
-        $packageMock->getName()->willReturn(self::PACKAGE_NAME);
-
-        $plugin = new Plugin($installerMock->reveal());
-        $installerMock->installCommands()->shouldBeCalled();
-
-        $plugin->onPostPackageInstall($eventMock->reveal());
-    }
-
-    public function testOnPostPackageInstallInNoDevMode()
-    {
-        $eventMock = $this->prophesize(PackageEvent::class);
-        $operationMock = $this->prophesize(InstallOperation::class);
-        $installerMock = $this->prophesize(Installer::class);
-
-        $eventMock->getOperation()->willReturn($operationMock->reveal());
-        $eventMock->isDevMode()->willReturn(false);
-        $installerMock->installCommands()->shouldNotBeCalled();
-
-        $plugin = new Plugin($installerMock->reveal());
-
-        $plugin->onPostPackageInstall($eventMock->reveal());
-    }
-
-    public function testOnPostPackageInstallWithAnotherOperation()
-    {
-        $eventMock = $this->prophesize(PackageEvent::class);
-        $operationMock = $this->prophesize(OperationInterface::class);
-        $installerMock = $this->prophesize(Installer::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-
-        $eventMock->getOperation()->willReturn($operationMock->reveal());
-        $eventMock->isDevMode()->willReturn(true);
-        $eventMock->getComposer()->willReturn($composerMock->reveal());
-        $eventMock->getIO()->willReturn($ioMock->reveal());
-        $installerMock->installCommands()->shouldNotBeCalled();
-
-        $plugin = new Plugin($installerMock->reveal());
-        $plugin->onPostPackageInstall($eventMock->reveal());
-    }
-
-    public function testOnPostPackageInstallWithAnotherPackage()
-    {
-        $eventMock = $this->prophesize(PackageEvent::class);
-        $operationMock = $this->prophesize(InstallOperation::class);
-        $packageMock = $this->prophesize(PackageInterface::class);
-        $installerMock = $this->prophesize(Installer::class);
-        $composerMock = $this->prophesize(Composer::class);
-        $ioMock = $this->prophesize(IOInterface::class);
-
-        $eventMock->getOperation()->willReturn($operationMock->reveal());
-        $eventMock->isDevMode()->willReturn(true);
-        $eventMock->getComposer()->willReturn($composerMock->reveal());
-        $eventMock->getIO()->willReturn($ioMock->reveal());
-        $operationMock->getPackage()->willReturn($packageMock->reveal());
-        $packageMock->getName()->shouldBeCalled()->willReturn('foo');
-        $installerMock->installCommands()->shouldNotBeCalled();
-
-        $plugin = new Plugin($installerMock->reveal());
-        $plugin->onPostPackageInstall($eventMock->reveal());
+        $this->assertArrayHasKey(\Composer\Plugin\Capability\CommandProvider::class, $capabilities);
+        $this->assertSame(CommandProvider::class, $capabilities[\Composer\Plugin\Capability\CommandProvider::class]);
     }
 }

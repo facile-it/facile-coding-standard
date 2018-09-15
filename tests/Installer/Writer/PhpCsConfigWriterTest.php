@@ -2,11 +2,9 @@
 
 namespace Facile\CodingStandardsTest\Installer\Writer;
 
-use Facile\CodingStandards\Installer\Provider\SourcePaths\ProviderInterface;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PhpCsFixer;
 use PHPUnit\Framework\TestCase;
 
 class PhpCsConfigWriterTest extends TestCase
@@ -16,32 +14,184 @@ class PhpCsConfigWriterTest extends TestCase
      */
     private $vfsRoot;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->vfsRoot = vfsStream::setup();
     }
 
-    public function testWriteConfigFile()
+    public function testWriteConfigFile(): void
     {
-        $provider = $this->prophesize(ProviderInterface::class);
-
-        mkdir($this->vfsRoot->url() . '/src');
-        mkdir($this->vfsRoot->url() . '/tests');
-
-        $provider->getSourcePaths()->willReturn([
-            'src/',
-            'tests/',
-        ]);
-
         $filename = $this->vfsRoot->url() . '/.php_cs.dist';
-        $writer = new PhpCsConfigWriter($provider->reveal());
+        $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename);
 
-        $csConfig = include $filename;
+        $content = \file_get_contents($filename);
 
-        $this->assertInstanceOf(PhpCsFixer\Config::class, $csConfig);
+        $expected = <<<'TEXT'
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+ 
+$additionalRules = [];
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+
+/*
+ * You can set manually these paths:
+ */
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
+
+TEXT;
+
+        $this->assertSame($expected, $content);
+    }
+
+    public function testWriteConfigFileWithNoDev(): void
+    {
+        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $writer = new PhpCsConfigWriter();
+
+        $writer->writeConfigFile($filename, true);
+
+        $content = \file_get_contents($filename);
+
+        $expected = <<<'TEXT'
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+ 
+$additionalRules = [];
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+
+/*
+ * You can set manually these paths:
+ */
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider(null, null, false);
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
+
+TEXT;
+
+        $this->assertSame($expected, $content);
+    }
+
+    public function testWriteConfigFileWithNoRisky(): void
+    {
+        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $writer = new PhpCsConfigWriter();
+
+        $writer->writeConfigFile($filename, false, true);
+
+        $content = \file_get_contents($filename);
+
+        $expected = <<<'TEXT'
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+ 
+$additionalRules = [];
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+
+/*
+ * You can set manually these paths:
+ */
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
+
+TEXT;
+
+        $this->assertSame($expected, $content);
+    }
+
+    public function testWriteConfigFileWithNoDevAndNoRisky(): void
+    {
+        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $writer = new PhpCsConfigWriter();
+
+        $writer->writeConfigFile($filename, true, true);
+
+        $content = \file_get_contents($filename);
+
+        $expected = <<<'TEXT'
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+ 
+$additionalRules = [];
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+
+/*
+ * You can set manually these paths:
+ */
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider(null, null, false);
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
+
+TEXT;
+
+        $this->assertSame($expected, $content);
     }
 }

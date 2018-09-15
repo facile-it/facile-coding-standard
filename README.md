@@ -4,12 +4,6 @@ Facile.it Coding Standard
 Repository with all coding standard ruleset.
 
 
-Status
-======
-
-Under development
-
-
 Installation
 ============
 
@@ -24,7 +18,9 @@ When you install it, a plugin will ask you some questions to setup your project 
 The installer will add a `.php_cs.dist` file in your project root directory,
 then you can edit manually if you need some changes.
 
-The CS config will be configured to find your project files using composer autoload (psr-0, psr-4) sources.
+The CS config will be configured to find your project files using
+composer autoload sources.
+Only `psr-0`, `psr-4` and `classmap` autoloads are supported.
 
 The installer will also add two scripts in your `composer.json`;
 
@@ -51,6 +47,7 @@ You can create a new file `.php_cs` with something like this:
 $config = require __DIR__ . '/.php_cs.dist';
 
 // change your configuration...
+$config->setUsingCache(false);
 
 return $config;
 ```
@@ -72,4 +69,54 @@ $ composer cs-fix
 
 ### PhpCsFixer configuration
 
-Seet [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
+See [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
+
+
+### v0.3 default configuration
+
+```
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+$additionalRules = [];
+
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
+```
+
+### Generate configuration
+
+If you have any problem updating to a new version, you can regenerate
+the default `.php_cs.dist` with the command:
+
+```
+$ composer facile-cs-create-config
+```
+
+```
+$ composer facile-cs-create-config --help
+
+Usage:
+  facile-cs-create-config [options]
+
+Options:
+      --no-dev                   Do not include autoload-dev directories
+      --no-risky                 Do not include risky rules
+```

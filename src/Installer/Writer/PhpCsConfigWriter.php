@@ -4,67 +4,82 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards\Installer\Writer;
 
-use Facile\CodingStandards\Installer\Provider\SourcePaths\ProviderInterface;
-
 final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 {
     /**
-     * @var ProviderInterface
+     * @param null|string $filename
+     * @param bool $noDev
+     * @param bool $noRisky
      */
-    private $sourcePathsProvider;
+    public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
+    {
+        $filename = $filename ?: '.php_cs.dist';
+        \file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
+    }
 
     /**
-     * PhpCsConfigWriter constructor.
+     * @param bool $noDev
+     * @param bool $noRisky
      *
-     * @param ProviderInterface $sourcePathsProvider
-     */
-    public function __construct(ProviderInterface $sourcePathsProvider)
-    {
-        $this->sourcePathsProvider = $sourcePathsProvider;
-    }
-
-    /**
-     * @param string $filename
-     */
-    public function writeConfigFile(string $filename)
-    {
-        file_put_contents($filename, $this->createConfigSource());
-    }
-
-    /**
      * @return string
      */
-    private function createConfigSource(): string
+    private function createConfigSource(bool $noDev = false, bool $noRisky = false): string
     {
-        $finderPaths = $this->sourcePathsProvider->getSourcePaths();
+        $rulesProviderConfig = $this->createRulesProviderConfig($noRisky);
 
-        $finderPathsString = var_export($finderPaths, true);
+        $autoloadPathProvider = '$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();';
 
-        $contents = <<<FILE
+        if ($noDev) {
+            $autoloadPathProvider = '$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider(null, null, false);';
+        }
+
+        return <<<FILE
 <?php
 
 /*
  * Additional rules or rules to override.
  * These rules will be added to default rules or will override them if the same key already exists.
  */
-\$additionalRules = [];
-\$rules = new Facile\CodingStandards\DefaultRules(\$additionalRules);
+ 
+$rulesProviderConfig
 
 \$config = PhpCsFixer\Config::create();
-\$config->setRules(\$rules->getRules());
-
-\$config->setUsingCache(false);
-\$config->setRiskyAllowed(false);
+\$config->setRules(\$rulesProvider->getRules());
 
 \$finder = PhpCsFixer\Finder::create();
-\$finder->in($finderPathsString);
+
+/*
+ * You can set manually these paths:
+ */
+$autoloadPathProvider
+\$finder->in(\$autoloadPathProvider->getPaths());
 
 \$config->setFinder(\$finder);
 
 return \$config;
 
 FILE;
+    }
 
-        return $contents;
+    private function createRulesProviderConfig(bool $noRisky = false): string
+    {
+        $providersLine = [
+            '    new Facile\CodingStandards\Rules\DefaultRulesProvider(),',
+        ];
+
+        if (false === $noRisky) {
+            $providersLine[] = '    new Facile\CodingStandards\Rules\RiskyRulesProvider(),';
+        }
+
+        $providersLine[] = '    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),';
+
+        $providersLine = \implode("\n", $providersLine);
+
+        return <<<TEXT
+\$additionalRules = [];
+\$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+$providersLine
+]);
+TEXT;
     }
 }

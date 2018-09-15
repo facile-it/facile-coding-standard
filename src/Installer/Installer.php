@@ -10,8 +10,8 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
-use Facile\CodingStandards\Installer\Provider\SourcePaths\ArrayProvider;
-use Facile\CodingStandards\Installer\Provider\SourcePaths\ComposerAutoloadProvider;
+use Composer\Package\PackageInterface;
+use Composer\Semver\Semver;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 
@@ -21,11 +21,6 @@ class Installer
      * @var IOInterface
      */
     private $io;
-
-    /**
-     * @var Composer
-     */
-    private $composer;
 
     /**
      * @var string
@@ -53,17 +48,6 @@ class Installer
     private $phpCsWriter;
 
     /**
-     * @throws \Exception
-     */
-    public function installCommands()
-    {
-        $this->io->write('<info>Setting up Facile.it Coding Standards</info>');
-        $this->requestCreateCsConfig();
-        $this->requestAddComposerScripts();
-        $this->composerJson->write($this->composerDefinition);
-    }
-
-    /**
      * @param IOInterface $io
      * @param Composer    $composer
      * @param null|string $projectRoot
@@ -81,26 +65,82 @@ class Installer
         PhpCsConfigWriterInterface $phpCsWriter = null
     ) {
         $this->io = $io;
-        $this->composer = $composer;
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: realpath(dirname($composerFile));
-        $this->projectRoot = rtrim($this->projectRoot, '/\\');
+        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerFile));
+        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
-        $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter(
-            new ArrayProvider([
-                new ComposerAutoloadProvider($this->composer->getPackage()->getAutoload()),
-                new ComposerAutoloadProvider($this->composer->getPackage()->getDevAutoload()),
-            ])
-        );
+        $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function installCommands(): void
+    {
+        $this->io->write('<info>Setting up Facile.it Coding Standards</info>');
+        $this->requestCreateCsConfig();
+        $this->requestAddComposerScripts();
+        $this->composerJson->write($this->composerDefinition);
+    }
+
+    /**
+     * Check if we need to do some upgrades
+     *
+     * @param PackageInterface $currentPackage
+     * @param PackageInterface $targetPackage
+     */
+    public function checkUpgrade(PackageInterface $currentPackage, PackageInterface $targetPackage): void
+    {
+        if (false === $this->isBcBreak($currentPackage, $targetPackage)) {
+            return;
+        }
+
+        $question = [
+            '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
+            \sprintf(
+                '  <question>%s</question>',
+                'Do you want to write the new configuration? (Y/n)'
+            ),
+        ];
+
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+
+        if (! $answer) {
+            return;
+        }
+
+        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
+    }
+
+    private function isBcBreak(PackageInterface $currentPackage, PackageInterface $targetPackage): bool
+    {
+        if ($targetPackage->getFullPrettyVersion() === $currentPackage->getFullPrettyVersion()) {
+            return false;
+        }
+
+        $constraint = $currentPackage->getVersion();
+        if (0 !== \strpos($constraint, 'dev-')) {
+            $constraint = '^' . $constraint;
+        }
+
+        if ($targetPackage->getVersion() && Semver::satisfies($targetPackage->getVersion(), $constraint)) {
+            // it needs an immediate semver-compliant upgrade
+            return false;
+        }
+
+        // it needs an upgrade but has potential BC breaks so is not urgent
+        return true;
     }
 
     /**
      * @param PhpCsConfigWriterInterface $phpCsWriter
      */
-    public function setPhpCsWriter(PhpCsConfigWriterInterface $phpCsWriter)
+    public function setPhpCsWriter(PhpCsConfigWriterInterface $phpCsWriter): void
     {
         $this->phpCsWriter = $phpCsWriter;
     }
@@ -112,7 +152,7 @@ class Installer
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    private function parseComposerDefinition(Composer $composer, $composerFile)
+    private function parseComposerDefinition(Composer $composer, $composerFile): void
     {
         $this->composerJson = new JsonFile($composerFile);
         $this->composerDefinition = $this->composerJson->read();
@@ -123,75 +163,76 @@ class Installer
         }
     }
 
-    public function requestCreateCsConfig()
+    public function requestCreateCsConfig(): void
     {
         $destPath = $this->projectRoot . '/.php_cs.dist';
 
-        if (file_exists($destPath)) {
-            $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
-            $this->io->write(sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
+        if (\file_exists($destPath)) {
+            $this->io->write(\sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
+            $this->io->write(\sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
 
             return;
         }
 
         $question = [
-            sprintf(
-                "\n  <question>%s</question>\n",
+            \sprintf(
+                "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
             '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
         ];
-        $answer = $this->io->askConfirmation($question, true);
+
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
     }
 
-    public function requestAddComposerScripts()
+    public function requestAddComposerScripts(): void
     {
         $scripts = [
             'cs-check' => 'php-cs-fixer fix --dry-run --diff',
             'cs-fix' => 'php-cs-fixer fix --diff',
         ];
 
-        if (0 === count(array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
-            $this->io->write(sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
+        if (0 === \count(\array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
+            $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
         }
 
         $question = [
-            sprintf(
-                "\n  <question>%s</question>\n",
+            \sprintf(
+                "  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
-            "  <info>It will add two scripts:</info>\n",
-            "  - <info>cs-check</info>\n",
-            "  - <info>cs-fix</info>\n",
+            '  <info>It will add two scripts:</info>',
+            '  - <info>cs-check</info>',
+            '  - <info>cs-fix</info>',
             'Answer: ',
         ];
 
-        $answer = $this->io->askConfirmation($question, true);
+        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        if (! array_key_exists('scripts', $this->composerDefinition)) {
+        if (! \array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 
         foreach ($scripts as $key => $command) {
             if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
                 $this->io->write([
-                    sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    \sprintf('  <error>Another script "%s" exists!</error>', $key),
                     '  If you want, you can replace it manually with:',
-                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                    \sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
                 ]);
                 continue;
             }
@@ -204,9 +245,9 @@ class Installer
      * @param string $composerCommand
      * @param string $command
      */
-    protected function addComposerScript(string $composerCommand, string $command)
+    protected function addComposerScript(string $composerCommand, string $command): void
     {
-        if (! array_key_exists('scripts', $this->composerDefinition)) {
+        if (! \array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 

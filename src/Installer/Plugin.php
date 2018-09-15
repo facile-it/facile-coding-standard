@@ -6,17 +6,19 @@ namespace Facile\CodingStandards\Installer;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 
 /**
  * Facile coding standards installer.
  */
-class Plugin implements EventSubscriberInterface, PluginInterface
+class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
     /**
      * @var Installer
@@ -45,7 +47,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      */
     public static function getPackageName(): string
     {
-        $composerJson = new JsonFile(dirname(__DIR__, 2) . '/composer.json');
+        $composerJson = new JsonFile(\dirname(__DIR__, 2) . '/composer.json');
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];
@@ -69,11 +71,11 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'onPostPackageInstall',
-            PackageEvents::POST_PACKAGE_UPDATE => 'onPostPackageInstall',
+            PackageEvents::POST_PACKAGE_UPDATE => 'onPostPackageUpdate',
         ];
     }
 
@@ -86,7 +88,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
     }
 
@@ -115,7 +117,45 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function onPostPackageInstall(PackageEvent $event)
+    public function onPostPackageUpdate(PackageEvent $event): void
+    {
+        if (! $event->isDevMode()) {
+            // Do nothing in production mode.
+            return;
+        }
+
+        $operation = $event->getOperation();
+
+        if (! $operation instanceof UpdateOperation) {
+            return;
+        }
+
+        $package = $operation->getInitialPackage();
+        $name = $package->getName();
+
+        if ($name !== self::getPackageName()) {
+            // we are not updating it
+            return;
+        }
+
+        $installer = $this->getInstaller($event->getComposer(), $event->getIO());
+
+        if (false === \method_exists($installer, 'checkUpgrade')) {
+            // it's an old version
+            return;
+        }
+
+        $installer->checkUpgrade($operation->getInitialPackage(), $operation->getTargetPackage());
+    }
+
+    /**
+     * @param PackageEvent $event
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \Exception
+     */
+    public function onPostPackageInstall(PackageEvent $event): void
     {
         if (! $event->isDevMode()) {
             // Do nothing in production mode.
@@ -138,5 +178,30 @@ class Plugin implements EventSubscriberInterface, PluginInterface
 
         $installer = $this->getInstaller($event->getComposer(), $event->getIO());
         $installer->installCommands();
+    }
+
+    /**
+     * Method by which a Plugin announces its API implementations, through an array
+     * with a special structure.
+     *
+     * The key must be a string, representing a fully qualified class/interface name
+     * which Composer Plugin API exposes.
+     * The value must be a string as well, representing the fully qualified class name
+     * of the implementing class.
+     *
+     * @tutorial
+     *
+     * return array(
+     *     'Composer\Plugin\Capability\CommandProvider' => 'My\CommandProvider',
+     *     'Composer\Plugin\Capability\Validator'       => 'My\Validator',
+     * );
+     *
+     * @return string[]
+     */
+    public function getCapabilities(): array
+    {
+        return [
+            \Composer\Plugin\Capability\CommandProvider::class => CommandProvider::class,
+        ];
     }
 }
