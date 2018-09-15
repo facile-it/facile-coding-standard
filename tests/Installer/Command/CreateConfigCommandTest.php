@@ -80,21 +80,6 @@ class CreateConfigCommandTest extends TestCase
                 true,
                 true,
             ],
-            [
-                ['facile-cs-create-config', '-n'],
-                true,
-                false,
-            ],
-            [
-                ['facile-cs-create-config', '-r'],
-                false,
-                true,
-            ],
-            [
-                ['facile-cs-create-config', '-n', '-r'],
-                true,
-                true,
-            ],
         ];
     }
 }

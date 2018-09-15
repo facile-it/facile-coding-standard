@@ -44,8 +44,8 @@ class CreateConfigCommand extends BaseCommand
             ->setName('facile-cs-create-config')
             ->setDescription('Write the facile-coding-standard configuration for php-cs-fixer')
             ->setDefinition([
-                new InputOption('no-dev', '-n', InputOption::VALUE_NONE, 'Do not include autoload-dev directories'),
-                new InputOption('no-risky', '-r', InputOption::VALUE_NONE, 'Do not include risky rules'),
+                new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Do not include autoload-dev directories'),
+                new InputOption('no-risky', null, InputOption::VALUE_NONE, 'Do not include risky rules'),
             ])
             ->setHelp(
                 <<<HELP
