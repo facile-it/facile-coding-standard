@@ -100,3 +100,23 @@ $config->setFinder($finder);
 
 return $config;
 ```
+
+### Generate configuration
+
+If you have any problem updating to a new version, you can regenerate
+the default `.php_cs.dist` with the command:
+
+```
+$ composer facile-cs-create-config
+```
+
+```
+$ composer facile-cs-create-config --help
+
+Usage:
+  facile-cs-create-config [options]
+
+Options:
+      --no-dev                   Do not include autoload-dev directories
+      --no-risky                 Do not include risky rules
+```
