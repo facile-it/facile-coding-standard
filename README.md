@@ -102,11 +102,12 @@ Options:
 
 ## Migrating to 0.3
 
-Updating the plugin from v0.2 to v0.3 could not update your
-configuration.
-
-If you have any problem you can generate a new configuration and update
-your `.php_cs` configuration.
+While updating the plugin from v0.2 to v0.3, it's not possible to update
+the configuration automatically. Since your previous configuration should 
+be committed into your Git repository, we suggest to temporarely delete it
+and just run the update, asking the plugin to create a new one; this way,
+you can use the diff afterwards to merge your personal modifications onto
+the new configuration format.
 
 ### v0.3 default configuration
 
