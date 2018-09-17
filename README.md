@@ -1,11 +1,20 @@
-Facile.it Coding Standard
--------------------------
+# Facile.it Coding Standard
+
+[![PHP Version](https://img.shields.io/badge/php-%5E7.1-blue.svg)](https://img.shields.io/badge/php-%5E7.1-blue.svg)
+[![Build Status](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/build.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
+
+[![Latest Stable Version](https://poser.pugx.org/facile-it/facile-coding-standard/v/stable)](https://packagist.org/packages/facile-it/facile-coding-standard)
+[![Total Downloads](https://poser.pugx.org/facile-it/facile-coding-standard/downloads)](https://packagist.org/packages/facile-it/facile-coding-standard)
+[![Latest Unstable Version](https://poser.pugx.org/facile-it/facile-coding-standard/v/unstable)](https://packagist.org/packages/facile-it/facile-coding-standard)
+[![License](https://poser.pugx.org/facile-it/facile-coding-standard/license)](https://packagist.org/packages/facile-it/facile-coding-standard)
+[![composer.lock](https://poser.pugx.org/facile-it/facile-coding-standard/composerlock)](https://packagist.org/packages/facile-it/facile-coding-standard)
 
 Repository with all coding standard ruleset.
 
 
-Installation
-============
+## Installation
 
 Currently, [Composer](https://getcomposer.org/) is the only supported installation tool.
 
@@ -20,6 +29,7 @@ then you can edit manually if you need some changes.
 
 The CS config will be configured to find your project files using
 composer autoload sources.
+
 Only `psr-0`, `psr-4` and `classmap` autoloads are supported.
 
 The installer will also add two scripts in your `composer.json`;
@@ -31,8 +41,7 @@ The installer will also add two scripts in your `composer.json`;
 }
 ```
 
-Configuration
-=============
+## Configuration
 
 The installation configuration should be enough to use it.
 
@@ -52,8 +61,7 @@ $config->setUsingCache(false);
 return $config;
 ```
 
-Usage
-=====
+## Usage
 
 To start code style check:
 
@@ -67,41 +75,12 @@ To automatically fix code style:
 $ composer cs-fix
 ```
 
-### PhpCsFixer configuration
+## PhpCsFixer configuration
 
 See [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
 
 
-### v0.3 default configuration
-
-```
-<?php
-
-/*
- * Additional rules or rules to override.
- * These rules will be added to default rules or will override them if the same key already exists.
- */
-$additionalRules = [];
-
-$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
-    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
-    new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
-    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
-]);
-
-$config = PhpCsFixer\Config::create();
-$config->setRules($rulesProvider->getRules());
-
-$finder = PhpCsFixer\Finder::create();
-$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
-$finder->in($autoloadPathProvider->getPaths());
-
-$config->setFinder($finder);
-
-return $config;
-```
-
-### Generate configuration
+## Generate configuration
 
 If you have any problem updating to a new version, you can regenerate
 the default `.php_cs.dist` with the command:
@@ -119,4 +98,41 @@ Usage:
 Options:
       --no-dev                   Do not include autoload-dev directories
       --no-risky                 Do not include risky rules
+```
+
+## Migrating to 0.3
+
+Updating the plugin from v0.2 to v0.3 could not update your
+configuration.
+
+If you have any problem you can generate a new configuration and update
+your `.php_cs` configuration.
+
+### v0.3 default configuration
+
+```
+<?php
+
+/*
+ * Additional rules or rules to override.
+ * These rules will be added to default rules or will override them if the same key already exists.
+ */
+$additionalRules = [];
+
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
+]);
+
+$config = PhpCsFixer\Config::create();
+$config->setRules($rulesProvider->getRules());
+
+$finder = PhpCsFixer\Finder::create();
+$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
+$finder->in($autoloadPathProvider->getPaths());
+
+$config->setFinder($finder);
+
+return $config;
 ```
