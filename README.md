@@ -102,12 +102,12 @@ Options:
 
 ## Migrating to 0.3
 
-While updating the plugin from v0.2 to v0.3, it's not possible to update
-the configuration automatically. Since your previous configuration should 
-be committed into your Git repository, we suggest to temporarely delete it
-and just run the update, asking the plugin to create a new one; this way,
-you can use the diff afterwards to merge your personal modifications onto
-the new configuration format.
+Updating the plugin from v0.2 to v0.3 will not automatically update your
+configuration. Since your previous configuration should be committed into 
+your Git repository, we suggest to temporarily delete it and just run the
+update, asking the plugin to create a new one; this way, you can use the
+diff afterwards to merge your personal modifications onto the new 
+configuration format.
 
 ### v0.3 default configuration
 
