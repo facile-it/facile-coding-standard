@@ -122,7 +122,7 @@ $additionalRules = [];
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
-    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    // new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
     new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
 ]);
 
