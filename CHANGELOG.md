@@ -1,7 +1,12 @@
 Changelog
 ---------
 
-## [0.3.1] - TBD
+## [0.3.2] - TBD
+## Changed
+- Create configuration without risky rules by default
+- Removed risky rules from default configuration
+
+## [0.3.1] - 2018-09-19
 ## Changed
 - Create configuration without risky rules by default
 - Removed risky rules from default configuration
