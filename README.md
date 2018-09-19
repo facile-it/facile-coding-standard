@@ -79,6 +79,33 @@ $ composer cs-fix
 
 See [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
 
+## Risky rules
+
+Risky rules are dangerous. Starting from version `0.3.1` we removed
+them from default configuration.
+
+If you want to add these rules, you can create your own `.php_cs`
+configuration:
+
+```php
+<?php
+
+/** @var \PhpCsFixer\Config $config */
+$config = include __DIR__ . '/.php_cs.dist';
+
+$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider([
+        // additional rules or rules to override
+    ]),
+]);
+
+$config->setRules($rulesProvider->getRules());
+
+return $config;
+
+```
 
 ## Generate configuration
 
@@ -122,7 +149,7 @@ $additionalRules = [];
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
-    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    // new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
     new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
 ]);
 

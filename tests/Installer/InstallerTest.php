@@ -145,7 +145,7 @@ class InstallerTest extends TestCase
             ->willReturn(true);
 
         $io->write(Argument::type('string'))->shouldBeCalled();
-        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist')
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true)
             ->shouldBeCalled();
 
         $installer->checkUpgrade($currentPackage, $targetPackage);
@@ -160,7 +160,7 @@ class InstallerTest extends TestCase
         $composer = $this->prophesize(Composer::class);
         $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
 
-        $phpCsWriter->writeConfigFile(Argument::any())->shouldNotBeCalled();
+        $phpCsWriter->writeConfigFile(Argument::cetera())->shouldNotBeCalled();
         $io->write(Argument::any())->shouldBeCalled();
         $io->askConfirmation(Argument::cetera())->shouldNotBeCalled();
         $composer->getPackage()->willReturn($package);
@@ -213,7 +213,8 @@ class InstallerTest extends TestCase
         $composer->getPackage()->willReturn($package);
         $package->getAutoload()->willReturn([]);
         $package->getDevAutoload()->willReturn([]);
-        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist')->shouldBeCalled();
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true)
+            ->shouldBeCalled();
 
         $installer = new Installer(
             $io->reveal(),

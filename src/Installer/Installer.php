@@ -114,7 +114,7 @@ class Installer
 
         $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
-        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
     }
 
     private function isBcBreak(PackageInterface $currentPackage, PackageInterface $targetPackage): bool
@@ -190,7 +190,7 @@ class Installer
 
         $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
-        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist');
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
     }
 
     public function requestAddComposerScripts(): void
