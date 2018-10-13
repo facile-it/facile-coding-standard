@@ -31,7 +31,7 @@ class AutoloadPathProvider
     public function __construct(?string $composerFile = null, ?string $projectRoot = null, bool $dev = true)
     {
         $this->composerPath = $composerFile ?: \trim(\getenv('COMPOSER') ?: '') ?: './composer.json';
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($this->composerPath));
+        $this->projectRoot = (string) ($projectRoot ?: \realpath(\dirname($this->composerPath)));
         $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         $this->dev = $dev;
     }
@@ -45,7 +45,9 @@ class AutoloadPathProvider
             throw new \RuntimeException('Unable to find composer.json');
         }
 
-        $composer = \json_decode(\file_get_contents($this->composerPath), true);
+        /** @var string $composerContent */
+        $composerContent = \file_get_contents($this->composerPath);
+        $composer = \json_decode($composerContent, true);
 
         if (! \is_array($composer)) {
             throw new \RuntimeException('Invalid composer.json file');

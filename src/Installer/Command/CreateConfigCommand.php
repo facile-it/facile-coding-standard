@@ -23,7 +23,7 @@ class CreateConfigCommand extends BaseCommand
      */
     public function getConfigWriter(): PhpCsConfigWriterInterface
     {
-        if (! $this->configWriter) {
+        if (null === $this->configWriter) {
             $this->configWriter = new PhpCsConfigWriter();
         }
 
@@ -61,8 +61,8 @@ HELP
 
         $configWriter->writeConfigFile(
             '.php_cs.dist',
-            $input->getOption('no-dev'),
-            $input->getOption('no-risky')
+            (bool) $input->getOption('no-dev'),
+            (bool) $input->getOption('no-risky')
         );
 
         return 0;

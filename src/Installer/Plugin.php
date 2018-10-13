@@ -21,7 +21,7 @@ use Composer\Plugin\PluginInterface;
 class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
     /**
-     * @var Installer
+     * @var Installer|null
      */
     private $installer;
 

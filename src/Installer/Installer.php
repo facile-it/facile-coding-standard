@@ -68,7 +68,7 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerFile));
+        $this->projectRoot = (string) ($projectRoot ?: \realpath(\dirname($composerFile)));
         $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
@@ -157,9 +157,13 @@ class Installer
         $this->composerJson = new JsonFile($composerFile);
         $this->composerDefinition = $this->composerJson->read();
         // Get root package
-        $this->rootPackage = $composer->getPackage();
+        /** @var BasePackage $rootPackage */
+        $rootPackage = $composer->getPackage();
+        $this->rootPackage = $rootPackage;
         while ($this->rootPackage instanceof AliasPackage) {
-            $this->rootPackage = $this->rootPackage->getAliasOf();
+            /** @var BasePackage $package */
+            $package = $this->rootPackage->getAliasOf();
+            $this->rootPackage = $package;
         }
     }
 
