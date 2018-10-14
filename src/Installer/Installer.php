@@ -8,8 +8,6 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
-use Composer\Package\AliasPackage;
-use Composer\Package\BasePackage;
 use Composer\Package\PackageInterface;
 use Composer\Semver\Semver;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
@@ -38,11 +36,6 @@ class Installer
     private $composerJson;
 
     /**
-     * @var BasePackage
-     */
-    private $rootPackage;
-
-    /**
      * @var PhpCsConfigWriterInterface
      */
     private $phpCsWriter;
@@ -68,7 +61,15 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = (string) ($projectRoot ?: \realpath(\dirname($composerFile)));
+        if (! empty($projectRoot)) {
+            $this->projectRoot = $projectRoot;
+        } else {
+            $projectRootFromPath = \realpath(\dirname($composerPath));
+            if (false === $projectRootFromPath) {
+                throw new \InvalidArgumentException('Invalid projectRoot.');
+            }
+            $this->projectRoot = $projectRootFromPath;
+        }
         $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
@@ -156,15 +157,6 @@ class Installer
     {
         $this->composerJson = new JsonFile($composerFile);
         $this->composerDefinition = $this->composerJson->read();
-        // Get root package
-        /** @var BasePackage $rootPackage */
-        $rootPackage = $composer->getPackage();
-        $this->rootPackage = $rootPackage;
-        while ($this->rootPackage instanceof AliasPackage) {
-            /** @var BasePackage $package */
-            $package = $this->rootPackage->getAliasOf();
-            $this->rootPackage = $package;
-        }
     }
 
     public function requestCreateCsConfig(): void
