@@ -61,14 +61,10 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        if (! empty($projectRoot)) {
-            $this->projectRoot = $projectRoot;
-        } else {
-            $projectRootFromPath = \realpath(\dirname($composerPath));
-            if (false === $projectRootFromPath) {
-                throw new \InvalidArgumentException('Invalid projectRoot.');
-            }
-            $this->projectRoot = $projectRootFromPath;
+        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerPath));
+
+        if (false === $this->projectRoot) {
+            throw new \RuntimeException('Unable to get project root.');
         }
         $this->projectRoot = \rtrim($this->projectRoot, '/\\');
         // Parse the composer.json

@@ -32,14 +32,10 @@ class AutoloadPathProvider
     {
         $this->composerPath = $composerFile ?: \trim(\getenv('COMPOSER') ?: '') ?: './composer.json';
 
-        if (! empty($projectRoot)) {
-            $this->projectRoot = $projectRoot;
-        } else {
-            $projectRootFromPath = \realpath(\dirname($this->composerPath));
-            if (false === $projectRootFromPath) {
-                throw new \InvalidArgumentException('Invalid projectRoot.');
-            }
-            $this->projectRoot = $projectRootFromPath;
+        $this->projectRoot = $projectRoot ?: \realpath(\dirname($this->composerPath));
+
+        if (false === $this->projectRoot) {
+            throw new \RuntimeException('Unable to get project root.');
         }
 
         $this->projectRoot = \rtrim($this->projectRoot, '/\\');
