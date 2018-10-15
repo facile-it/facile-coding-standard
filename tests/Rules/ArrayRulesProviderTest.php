@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Facile\CodingStandardsTest\Installer;
+namespace Facile\CodingStandardsTest\Rules;
 
 use Facile\CodingStandards\Rules\ArrayRulesProvider;
 use PHPUnit\Framework\TestCase;
