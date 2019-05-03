@@ -12,7 +12,7 @@ use SplFileInfo;
 
 class SingleLineVarPhpdocFixer extends AbstractFixer
 {
-    private const NAME = 'single_line_var_phpdoc';
+    private const NAME = 'SingleLineVarPhpdocFixer/single_line_var_phpdoc';
 
     public function getName()
     {
