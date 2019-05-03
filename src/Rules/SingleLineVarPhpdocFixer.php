@@ -26,10 +26,10 @@ class SingleLineVarPhpdocFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
-    protected function applyFix(SplFileInfo $file, Tokens $tokens):void
+    protected function applyFix(SplFileInfo $file, Tokens $tokens): void
     {
         /** @var Token $token */
         foreach ($tokens as $index => $token) {
@@ -37,10 +37,10 @@ class SingleLineVarPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            $comment = preg_replace_callback(
+            $comment = \preg_replace_callback(
                 '/(\s*)\/\*[\s*]+@var (.*)[\s*]+\*\//',
-                function($matches) {
-                    return $matches[1].'/** @var '.trim($matches[2]).' */';
+                function ($matches) {
+                    return $matches[1] . '/** @var ' . \trim($matches[2]) . ' */';
                 },
                 $token->getContent()
             );
@@ -50,5 +50,4 @@ class SingleLineVarPhpdocFixer extends AbstractFixer
             }
         }
     }
-
 }

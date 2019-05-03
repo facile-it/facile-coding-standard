@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Facile\CodingStandardsTest\Rules;
@@ -8,11 +9,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 class SingleLineVarPhpdocFixerTest extends AbstractFixerTestCase
 {
-
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input) : void {
+    public function testFix(string $expected, string $input): void
+    {
         $this->doTest($expected, $input);
     }
 
@@ -23,7 +24,6 @@ class SingleLineVarPhpdocFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases(): \Generator
     {
-
         $input = <<<'PHP'
         <?php
         
@@ -73,7 +73,5 @@ PHP;
 PHP;
 
         yield [$expected, $input];
-
     }
-
 }
