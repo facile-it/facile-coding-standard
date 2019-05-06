@@ -164,3 +164,41 @@ $config->setFinder($finder);
 
 return $config;
 ```
+
+### Available custom rules
+
+- Added SingleLineVarPhpdocFixer
+
+This rule transform multiline phpdoc containing only @var declaration to a single line phpdoc, for example:
+
+```php
+/**
+ * @var string 
+ */
+```
+
+will be transformed into:
+
+```php
+/** @var string */
+``` 
+
+For enabling a custom rule you have to add it manually:
+
+```php
+$config = PhpCsFixer\Config::create();
+
+$config->setRules(
+    array_merge(
+        $rulesProvider->getRules(),
+        [
+            'SingleLineVarPhpdocFixer/single_line_var_phpdoc' => true,
+        ]
+    )
+)->registerCustomFixers(
+    [
+        new SingleLineVarPhpdocFixer(),
+    ]
+);
+```
+
