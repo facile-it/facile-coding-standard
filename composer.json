@@ -16,7 +16,7 @@
         "cs-fix": "php-cs-fixer fix --diff"
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-json": "*",
         "friendsofphp/php-cs-fixer": "^2.16.4.0",
         "composer-plugin-api": "^1.1"
