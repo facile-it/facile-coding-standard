@@ -107,6 +107,18 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
+        'visibility_required' => ['property', 'method', 'const'],
+        'heredoc_indentation' => true,
+        'heredoc_to_nowdoc' => true,
+        'no_null_property_initialization' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'global_namespace_import' => [
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ],
+        'constant_case' => true,
     ];
 
     /**
