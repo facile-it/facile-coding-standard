@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Facile\CodingStandardsTest;
 
 use Facile\CodingStandards\AutoloadPathProvider;
+use Facile\CodingStandardsTest\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\TestCase;
 
 class AutoloadPathProviderTest extends TestCase
 {

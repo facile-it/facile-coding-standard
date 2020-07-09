@@ -1,0 +1,8 @@
+parameters:
+    level: max
+    parallel:
+        processTimeout: 180.0
+    paths:
+        - %currentWorkingDirectory%/src
+
+    inferPrivatePropertyTypeFromConstructor: true

@@ -26,7 +26,7 @@ class Installer
     private $projectRoot;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $composerDefinition;
 
@@ -61,12 +61,14 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerPath));
+        $projectRootPath = $projectRoot ?: \realpath(\dirname($composerFile));
 
-        if (false === $this->projectRoot) {
+        if (! $projectRootPath) {
             throw new \RuntimeException('Unable to get project root.');
         }
-        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
+
+        $this->projectRoot = \rtrim($projectRootPath, '/\\');
+
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();

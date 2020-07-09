@@ -20,12 +20,6 @@ matrix:
       - DEPS=lowest
     - php: 7.1
       env:
-      - EXECUTE_CS_CHECK=true
-      - EXECUTE_TEST_SCRUTINIZER=true
-      - EXECUTE_TEST_PHPSTAN=true
-      - DEPS=locked
-    - php: 7.1
-      env:
       - DEPS=latest
     - php: 7.2
       env:
@@ -33,6 +27,24 @@ matrix:
     - php: 7.2
       env:
       - DEPS=latest
+    - php: 7.3
+      env:
+        - DEPS=lowest
+    - php: 7.3
+      env:
+        - DEPS=latest
+    - php: 7.4
+      env:
+        - DEPS=lowest
+    - php: 7.4
+      env:
+        - EXECUTE_CS_CHECK=true
+        - EXECUTE_TEST_SCRUTINIZER=true
+        - EXECUTE_ANALYSE=true
+        - DEPS=locked
+    - php: 7.4
+      env:
+        - DEPS=latest
     - php: nightly
       env:
       - DEPS=lowest
@@ -51,7 +63,11 @@ install:
 script:
   - if [[ $EXECUTE_TEST_SCRUTINIZER == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover coverage.clover ; fi
   - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then ./vendor/bin/phpunit ; fi
+<<<<<<< HEAD
   - if [[ $EXECUTE_TEST_PHPSTAN != 'true' ]]; then ./vendor/bin/phpstan analyse --no-progress -c phpstan.neon -l7 . ; fi
+=======
+  - if [[ EXECUTE_ANALYSE == 'true' ]]; then ./vendor/bin/phpstan analyse; fi
+>>>>>>> Initial support to composer 2.0
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then DISABLE_RISKY_RULES=true ./vendor/bin/php-cs-fixer fix -v --diff --dry-run; fi
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/php-cs-fixer fix -v --diff --dry-run --allow-risky yes; fi
 

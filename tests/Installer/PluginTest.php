@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
@@ -16,7 +18,7 @@ use Composer\Plugin\PluginInterface;
 use Facile\CodingStandards\Installer\CommandProvider;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Plugin;
-use PHPUnit\Framework\TestCase;
+use Facile\CodingStandardsTest\Framework\TestCase;
 use Prophecy\Argument;
 
 class PluginTest extends TestCase

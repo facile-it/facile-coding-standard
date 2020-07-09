@@ -10,7 +10,7 @@ namespace Facile\CodingStandards\Rules;
 final class RiskyRulesProvider implements RulesProviderInterface
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private static $rules = [
         'dir_constant' => true,
@@ -39,7 +39,7 @@ final class RiskyRulesProvider implements RulesProviderInterface
     /**
      * Get default rules.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getRules(): array
     {

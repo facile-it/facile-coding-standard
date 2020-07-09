@@ -6,7 +6,7 @@ namespace Facile\CodingStandardsTest\Installer\Command;
 
 use Facile\CodingStandards\Installer\Command\CreateConfigCommand;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
-use PHPUnit\Framework\TestCase;
+use Facile\CodingStandardsTest\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\OutputInterface;
 

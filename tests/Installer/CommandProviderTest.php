@@ -7,7 +7,7 @@ namespace Facile\CodingStandardsTest\Installer;
 use Composer\Plugin\Capability\CommandProvider as ComposerCommandProvider;
 use Facile\CodingStandards\Installer\Command\CreateConfigCommand;
 use Facile\CodingStandards\Installer\CommandProvider;
-use PHPUnit\Framework\TestCase;
+use Facile\CodingStandardsTest\Framework\TestCase;
 
 class CommandProviderTest extends TestCase
 {

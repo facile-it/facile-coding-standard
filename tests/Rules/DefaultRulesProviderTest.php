@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Facile\CodingStandardsTest\Rules;
 
 use Facile\CodingStandards\Rules\DefaultRulesProvider;
-use PHPUnit\Framework\TestCase;
+use Facile\CodingStandardsTest\Framework\TestCase;
 
 class DefaultRulesProviderTest extends TestCase
 {
@@ -13,6 +13,6 @@ class DefaultRulesProviderTest extends TestCase
     {
         $provider = new DefaultRulesProvider();
 
-        $this->assertInternalType('array', $provider->getRules());
+        $this->assertIsArray($provider->getRules());
     }
 }

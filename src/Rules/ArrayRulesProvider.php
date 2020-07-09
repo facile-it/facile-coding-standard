@@ -10,14 +10,14 @@ namespace Facile\CodingStandards\Rules;
 final class ArrayRulesProvider implements RulesProviderInterface
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $rules;
 
     /**
      * ArrayRulesProvider constructor.
      *
-     * @param array $rules
+     * @param array<string, mixed> $rules
      */
     public function __construct(array $rules)
     {
@@ -27,7 +27,7 @@ final class ArrayRulesProvider implements RulesProviderInterface
     /**
      * Get rules.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getRules(): array
     {

@@ -43,7 +43,7 @@ class AutoloadPathProvider
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getPaths(): array
     {
@@ -70,6 +70,11 @@ class AutoloadPathProvider
         return $paths;
     }
 
+    /**
+     * @param array<mixed> $autoload
+     *
+     * @return string[]
+     */
     private function getAutoloadPaths(array $autoload): array
     {
         $keys = ['psr-0', 'psr-4', 'classmap'];
@@ -84,6 +89,11 @@ class AutoloadPathProvider
         return $autoloadPaths;
     }
 
+    /**
+     * @param array<mixed> $autoload
+     *
+     * @return string[]
+     */
     private function reduceAutoload(array $autoload): array
     {
         return \array_reduce(
@@ -93,6 +103,12 @@ class AutoloadPathProvider
         );
     }
 
+    /**
+     * @param array<mixed> $carry
+     * @param array<mixed>|string $item
+     *
+     * @return string[]
+     */
     private function autoloadReducer(array $carry, $item): array
     {
         if (\is_array($item)) {

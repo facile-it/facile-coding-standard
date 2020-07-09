@@ -1,10 +1,10 @@
 Changelog
 ---------
 
-## [0.3.2] - TBD
+## [0.4.0] - TBD
 ## Changed
-- Create configuration without risky rules by default
-- Removed risky rules from default configuration
+- Bumped minimum required PHP version to 7.2
+- Composer 2.0 compatibility
 
 ## [0.3.1] - 2018-09-19
 ## Changed
