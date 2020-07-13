@@ -9,9 +9,7 @@ namespace Facile\CodingStandards\Rules;
  */
 final class DefaultRulesProvider implements RulesProviderInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private static $rules = [
         '@PSR2' => true,
         'align_multiline_comment' => true,
@@ -79,7 +77,9 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'not_operator_with_successor_space' => true,
         'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'imports_order' => ['class', 'const', 'function'],
+        ],
         'phpdoc_align' => false,
         'phpdoc_annotation_without_dot' => true,
         'phpdoc_indent' => true,
@@ -107,12 +107,33 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
+        'visibility_required' => ['property', 'method', 'const'],
+        'heredoc_indentation' => true,
+        'heredoc_to_nowdoc' => true,
+        'no_null_property_initialization' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'global_namespace_import' => [
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ],
+        'constant_case' => true,
+        'declare_strict_types' => true,
+        'indentation_type' => true,
+        'no_superfluous_phpdoc_tags' => [
+            'allow_mixed' => true,
+        ],
+        'phpdoc_line_span' => [
+            'const' => 'single',
+            'method' => 'multi',
+            'property' => 'single',
+        ],
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
     ];
 
     /**
      * Get default rules.
-     *
-     * @return array
      */
     public function getRules(): array
     {

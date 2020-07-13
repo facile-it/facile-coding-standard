@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandardsTest\Installer\Command;
 
+use Exception;
 use Facile\CodingStandards\Installer\Command\CreateConfigCommand;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 use PHPUnit\Framework\TestCase;
@@ -30,11 +31,7 @@ class CreateConfigCommandTest extends TestCase
     /**
      * @dataProvider executeProvider
      *
-     * @param array $args
-     * @param bool $noDev
-     * @param bool $noRisky
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testExecute(array $args, bool $noDev, bool $noRisky): void
     {

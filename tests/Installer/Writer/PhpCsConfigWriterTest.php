@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandardsTest\Installer\Writer;
 
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use function file_get_contents;
 
 class PhpCsConfigWriterTest extends TestCase
 {
-    /**
-     * @var vfsStreamDirectory
-     */
+    /** @var vfsStreamDirectory */
     private $vfsRoot;
 
     protected function setUp(): void
@@ -28,7 +29,7 @@ class PhpCsConfigWriterTest extends TestCase
 
         $writer->writeConfigFile($filename);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -72,7 +73,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -116,7 +117,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, false, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -159,7 +160,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, true, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php

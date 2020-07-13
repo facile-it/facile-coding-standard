@@ -8,8 +8,6 @@ interface RulesProviderInterface
 {
     /**
      * Get rules.
-     *
-     * @return array
      */
     public function getRules(): array;
 }
