@@ -20,22 +20,22 @@ matrix:
         - DEPS=lowest
     - php: 7.2
       env:
-        - DEPS=latest
-    - php: 7.3
-      env:
-        - DEPS=lowest
-    - php: 7.3
-      env:
-        - DEPS=latest
-    - php: 7.4
-      env:
-        - DEPS=lowest
-    - php: 7.4
-      env:
         - EXECUTE_CS_CHECK=true
         - EXECUTE_TEST_SCRUTINIZER=true
         - EXECUTE_TEST_PHPSTAN=true
         - DEPS=locked
+    - php: 7.2
+      env:
+        - DEPS=latest
+    - php: 7.3
+      env:
+        - DEPS=lowest
+    - php: 7.3
+      env:
+        - DEPS=latest
+    - php: 7.4
+      env:
+        - DEPS=lowest
     - php: 7.4
       env:
         - DEPS=latest

@@ -13,14 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateConfigCommand extends BaseCommand
 {
-    /**
-     * @var PhpCsConfigWriterInterface
-     */
+    /** @var PhpCsConfigWriterInterface */
     private $configWriter;
 
-    /**
-     * @return PhpCsConfigWriterInterface
-     */
     public function getConfigWriter(): PhpCsConfigWriterInterface
     {
         if (null === $this->configWriter) {
@@ -30,9 +25,6 @@ class CreateConfigCommand extends BaseCommand
         return $this->configWriter;
     }
 
-    /**
-     * @param PhpCsConfigWriterInterface $configWriter
-     */
     public function setConfigWriter(PhpCsConfigWriterInterface $configWriter): void
     {
         $this->configWriter = $configWriter;
@@ -48,10 +40,10 @@ class CreateConfigCommand extends BaseCommand
                 new InputOption('no-risky', null, InputOption::VALUE_NONE, 'Do not include risky rules'),
             ])
             ->setHelp(
-                <<<HELP
+                <<<'HELP'
 Write config file in <comment>.php_cs.dist</comment>.
 HELP
-)
+            )
         ;
     }
 

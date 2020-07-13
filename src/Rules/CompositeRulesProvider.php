@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards\Rules;
 
+use function array_merge;
+
 /**
  * Class CompositeRulesProvider
  */
 final class CompositeRulesProvider implements RulesProviderInterface
 {
-    /**
-     * @var RulesProviderInterface[]
-     */
+    /** @var RulesProviderInterface[] */
     private $providers = [];
 
     /**
@@ -33,15 +33,13 @@ final class CompositeRulesProvider implements RulesProviderInterface
 
     /**
      * Get rules.
-     *
-     * @return array
      */
     public function getRules(): array
     {
         $rules = [];
 
         foreach ($this->providers as $provider) {
-            $rules = \array_merge($rules, $provider->getRules());
+            $rules = array_merge($rules, $provider->getRules());
         }
 
         return $rules;

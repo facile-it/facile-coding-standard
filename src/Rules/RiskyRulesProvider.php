@@ -9,9 +9,7 @@ namespace Facile\CodingStandards\Rules;
  */
 final class RiskyRulesProvider implements RulesProviderInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private static $rules = [
         'dir_constant' => true,
         'function_to_constant' => true,
@@ -43,8 +41,6 @@ final class RiskyRulesProvider implements RulesProviderInterface
 
     /**
      * Get default rules.
-     *
-     * @return array
      */
     public function getRules(): array
     {

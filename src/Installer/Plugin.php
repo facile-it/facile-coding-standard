@@ -14,15 +14,18 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
+use function dirname;
+use function method_exists;
 
 /**
  * Facile coding standards installer.
  */
 class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
-    /**
-     * @var Installer|null
-     */
+    /** @var Installer|null */
     private $installer;
 
     /**
@@ -40,14 +43,12 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
     /**
      * Return this package name.
      *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
-     *
-     * @return string
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public static function getPackageName(): string
     {
-        $composerJson = new JsonFile(\dirname(__DIR__, 2) . '/composer.json');
+        $composerJson = new JsonFile(dirname(__DIR__, 2) . '/composer.json');
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];
@@ -82,24 +83,16 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
     /**
      * Apply plugin modifications to Composer.
      *
-     * @param Composer    $composer
-     * @param IOInterface $io
-     *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
     }
 
     /**
-     * @param Composer    $composer
-     * @param IOInterface $io
-     *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
-     *
-     * @return Installer
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function getInstaller(Composer $composer, IOInterface $io): Installer
     {
@@ -111,11 +104,9 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
     }
 
     /**
-     * @param PackageEvent $event
-     *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws Exception
      */
     public function onPostPackageUpdate(PackageEvent $event): void
     {
@@ -140,7 +131,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 
         $installer = $this->getInstaller($event->getComposer(), $event->getIO());
 
-        if (false === \method_exists($installer, 'checkUpgrade')) {
+        if (false === method_exists($installer, 'checkUpgrade')) {
             // it's an old version
             return;
         }
@@ -149,11 +140,9 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
     }
 
     /**
-     * @param PackageEvent $event
-     *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws Exception
      */
     public function onPostPackageInstall(PackageEvent $event): void
     {

@@ -8,22 +8,18 @@ use Facile\CodingStandards\AutoloadPathProvider;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use function file_put_contents;
+use function mkdir;
 
 class AutoloadPathProviderTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $composerFilePath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $projectRoot;
 
-    /**
-     * @var vfsStreamDirectory
-     */
+    /** @var vfsStreamDirectory */
     private $vfsRoot;
 
     protected function setUp(): void
@@ -34,9 +30,9 @@ class AutoloadPathProviderTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        \mkdir($this->vfsRoot->url() . '/src');
-        \mkdir($this->vfsRoot->url() . '/tests');
-        \file_put_contents($this->composerFilePath, Util::getComposerContent());
+        mkdir($this->vfsRoot->url() . '/src');
+        mkdir($this->vfsRoot->url() . '/tests');
+        file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
     public function testGetPathsWithDevOn(): void

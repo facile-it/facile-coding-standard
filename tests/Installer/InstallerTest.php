@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
@@ -13,22 +15,18 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use function file_put_contents;
+use function touch;
 
 class InstallerTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $composerFilePath;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $projectRoot;
 
-    /**
-     * @var vfsStreamDirectory
-     */
+    /** @var vfsStreamDirectory */
     private $vfsRoot;
 
     protected function setUp(): void
@@ -39,7 +37,7 @@ class InstallerTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        \file_put_contents($this->composerFilePath, Util::getComposerContent());
+        file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
     public function invalidUpgradeProvider(): array
@@ -66,9 +64,6 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider invalidUpgradeProvider
-     *
-     * @param array $currentPackageV
-     * @param array $targetPackageV
      */
     public function testCheckUpgradeTestNotNecessary(array $currentPackageV, array $targetPackageV): void
     {
@@ -95,9 +90,6 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider validUpgradeProvider
-     *
-     * @param array $currentPackageV
-     * @param array $targetPackageV
      */
     public function testCheckUpgradeTestNecessary(array $currentPackageV, array $targetPackageV): void
     {
@@ -153,7 +145,7 @@ class InstallerTest extends TestCase
 
     public function testRequestCreateCsConfigWithAlreadyExistingFile(): void
     {
-        \touch($this->projectRoot . '/.php_cs.dist');
+        touch($this->projectRoot . '/.php_cs.dist');
 
         $package = $this->prophesize(PackageInterface::class);
         $io = $this->prophesize(IOInterface::class);

@@ -9,9 +9,7 @@ namespace Facile\CodingStandards\Rules;
  */
 final class DefaultRulesProvider implements RulesProviderInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private static $rules = [
         '@PSR2' => true,
         'align_multiline_comment' => true,
@@ -79,7 +77,9 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'not_operator_with_successor_space' => true,
         'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'imports_order' => ['class', 'const', 'function'],
+        ],
         'phpdoc_align' => false,
         'phpdoc_annotation_without_dot' => true,
         'phpdoc_indent' => true,
@@ -119,12 +119,21 @@ final class DefaultRulesProvider implements RulesProviderInterface
             'import_functions' => true,
         ],
         'constant_case' => true,
+        'declare_strict_types' => true,
+        'indentation_type' => true,
+        'no_superfluous_phpdoc_tags' => [
+            'allow_mixed' => true,
+        ],
+        'phpdoc_line_span' => [
+            'const' => 'single',
+            'method' => 'multi',
+            'property' => 'single',
+        ],
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
     ];
 
     /**
      * Get default rules.
-     *
-     * @return array
      */
     public function getRules(): array
     {

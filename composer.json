@@ -12,13 +12,13 @@
         "coding standard"
     ],
     "scripts": {
-        "cs-check": "php-cs-fixer fix --dry-run --diff",
-        "cs-fix": "php-cs-fixer fix --diff"
+        "cs-check": "php-cs-fixer fix --dry-run --diff --allow-risky=yes",
+        "cs-fix": "php-cs-fixer fix --diff --allow-risky=yes"
     },
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "friendsofphp/php-cs-fixer": "^2.16.4.0",
+        "friendsofphp/php-cs-fixer": "^2.16.4",
         "composer-plugin-api": "^1.1"
     },
     "require-dev": {

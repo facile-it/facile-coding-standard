@@ -4,25 +4,17 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards\Installer\Writer;
 
+use function file_put_contents;
+use function implode;
+
 final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 {
-    /**
-     * @param null|string $filename
-     * @param bool $noDev
-     * @param bool $noRisky
-     */
     public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
     {
         $filename = $filename ?: '.php_cs.dist';
-        \file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
+        file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
     }
 
-    /**
-     * @param bool $noDev
-     * @param bool $noRisky
-     *
-     * @return string
-     */
     private function createConfigSource(bool $noDev = false, bool $noRisky = false): string
     {
         $rulesProviderConfig = $this->createRulesProviderConfig($noRisky);
@@ -73,7 +65,7 @@ FILE;
 
         $providersLine[] = '    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),';
 
-        $providersLine = \implode("\n", $providersLine);
+        $providersLine = implode("\n", $providersLine);
 
         return <<<TEXT
 \$additionalRules = [];

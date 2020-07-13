@@ -10,45 +10,45 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\PackageInterface;
 use Composer\Semver\Semver;
+use Exception;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
+use InvalidArgumentException;
+use RuntimeException;
+use function array_diff_key;
+use function array_key_exists;
+use function count;
+use function dirname;
+use function file_exists;
+use function implode;
+use function realpath;
+use function rtrim;
+use function sprintf;
+use function strpos;
 
 class Installer
 {
-    /**
-     * @var IOInterface
-     */
+    /** @var IOInterface */
     private $io;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $projectRoot;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $composerDefinition;
 
-    /**
-     * @var JsonFile
-     */
+    /** @var JsonFile */
     private $composerJson;
 
-    /**
-     * @var PhpCsConfigWriterInterface
-     */
+    /** @var PhpCsConfigWriterInterface */
     private $phpCsWriter;
 
     /**
-     * @param IOInterface $io
-     * @param Composer    $composer
      * @param null|string $projectRoot
      * @param null|string $composerPath
-     * @param null|PhpCsConfigWriterInterface $phpCsWriter
      *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function __construct(
         IOInterface $io,
@@ -61,19 +61,19 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?: Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerPath));
+        $this->projectRoot = $projectRoot ?: realpath(dirname($composerPath));
 
         if (false === $this->projectRoot) {
-            throw new \RuntimeException('Unable to get project root.');
+            throw new RuntimeException('Unable to get project root.');
         }
-        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
+        $this->projectRoot = rtrim($this->projectRoot, '/\\');
         // Parse the composer.json
-        $this->parseComposerDefinition($composer, $composerFile);
+        $this->parseComposerDefinition($composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function installCommands(): void
     {
@@ -85,9 +85,6 @@ class Installer
 
     /**
      * Check if we need to do some upgrades
-     *
-     * @param PackageInterface $currentPackage
-     * @param PackageInterface $targetPackage
      */
     public function checkUpgrade(PackageInterface $currentPackage, PackageInterface $targetPackage): void
     {
@@ -97,19 +94,19 @@ class Installer
 
         $question = [
             '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
-            \sprintf(
+            sprintf(
                 '  <question>%s</question>',
                 'Do you want to write the new configuration? (Y/n)'
             ),
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
     }
@@ -121,7 +118,7 @@ class Installer
         }
 
         $constraint = $currentPackage->getVersion();
-        if (0 !== \strpos($constraint, 'dev-')) {
+        if (0 !== strpos($constraint, 'dev-')) {
             $constraint = '^' . $constraint;
         }
 
@@ -134,22 +131,16 @@ class Installer
         return true;
     }
 
-    /**
-     * @param PhpCsConfigWriterInterface $phpCsWriter
-     */
     public function setPhpCsWriter(PhpCsConfigWriterInterface $phpCsWriter): void
     {
         $this->phpCsWriter = $phpCsWriter;
     }
 
     /**
-     * @param Composer $composer
-     * @param string   $composerFile
-     *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
-    private function parseComposerDefinition(Composer $composer, $composerFile): void
+    private function parseComposerDefinition(string $composerFile): void
     {
         $this->composerJson = new JsonFile($composerFile);
         $this->composerDefinition = $this->composerJson->read();
@@ -159,28 +150,28 @@ class Installer
     {
         $destPath = $this->projectRoot . '/.php_cs.dist';
 
-        if (\file_exists($destPath)) {
-            $this->io->write(\sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
-            $this->io->write(\sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
+        if (file_exists($destPath)) {
+            $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
+            $this->io->write(sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
 
             return;
         }
 
         $question = [
-            \sprintf(
+            sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
             '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
     }
@@ -192,14 +183,14 @@ class Installer
             'cs-fix' => 'php-cs-fixer fix --diff',
         ];
 
-        if (0 === \count(\array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
-            $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
+        if (0 === count(array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
+            $this->io->write(sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
         }
 
         $question = [
-            \sprintf(
+            sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
@@ -209,22 +200,22 @@ class Installer
             'Answer: ',
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        if (! \array_key_exists('scripts', $this->composerDefinition)) {
+        if (! array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 
         foreach ($scripts as $key => $command) {
             if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
                 $this->io->write([
-                    \sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    sprintf('  <error>Another script "%s" exists!</error>', $key),
                     '  If you want, you can replace it manually with:',
-                    \sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
                 ]);
                 continue;
             }
@@ -233,13 +224,9 @@ class Installer
         }
     }
 
-    /**
-     * @param string $composerCommand
-     * @param string $command
-     */
     protected function addComposerScript(string $composerCommand, string $command): void
     {
-        if (! \array_key_exists('scripts', $this->composerDefinition)) {
+        if (! array_key_exists('scripts', $this->composerDefinition)) {
             $this->composerDefinition['scripts'] = [];
         }
 
