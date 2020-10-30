@@ -200,7 +200,7 @@ class Installer
         /** @var mixed $scriptsDefinition */
         $scriptsDefinition = $this->composerDefinition['scripts'] ?? [];
 
-        if (is_array($scriptsDefinition) && 0 === \count(\array_diff_key($scripts, $scriptsDefinition))) {
+        if (\is_array($scriptsDefinition) && 0 === \count(\array_diff_key($scripts, $scriptsDefinition))) {
             $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
