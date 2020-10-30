@@ -32,18 +32,18 @@ class AutoloadPathProvider
     {
         $this->composerPath = $composerFile ?: \trim(\getenv('COMPOSER') ?: '') ?: './composer.json';
 
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($this->composerPath));
+        $projectRootPath = $projectRoot ?: \realpath(\dirname($this->composerPath));
 
-        if (false === $this->projectRoot) {
+        if (false === $projectRootPath) {
             throw new \RuntimeException('Unable to get project root.');
         }
 
-        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
+        $this->projectRoot = \rtrim($projectRootPath, '/\\');
         $this->dev = $dev;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getPaths(): array
     {
@@ -61,15 +61,24 @@ class AutoloadPathProvider
             throw new \RuntimeException('Invalid composer.json file');
         }
 
-        $paths = $this->getAutoloadPaths($composer['autoload'] ?? []);
+        /** @var array<mixed> $autoload */
+        $autoload = $composer['autoload'] ?? [];
+        $paths = $this->getAutoloadPaths($autoload);
 
         if ($this->dev) {
-            $paths = \array_merge($paths, $this->getAutoloadPaths($composer['autoload-dev'] ?? []));
+            /** @var array<mixed> $autoloadDev */
+            $autoloadDev = $composer['autoload-dev'] ?? [];
+            $paths = \array_merge($paths, $this->getAutoloadPaths($autoloadDev));
         }
 
         return $paths;
     }
 
+    /**
+     * @param array<mixed> $autoload
+     *
+     * @return array<string>
+     */
     private function getAutoloadPaths(array $autoload): array
     {
         $keys = ['psr-0', 'psr-4', 'classmap'];
@@ -77,13 +86,18 @@ class AutoloadPathProvider
 
         $autoloadPaths = $this->reduceAutoload($autoloads);
 
-        $autoloadPaths = \array_filter($autoloadPaths, function (string $path) {
+        $autoloadPaths = \array_filter($autoloadPaths, function (string $path): bool {
             return \is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path);
         });
 
         return $autoloadPaths;
     }
 
+    /**
+     * @param array<mixed> $autoload
+     *
+     * @return array<string>
+     */
     private function reduceAutoload(array $autoload): array
     {
         return \array_reduce(
@@ -93,6 +107,12 @@ class AutoloadPathProvider
         );
     }
 
+    /**
+     * @param array<string> $carry
+     * @param array<mixed>|string $item
+     *
+     * @return array<string>
+     */
     private function autoloadReducer(array $carry, $item): array
     {
         if (\is_array($item)) {

@@ -17,7 +17,7 @@ final class CompositeRulesProvider implements RulesProviderInterface
     /**
      * CompositeRulesProvider constructor.
      *
-     * @param iterable|RulesProviderInterface[] $providers
+     * @param iterable<RulesProviderInterface> $providers
      */
     public function __construct(iterable $providers)
     {
@@ -34,16 +34,16 @@ final class CompositeRulesProvider implements RulesProviderInterface
     /**
      * Get rules.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getRules(): array
     {
         $rules = [];
 
         foreach ($this->providers as $provider) {
-            $rules = \array_merge($rules, $provider->getRules());
+            $rules[] = $provider->getRules();
         }
 
-        return $rules;
+        return \array_merge([], ...$rules);
     }
 }

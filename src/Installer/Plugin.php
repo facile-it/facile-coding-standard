@@ -21,7 +21,7 @@ use Composer\Plugin\PluginInterface;
 class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 {
     /**
-     * @var Installer|null
+     * @var null|Installer
      */
     private $installer;
 
@@ -30,7 +30,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
      *
      * Optionally accept the project root into which to install.
      *
-     * @param Installer $installer
+     * @param null|Installer $installer
      */
     public function __construct(Installer $installer = null)
     {
@@ -48,6 +48,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
     public static function getPackageName(): string
     {
         $composerJson = new JsonFile(\dirname(__DIR__, 2) . '/composer.json');
+        /** @var array{name: string} $composerDefinition */
         $composerDefinition = $composerJson->read();
 
         return $composerDefinition['name'];
@@ -69,7 +70,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
      * * array('eventName' => array('methodName', $priority))
      * * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
      *
-     * @return array The event names to listen to
+     * @return array<string, string> The event names to listen to
      */
     public static function getSubscribedEvents(): array
     {
@@ -203,5 +204,13 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
         return [
             \Composer\Plugin\Capability\CommandProvider::class => CommandProvider::class,
         ];
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
     }
 }

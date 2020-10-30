@@ -18,15 +18,18 @@ class CreateConfigCommand extends BaseCommand
      */
     private $configWriter;
 
+    public function __construct(string $name = null)
+    {
+        $this->configWriter = new PhpCsConfigWriter();
+
+        parent::__construct($name);
+    }
+
     /**
      * @return PhpCsConfigWriterInterface
      */
     public function getConfigWriter(): PhpCsConfigWriterInterface
     {
-        if (null === $this->configWriter) {
-            $this->configWriter = new PhpCsConfigWriter();
-        }
-
         return $this->configWriter;
     }
 
@@ -51,11 +54,11 @@ class CreateConfigCommand extends BaseCommand
                 <<<HELP
 Write config file in <comment>.php_cs.dist</comment>.
 HELP
-)
+            )
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $configWriter = $this->getConfigWriter();
 

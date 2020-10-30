@@ -10,7 +10,7 @@ namespace Facile\CodingStandards\Rules;
 final class DefaultRulesProvider implements RulesProviderInterface
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private static $rules = [
         '@PSR2' => true,
@@ -112,7 +112,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
     /**
      * Get default rules.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getRules(): array
     {

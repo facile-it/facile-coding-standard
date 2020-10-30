@@ -26,7 +26,7 @@ class Installer
     private $projectRoot;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $composerDefinition;
 
@@ -53,20 +53,23 @@ class Installer
     public function __construct(
         IOInterface $io,
         Composer $composer,
-        $projectRoot = null,
-        $composerPath = null,
-        PhpCsConfigWriterInterface $phpCsWriter = null
+        ?string $projectRoot = null,
+        ?string $composerPath = null,
+        ?PhpCsConfigWriterInterface $phpCsWriter = null
     ) {
         $this->io = $io;
         // Get composer.json location
-        $composerFile = $composerPath ?: Factory::getComposerFile();
+        /** @var string $composerFile */
+        $composerFile = $composerPath ?? Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $this->projectRoot = $projectRoot ?: \realpath(\dirname($composerPath));
+        $projectRootPath = $projectRoot ?: \realpath(\dirname($composerFile));
 
-        if (false === $this->projectRoot) {
+        if (! $projectRootPath) {
             throw new \RuntimeException('Unable to get project root.');
         }
-        $this->projectRoot = \rtrim($this->projectRoot, '/\\');
+
+        $this->projectRoot = \rtrim($projectRootPath, '/\\');
+
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
@@ -149,10 +152,12 @@ class Installer
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    private function parseComposerDefinition(Composer $composer, $composerFile): void
+    private function parseComposerDefinition(Composer $composer, string $composerFile): void
     {
         $this->composerJson = new JsonFile($composerFile);
-        $this->composerDefinition = $this->composerJson->read();
+        /** @var array<string, mixed> $definition */
+        $definition = $this->composerJson->read();
+        $this->composerDefinition = $definition;
     }
 
     public function requestCreateCsConfig(): void
@@ -192,7 +197,10 @@ class Installer
             'cs-fix' => 'php-cs-fixer fix --diff',
         ];
 
-        if (0 === \count(\array_diff_key($scripts, $this->composerDefinition['scripts'] ?? []))) {
+        /** @var mixed $scriptsDefinition */
+        $scriptsDefinition = $this->composerDefinition['scripts'] ?? [];
+
+        if (\is_array($scriptsDefinition) && 0 === \count(\array_diff_key($scripts, $scriptsDefinition))) {
             $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
@@ -239,10 +247,11 @@ class Installer
      */
     protected function addComposerScript(string $composerCommand, string $command): void
     {
-        if (! \array_key_exists('scripts', $this->composerDefinition)) {
-            $this->composerDefinition['scripts'] = [];
-        }
+        /** @var array<string, mixed> $scripts */
+        $scripts = $this->composerDefinition['scripts'] ?? [];
 
-        $this->composerDefinition['scripts'][$composerCommand] = $command;
+        $scripts[$composerCommand] = $command;
+
+        $this->composerDefinition['scripts'] = $scripts;
     }
 }

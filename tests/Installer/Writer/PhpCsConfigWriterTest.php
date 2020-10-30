@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandardsTest\Installer\Writer;
 
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriter;
+use Facile\CodingStandardsTest\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\TestCase;
 
 class PhpCsConfigWriterTest extends TestCase
 {

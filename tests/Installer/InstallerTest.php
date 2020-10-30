@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandardsTest\Installer;
 
 use Composer\Composer;
@@ -8,10 +10,10 @@ use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Facile\CodingStandards\Installer\Installer;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
+use Facile\CodingStandardsTest\Framework\TestCase;
 use Facile\CodingStandardsTest\Util;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
 class InstallerTest extends TestCase

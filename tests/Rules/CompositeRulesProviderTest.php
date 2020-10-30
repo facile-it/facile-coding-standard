@@ -6,7 +6,7 @@ namespace Facile\CodingStandardsTest\Rules;
 
 use Facile\CodingStandards\Rules\CompositeRulesProvider;
 use Facile\CodingStandards\Rules\RulesProviderInterface;
-use PHPUnit\Framework\TestCase;
+use Facile\CodingStandardsTest\Framework\TestCase;
 
 class CompositeRulesProviderTest extends TestCase
 {
