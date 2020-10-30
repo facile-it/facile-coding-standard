@@ -1,7 +1,9 @@
 inherit: true
 
 checks:
-  php: true
+  php:
+    excluded_dependencies:
+      - composer/composer
 
 filter:
   paths:
