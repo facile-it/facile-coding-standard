@@ -61,10 +61,14 @@ class AutoloadPathProvider
             throw new \RuntimeException('Invalid composer.json file');
         }
 
-        $paths = $this->getAutoloadPaths($composer['autoload'] ?? []);
+        /** @var array<mixed> $autoload */
+        $autoload = $composer['autoload'] ?? [];
+        $paths = $this->getAutoloadPaths($autoload);
 
         if ($this->dev) {
-            $paths = \array_merge($paths, $this->getAutoloadPaths($composer['autoload-dev'] ?? []));
+            /** @var array<mixed> $autoloadDev */
+            $autoloadDev = $composer['autoload-dev'] ?? [];
+            $paths = \array_merge($paths, $this->getAutoloadPaths($autoloadDev));
         }
 
         return $paths;
@@ -73,7 +77,7 @@ class AutoloadPathProvider
     /**
      * @param array<mixed> $autoload
      *
-     * @return string[]
+     * @return array<string>
      */
     private function getAutoloadPaths(array $autoload): array
     {
@@ -82,7 +86,7 @@ class AutoloadPathProvider
 
         $autoloadPaths = $this->reduceAutoload($autoloads);
 
-        $autoloadPaths = \array_filter($autoloadPaths, function (string $path) {
+        $autoloadPaths = \array_filter($autoloadPaths, function (string $path): bool {
             return \is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path);
         });
 
@@ -92,7 +96,7 @@ class AutoloadPathProvider
     /**
      * @param array<mixed> $autoload
      *
-     * @return string[]
+     * @return array<string>
      */
     private function reduceAutoload(array $autoload): array
     {
@@ -104,10 +108,10 @@ class AutoloadPathProvider
     }
 
     /**
-     * @param array<mixed> $carry
+     * @param array<string> $carry
      * @param array<mixed>|string $item
      *
-     * @return string[]
+     * @return array<string>
      */
     private function autoloadReducer(array $carry, $item): array
     {
