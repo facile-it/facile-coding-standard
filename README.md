@@ -1,7 +1,7 @@
 # Facile.it Coding Standard
 
 [![PHP Version](https://img.shields.io/badge/php-%5E7.1-blue.svg)](https://img.shields.io/badge/php-%5E7.1-blue.svg)
-[![Build Status](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/build.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/build-status/master)
+[![Build status](https://github.com/facile-it/facile-coding-standard/workflows/Continuous%20Integration/badge.svg)]( https://github.com/facile-it/facile-coding-standard/actions?query=workflow%3A%22Continuous+Integration%22+branch%3Amaster)
 [![Code Coverage](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
 
