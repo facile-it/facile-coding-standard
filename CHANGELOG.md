@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## [0.4.0] - TBD
+## [0.4.0] - 2020-10-31
 ## Changed
 - Bumped minimum required PHP version to 7.2
 - Composer 2.0 compatibility
