@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## [0.4.1] - TBA
+### Added
+- Allow PHP 8
+
 ## [0.4.0] - 2020-10-31
 ## Changed
 - Bumped minimum required PHP version to 7.2
