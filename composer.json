@@ -19,7 +19,7 @@
         "cs-fix": "php-cs-fixer fix --diff --allow-risky yes"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ^8.0",
         "ext-json": "*",
         "composer-plugin-api": "^1.1 || ^2.0",
         "friendsofphp/php-cs-fixer": "^2.16.5",
