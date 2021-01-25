@@ -71,5 +71,8 @@ jobs:
         if: "${{ matrix.coverage == 'true' }}"
 
       - name: "Upload coverage"
-        run: "wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./coverage.xml"
+        uses: codecov/codecov-action@v1
         if: "${{ matrix.coverage == 'true' }}"
+        with:
+            file: './coverage.xml'
+            fail_ci_if_error: true
