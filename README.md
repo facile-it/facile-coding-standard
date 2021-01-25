@@ -2,8 +2,7 @@
 
 [![PHP Version](https://img.shields.io/badge/php-%5E7.1-blue.svg)](https://img.shields.io/badge/php-%5E7.1-blue.svg)
 [![Build status](https://github.com/facile-it/facile-coding-standard/workflows/Continuous%20Integration/badge.svg)]( https://github.com/facile-it/facile-coding-standard/actions?query=workflow%3A%22Continuous+Integration%22+branch%3Amaster)
-[![Code Coverage](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/facile-it/facile-coding-standard/?branch=master)
+[![Code coverage](https://codecov.io/gh/facile-it/facile-coding-standard/branch/master/graph/badge.svg?token=HlbkT2oJiB)](https://codecov.io/gh/facile-it/facile-coding-standard)
 
 [![Latest Stable Version](https://poser.pugx.org/facile-it/facile-coding-standard/v/stable)](https://packagist.org/packages/facile-it/facile-coding-standard)
 [![Total Downloads](https://poser.pugx.org/facile-it/facile-coding-standard/downloads)](https://packagist.org/packages/facile-it/facile-coding-standard)
