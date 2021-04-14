@@ -13,7 +13,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
      */
     public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
     {
-        $filename = $filename ?: '.php_cs.dist';
+        $filename = $filename ?: '.php-cs-fixer.dist.php';
         \file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
     }
 

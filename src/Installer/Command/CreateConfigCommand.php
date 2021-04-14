@@ -52,7 +52,7 @@ class CreateConfigCommand extends BaseCommand
             ])
             ->setHelp(
                 <<<HELP
-Write config file in <comment>.php_cs.dist</comment>.
+Write config file in <comment>.php-cs-fixer.dist.php</comment>.
 HELP
             )
         ;
@@ -63,7 +63,7 @@ HELP
         $configWriter = $this->getConfigWriter();
 
         $configWriter->writeConfigFile(
-            '.php_cs.dist',
+            '.php-cs-fixer.dist.php',
             (bool) $input->getOption('no-dev'),
             (bool) $input->getOption('no-risky')
         );

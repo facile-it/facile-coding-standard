@@ -114,7 +114,7 @@ class Installer
 
         $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
-        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true);
     }
 
     private function isBcBreak(PackageInterface $currentPackage, PackageInterface $targetPackage): bool
@@ -162,11 +162,11 @@ class Installer
 
     public function requestCreateCsConfig(): void
     {
-        $destPath = $this->projectRoot . '/.php_cs.dist';
+        $destPath = $this->projectRoot . '/.php-cs-fixer.dist.php';
 
         if (\file_exists($destPath)) {
             $this->io->write(\sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
-            $this->io->write(\sprintf('  <info>Delete .php_cs.dist if you want to install it.</info>'));
+            $this->io->write(\sprintf('  <info>Delete .php-cs-fixer.dist.php if you want to install it.</info>'));
 
             return;
         }
@@ -176,7 +176,7 @@ class Installer
                 "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
-            '  <info>It will create a .php_cs.dist file in your project root directory.</info> ',
+            '  <info>It will create a .php-cs-fixer.dist.php file in your project root directory.</info> ',
         ];
 
         $answer = $this->io->askConfirmation(\implode("\n", $question), true);
@@ -187,7 +187,7 @@ class Installer
 
         $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
 
-        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true);
+        $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true);
     }
 
     public function requestAddComposerScripts(): void
