@@ -14,7 +14,7 @@ on:
 
 jobs:
   phpunit:
-    name: "PHPUnit"
+    name: "Tests"
     runs-on: "ubuntu-20.04"
 
     strategy:
