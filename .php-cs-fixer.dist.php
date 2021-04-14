@@ -7,7 +7,7 @@ $providers = [
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
 
-$config = new PhpCsFixer\Config(__FILE__);
+$config = new PhpCsFixer\Config('facile-it/facile-coding-standard');
 $config->setRules($rulesProvider->getRules());
 
 $config->setUsingCache(false);

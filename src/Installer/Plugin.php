@@ -141,7 +141,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
 
         $installer = $this->getInstaller($event->getComposer(), $event->getIO());
 
-        if (false === \method_exists($installer, 'checkUpgrade')) {
+        if (false === method_exists($installer, 'checkUpgrade')) {
             // it's an old version
             return;
         }

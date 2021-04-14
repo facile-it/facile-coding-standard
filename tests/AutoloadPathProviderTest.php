@@ -34,9 +34,9 @@ class AutoloadPathProviderTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        \mkdir($this->vfsRoot->url() . '/src');
-        \mkdir($this->vfsRoot->url() . '/tests');
-        \file_put_contents($this->composerFilePath, Util::getComposerContent());
+        mkdir($this->vfsRoot->url() . '/src');
+        mkdir($this->vfsRoot->url() . '/tests');
+        file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
     public function testGetPathsWithDevOn(): void
