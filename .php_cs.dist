@@ -2,11 +2,8 @@
 
 $providers = [
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+    new Facile\CodingStandards\Rules\RiskyRulesProvider(),
 ];
-
-if (false === getenv('DISABLE_RISKY_RULES')) {
-    $providers[] = new Facile\CodingStandards\Rules\RiskyRulesProvider();
-}
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
 
@@ -14,7 +11,7 @@ $config = PhpCsFixer\Config::create();
 $config->setRules($rulesProvider->getRules());
 
 $config->setUsingCache(false);
-$config->setRiskyAllowed(false);
+$config->setRiskyAllowed(true);
 
 $finder = PhpCsFixer\Finder::create();
 $autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
