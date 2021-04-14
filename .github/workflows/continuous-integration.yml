@@ -70,3 +70,4 @@ jobs:
 
       - name: "Run PHP-CS-Fixer (E2E test)"
         run: "vendor/bin/php-cs-fixer fix --dry-run --diff"
+        if: "${{ matrix.deps != 'lowest' }}"
