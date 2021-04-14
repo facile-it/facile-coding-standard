@@ -62,13 +62,13 @@ class Installer
         /** @var string $composerFile */
         $composerFile = $composerPath ?? Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $projectRootPath = $projectRoot ?: \realpath(\dirname($composerFile));
+        $projectRootPath = $projectRoot ?: realpath(\dirname($composerFile));
 
         if (! $projectRootPath) {
             throw new \RuntimeException('Unable to get project root.');
         }
 
-        $this->projectRoot = \rtrim($projectRootPath, '/\\');
+        $this->projectRoot = rtrim($projectRootPath, '/\\');
 
         // Parse the composer.json
         $this->parseComposerDefinition($composer, $composerFile);
@@ -100,19 +100,19 @@ class Installer
 
         $question = [
             '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
-            \sprintf(
+            sprintf(
                 '  <question>%s</question>',
                 'Do you want to write the new configuration? (Y/n)'
             ),
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true);
     }
@@ -124,7 +124,7 @@ class Installer
         }
 
         $constraint = $currentPackage->getVersion();
-        if (0 !== \strpos($constraint, 'dev-')) {
+        if (0 !== strpos($constraint, 'dev-')) {
             $constraint = '^' . $constraint;
         }
 
@@ -164,28 +164,28 @@ class Installer
     {
         $destPath = $this->projectRoot . '/.php-cs-fixer.dist.php';
 
-        if (\file_exists($destPath)) {
-            $this->io->write(\sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
-            $this->io->write(\sprintf('  <info>Delete .php-cs-fixer.dist.php if you want to install it.</info>'));
+        if (file_exists($destPath)) {
+            $this->io->write(sprintf("\n  <comment>Skipping... CS config file already exists.</comment>"));
+            $this->io->write(sprintf('  <info>Delete .php-cs-fixer.dist.php if you want to install it.</info>'));
 
             return;
         }
 
         $question = [
-            \sprintf(
+            sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
             '  <info>It will create a .php-cs-fixer.dist.php file in your project root directory.</info> ',
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
         }
 
-        $this->io->write(\sprintf("\n  <info>Writing configuration in project root...</info>"));
+        $this->io->write(sprintf("\n  <info>Writing configuration in project root...</info>"));
 
         $this->phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true);
     }
@@ -200,14 +200,14 @@ class Installer
         /** @var mixed $scriptsDefinition */
         $scriptsDefinition = $this->composerDefinition['scripts'] ?? [];
 
-        if (\is_array($scriptsDefinition) && 0 === \count(\array_diff_key($scripts, $scriptsDefinition))) {
-            $this->io->write(\sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
+        if (\is_array($scriptsDefinition) && 0 === \count(array_diff_key($scripts, $scriptsDefinition))) {
+            $this->io->write(sprintf("\n  <comment>Skipping... Scripts already exist in composer.json.</comment>"));
 
             return;
         }
 
         $question = [
-            \sprintf(
+            sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
@@ -217,7 +217,7 @@ class Installer
             'Answer: ',
         ];
 
-        $answer = $this->io->askConfirmation(\implode("\n", $question), true);
+        $answer = $this->io->askConfirmation(implode("\n", $question), true);
 
         if (! $answer) {
             return;
@@ -230,9 +230,9 @@ class Installer
         foreach ($scripts as $key => $command) {
             if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
                 $this->io->write([
-                    \sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    sprintf('  <error>Another script "%s" exists!</error>', $key),
                     '  If you want, you can replace it manually with:',
-                    \sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
                 ]);
                 continue;
             }

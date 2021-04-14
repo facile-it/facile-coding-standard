@@ -44,6 +44,6 @@ final class CompositeRulesProvider implements RulesProviderInterface
             $rules[] = $provider->getRules();
         }
 
-        return \array_merge([], ...$rules);
+        return array_merge([], ...$rules);
     }
 }

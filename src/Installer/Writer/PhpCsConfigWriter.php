@@ -14,7 +14,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
     public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
     {
         $filename = $filename ?: '.php-cs-fixer.dist.php';
-        \file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
+        file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
     }
 
     /**
@@ -73,7 +73,7 @@ FILE;
 
         $providersLine[] = '    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),';
 
-        $providersLine = \implode("\n", $providersLine);
+        $providersLine = implode("\n", $providersLine);
 
         return <<<TEXT
 \$additionalRules = [];

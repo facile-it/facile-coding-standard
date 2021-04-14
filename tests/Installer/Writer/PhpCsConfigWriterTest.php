@@ -30,7 +30,7 @@ class PhpCsConfigWriterTest extends TestCase
 
         $writer->writeConfigFile($filename);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -74,7 +74,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -118,7 +118,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, false, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php
@@ -161,7 +161,7 @@ TEXT;
 
         $writer->writeConfigFile($filename, true, true);
 
-        $content = \file_get_contents($filename);
+        $content = file_get_contents($filename);
 
         $expected = <<<'TEXT'
 <?php

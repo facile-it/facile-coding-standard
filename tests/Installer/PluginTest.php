@@ -43,8 +43,8 @@ class PluginTest extends TestCase
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_INSTALL, $events);
         $this->assertArrayHasKey(PackageEvents::POST_PACKAGE_UPDATE, $events);
 
-        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
-        $this->assertTrue(\method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
+        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_INSTALL]));
+        $this->assertTrue(method_exists($plugin, $events[PackageEvents::POST_PACKAGE_UPDATE]));
     }
 
     public function testActive(): void
