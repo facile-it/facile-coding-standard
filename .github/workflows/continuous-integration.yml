@@ -69,4 +69,4 @@ jobs:
           fail_ci_if_error: true
 
       - name: "Run PHP-CS-Fixer (E2E test)"
-        run: "vendor/bin/php-cs-fixer --dry-run --diff"
+        run: "vendor/bin/php-cs-fixer fix --dry-run --diff"
