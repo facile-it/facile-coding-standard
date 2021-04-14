@@ -23,7 +23,7 @@ $ composer require --dev facile-it/facile-coding-standard
 
 When you install it, a plugin will ask you some questions to setup your project automatically.
 
-The installer will add a `.php_cs.dist` file in your project root directory,
+The installer will add a `.php-cs-fixer.dist.php` file in your project root directory,
 then you can edit manually if you need some changes.
 
 The CS config will be configured to find your project files using
@@ -44,15 +44,15 @@ The installer will also add two scripts in your `composer.json`;
 
 The installation configuration should be enough to use it.
 
-If you need to change the CS config file, we suggest to don't edit the main `.php_cs.dist` file.
+If you need to change the CS config file, we suggest to don't edit the main `.php-cs-fixer.dist.php` file.
 
-You can create a new file `.php_cs` with something like this:
+You can create a new file `.php-cs-fixer.php` with something like this:
 
 ```php
 <?php
 
 /** @var PhpCsFixer\Config $config */
-$config = require __DIR__ . '/.php_cs.dist';
+$config = require __DIR__ . '/.php-cs-fixer.dist.php';
 
 // change your configuration...
 $config->setUsingCache(false);
@@ -83,14 +83,14 @@ See [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
 Risky rules are dangerous. Starting from version `0.3.1` we removed
 them from default configuration.
 
-If you want to add these rules, you can create your own `.php_cs`
+If you want to add these rules, you can create your own `.php-cs-fixer.php`
 configuration:
 
 ```php
 <?php
 
 /** @var \PhpCsFixer\Config $config */
-$config = include __DIR__ . '/.php_cs.dist';
+$config = include __DIR__ . '/.php-cs-fixer.dist.php';
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
@@ -109,7 +109,7 @@ return $config;
 ## Generate configuration
 
 If you have any problem updating to a new version, you can regenerate
-the default `.php_cs.dist` with the command:
+the default `.php-cs-fixer.dist.php` with the command:
 
 ```
 $ composer facile-cs-create-config

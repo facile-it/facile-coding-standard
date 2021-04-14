@@ -25,7 +25,7 @@ class PhpCsConfigWriterTest extends TestCase
 
     public function testWriteConfigFile(): void
     {
-        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $filename = $this->vfsRoot->url() . '/.php-cs-fixer.dist.php';
         $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename);
@@ -69,7 +69,7 @@ TEXT;
 
     public function testWriteConfigFileWithNoDev(): void
     {
-        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $filename = $this->vfsRoot->url() . '/.php-cs-fixer.dist.php';
         $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename, true);
@@ -113,7 +113,7 @@ TEXT;
 
     public function testWriteConfigFileWithNoRisky(): void
     {
-        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $filename = $this->vfsRoot->url() . '/.php-cs-fixer.dist.php';
         $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename, false, true);
@@ -156,7 +156,7 @@ TEXT;
 
     public function testWriteConfigFileWithNoDevAndNoRisky(): void
     {
-        $filename = $this->vfsRoot->url() . '/.php_cs.dist';
+        $filename = $this->vfsRoot->url() . '/.php-cs-fixer.dist.php';
         $writer = new PhpCsConfigWriter();
 
         $writer->writeConfigFile($filename, true, true);
