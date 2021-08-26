@@ -71,7 +71,7 @@ class Installer
         $this->projectRoot = rtrim($projectRootPath, '/\\');
 
         // Parse the composer.json
-        $this->parseComposerDefinition($composer, $composerFile);
+        $this->parseComposerDefinition($composerFile);
         $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
     }
 
@@ -146,13 +146,12 @@ class Installer
     }
 
     /**
-     * @param Composer $composer
      * @param string   $composerFile
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    private function parseComposerDefinition(Composer $composer, string $composerFile): void
+    private function parseComposerDefinition(string $composerFile): void
     {
         $this->composerJson = new JsonFile($composerFile);
         /** @var array<string, mixed> $definition */
