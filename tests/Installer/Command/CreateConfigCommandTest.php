@@ -46,7 +46,7 @@ class CreateConfigCommandTest extends TestCase
         $output = $this->prophesize(OutputInterface::class);
 
         $writer->writeConfigFile(
-            '.php_cs.dist',
+            '.php-cs-fixer.dist.php',
             $noDev,
             $noRisky
         )

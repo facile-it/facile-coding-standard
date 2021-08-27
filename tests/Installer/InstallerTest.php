@@ -41,7 +41,7 @@ class InstallerTest extends TestCase
 
         $this->projectRoot = $this->vfsRoot->url();
         $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        \file_put_contents($this->composerFilePath, Util::getComposerContent());
+        file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
     public function invalidUpgradeProvider(): array
@@ -147,7 +147,7 @@ class InstallerTest extends TestCase
             ->willReturn(true);
 
         $io->write(Argument::type('string'))->shouldBeCalled();
-        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true)
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true)
             ->shouldBeCalled();
 
         $installer->checkUpgrade($currentPackage, $targetPackage);
@@ -155,7 +155,7 @@ class InstallerTest extends TestCase
 
     public function testRequestCreateCsConfigWithAlreadyExistingFile(): void
     {
-        \touch($this->projectRoot . '/.php_cs.dist');
+        touch($this->projectRoot . '/.php-cs-fixer.dist.php');
 
         $package = $this->prophesize(PackageInterface::class);
         $io = $this->prophesize(IOInterface::class);
@@ -215,7 +215,7 @@ class InstallerTest extends TestCase
         $composer->getPackage()->willReturn($package);
         $package->getAutoload()->willReturn([]);
         $package->getDevAutoload()->willReturn([]);
-        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php_cs.dist', false, true)
+        $phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true)
             ->shouldBeCalled();
 
         $installer = new Installer(

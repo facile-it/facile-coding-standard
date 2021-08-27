@@ -7,13 +7,13 @@ $providers = [
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
 
-$config = PhpCsFixer\Config::create();
+$config = new PhpCsFixer\Config('facile-it/facile-coding-standard');
 $config->setRules($rulesProvider->getRules());
 
 $config->setUsingCache(false);
 $config->setRiskyAllowed(true);
 
-$finder = PhpCsFixer\Finder::create();
+$finder = new PhpCsFixer\Finder();
 $autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
 $finder->in($autoloadPathProvider->getPaths());
 

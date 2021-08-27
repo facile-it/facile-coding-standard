@@ -20,8 +20,10 @@ final class DefaultRulesProvider implements RulesProviderInterface
             'syntax' => 'short',
         ],
         'binary_operator_spaces' => [
-            'align_double_arrow' => false,
-            'align_equals' => false,
+            'operators' => [
+                '=>' => null,
+                '=' => null,
+            ],
         ],
         'blank_line_after_namespace' => true,
         'blank_line_after_opening_tag' => true,
@@ -41,9 +43,11 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'declare_equal_normalize' => true,
         'function_typehint_space' => true,
         'include' => true,
+        'increment_style' => [
+            'style' => 'pre',
+        ],
         'lowercase_cast' => true,
         'method_chaining_indentation' => true,
-        'method_separation' => true,
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
@@ -51,7 +55,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
-        'no_extra_consecutive_blank_lines' => [
+        'no_extra_blank_lines' => [
             'tokens' => [
                 'curly_brace_block',
                 'extra',
@@ -93,7 +97,6 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'phpdoc_trim' => true,
         'phpdoc_types' => true,
         'phpdoc_var_without_name' => true,
-        'pre_increment' => true,
         'return_type_declaration' => true,
         'short_scalar_cast' => true,
         'single_blank_line_before_namespace' => true,
@@ -103,7 +106,9 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
         'ternary_to_null_coalescing' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arrays'],
+        ],
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
