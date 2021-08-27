@@ -1,6 +1,6 @@
 # Facile.it Coding Standard
 
-[![PHP Version](https://img.shields.io/badge/php-%5E7.1-blue.svg)](https://img.shields.io/badge/php-%5E7.1-blue.svg)
+[![PHP Version](https://img.shields.io/badge/php-%5E7.2-blue.svg)](https://img.shields.io/badge/php-%5E7.2-blue.svg)
 [![Build status](https://github.com/facile-it/facile-coding-standard/workflows/Continuous%20Integration/badge.svg)]( https://github.com/facile-it/facile-coding-standard/actions?query=workflow%3A%22Continuous+Integration%22+branch%3Amaster)
 [![Code coverage](https://codecov.io/gh/facile-it/facile-coding-standard/branch/master/graph/badge.svg?token=HlbkT2oJiB)](https://codecov.io/gh/facile-it/facile-coding-standard)
 
