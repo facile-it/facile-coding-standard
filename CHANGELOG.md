@@ -2,7 +2,7 @@ Changelog
 ---------
 
 ## [0.5.0] - TBA
-- Upgrade to PHP-CS-Fixer 3.0 #35 (all breaking changes are due to upstream, check the [UPGRADE-v3.md](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/3.0/UPGRADE-v3.md) document for a complete list)
+- Upgrade to PHP-CS-Fixer 3.0 #35 (all breaking changes are due to upstream, check the [UPGRADE-v3.md](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.2/UPGRADE-v3.md) document for a complete list)
 
 ## [0.4.1] - 2021-02-17
 ### Added
