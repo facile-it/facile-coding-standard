@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## [0.5.1] - TBA
+## [0.5.1] - 2021-09-02
 - Fix configuration generation
 - Check for --no-interactive flag during BC upgrades
 
