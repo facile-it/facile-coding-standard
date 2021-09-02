@@ -43,10 +43,10 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
  
 $rulesProviderConfig
 
-\$config = PhpCsFixer\Config::create();
+\$config = new PhpCsFixer\Config();
 \$config->setRules(\$rulesProvider->getRules());
 
-\$finder = PhpCsFixer\Finder::create();
+\$finder = new PhpCsFixer\Finder();
 
 /*
  * You can set manually these paths:
