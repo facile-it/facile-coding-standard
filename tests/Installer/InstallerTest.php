@@ -118,6 +118,8 @@ class InstallerTest extends TestCase
             $phpCsWriter->reveal()
         );
 
+        $io->isInteractive()
+            ->willReturn(true);
         $io->askConfirmation(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn(false);
@@ -142,6 +144,8 @@ class InstallerTest extends TestCase
             $phpCsWriter->reveal()
         );
 
+        $io->isInteractive()
+            ->willReturn(true);
         $io->askConfirmation(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn(true);
@@ -149,6 +153,35 @@ class InstallerTest extends TestCase
         $io->write(Argument::type('string'))->shouldBeCalled();
         $phpCsWriter->writeConfigFile($this->projectRoot . '/.php-cs-fixer.dist.php', false, true)
             ->shouldBeCalled();
+
+        $installer->checkUpgrade($currentPackage, $targetPackage);
+    }
+
+    public function testCheckUpgradeShouldntWriteWithNoInteractiveInput(): void
+    {
+        $currentPackage = new Package('dummy', '0.1.0', '0.1.0');
+        $targetPackage = new Package('dummy', '0.2.0', '0.2.0');
+
+        $io = $this->prophesize(IOInterface::class);
+        $composer = $this->prophesize(Composer::class);
+        $phpCsWriter = $this->prophesize(PhpCsConfigWriterInterface::class);
+
+        $installer = new Installer(
+            $io->reveal(),
+            $composer->reveal(),
+            $this->projectRoot,
+            $this->composerFilePath,
+            $phpCsWriter->reveal()
+        );
+
+        $io->isInteractive()
+            ->willReturn(false);
+        $io->askConfirmation(Argument::cetera())
+            ->shouldNotBeCalled();
+
+        $io->write(Argument::containingString('Skip'))->shouldBeCalled();
+        $phpCsWriter->writeConfigFile(Argument::cetera())
+            ->shouldNotBeCalled();
 
         $installer->checkUpgrade($currentPackage, $targetPackage);
     }
