@@ -89,6 +89,8 @@ class InstallerTest extends TestCase
             $phpCsWriter->reveal()
         );
 
+        $io->isInteractive()
+            ->willReturn(true);
         $io->askConfirmation(Argument::cetera())
             ->shouldNotBeCalled();
 
