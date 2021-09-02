@@ -94,13 +94,13 @@ class Installer
      */
     public function checkUpgrade(PackageInterface $currentPackage, PackageInterface $targetPackage): void
     {
-        if (false === $this->isBcBreak($currentPackage, $targetPackage)) {
-            return;
-        }
-
         if (! $this->io->isInteractive()) {
             $this->io->write(sprintf("\n  <info>Skipping configuration upgrade due to --no-interactive flag.</info>"));
 
+            return;
+        }
+
+        if (false === $this->isBcBreak($currentPackage, $targetPackage)) {
             return;
         }
 
