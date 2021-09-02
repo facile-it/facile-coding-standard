@@ -3,6 +3,7 @@ Changelog
 
 ## [0.5.1] - TBA
 - Fix configuration generation
+- Check for --no-interactive flag during BC upgrades
 
 ## [0.5.0] - 2021-09-01
 - Upgrade to PHP-CS-Fixer 3.0 #35 (all breaking changes are due to upstream, check the [UPGRADE-v3.md](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.2/UPGRADE-v3.md) document for a complete list)
