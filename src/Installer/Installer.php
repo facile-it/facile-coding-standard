@@ -59,7 +59,6 @@ class Installer
     ) {
         $this->io = $io;
         // Get composer.json location
-        /** @var string $composerFile */
         $composerFile = $composerPath ?? Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
         $projectRootPath = $projectRoot ?: realpath(\dirname($composerFile));
