@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+## [0.5.2] - 2022-05-02
+- Allow Symfony 6
+
 ## [0.5.1] - 2021-09-02
 - Fix configuration generation
 - Check for --no-interactive flag during BC upgrades
