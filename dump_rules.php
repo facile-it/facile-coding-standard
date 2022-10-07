@@ -58,7 +58,9 @@ function isAlreadyActiveInCurrentRuleset(FixerInterface $fixer): bool
         );
 
         foreach (RuleSets::getSetDefinitions() as $ruleSetDefinition) {
-            $allActiveRules = array_merge($allActiveRules, $ruleSetDefinition->getRules());
+            if (array_key_exists($ruleSetDefinition->getName(), $allActiveRules)) {
+                $allActiveRules = array_merge($allActiveRules, $ruleSetDefinition->getRules());
+            }
         }
     }
 
