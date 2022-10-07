@@ -4,3 +4,4 @@
 /.phpunit.result.cache
 /phpunit.xml
 composer.lock
+dump_rules.md
