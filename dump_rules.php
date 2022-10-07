@@ -16,6 +16,7 @@ use Facile\CodingStandards\Rules\RiskyRulesProvider;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -55,13 +56,28 @@ function isAlreadyActiveInCurrentRuleset(FixerInterface $fixer): bool
         );
 
         foreach (RuleSets::getSetDefinitions() as $ruleSetDefinition) {
-            if (array_key_exists($ruleSetDefinition->getName(), $allActiveRules)) {
+            if (isIgnoredSet($ruleSetDefinition) || array_key_exists($ruleSetDefinition->getName(), $allActiveRules)) {
                 $allActiveRules = array_merge($allActiveRules, $ruleSetDefinition->getRules());
             }
         }
     }
 
     return array_key_exists($fixer->getName(), $allActiveRules);
+}
+
+function isIgnoredSet(RuleSetDescriptionInterface $ruleSetDefinition): bool
+{
+    // ignore PHP & PHPUnit migration sets, they should be handled on demand and with Rector
+    if (preg_match('/^@PHP(Unit)?\d+Migration/', $ruleSetDefinition->getName())) {
+        return true;
+    }
+
+    // ignore Symfony & PhpCsFixer internal code styles
+    if (preg_match('/^@(Symfony|PhpCsFixer)/', $ruleSetDefinition->getName())) {
+        return true;
+    }
+
+    return false;
 }
 
 function describe(string $outputFile, FixerInterface $fixer): void
