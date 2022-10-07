@@ -23,13 +23,10 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$fixers = getAllFixers();
-$setDefinitions = RuleSets::getSetDefinitions();
-
 $output = __DIR__ . '/dump_rules.md';
 @unlink($output);
 
-foreach ($fixers as $fixer) {
+foreach (getAllFixers() as $fixer) {
     if (isAlreadyActiveInCurrentRuleset($fixer)) {
         continue;
     }
