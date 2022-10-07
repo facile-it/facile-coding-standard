@@ -55,11 +55,23 @@ function isAlreadyActiveInCurrentRuleset(FixerInterface $fixer): bool
             (new RiskyRulesProvider())->getRules()
         );
 
-        foreach (RuleSets::getSetDefinitions() as $ruleSetDefinition) {
+        $ruleSets = RuleSets::getSetDefinitions();
+        foreach ($ruleSets as $ruleSetDefinition) {
             if (isIgnoredSet($ruleSetDefinition) || array_key_exists($ruleSetDefinition->getName(), $allActiveRules)) {
                 $allActiveRules = array_merge($allActiveRules, $ruleSetDefinition->getRules());
             }
         }
+
+        do {
+            $foundSet = false;
+            foreach ($allActiveRules as $ruleName => $options) {
+                if (str_starts_with($ruleName, '@')) {
+                    $allActiveRules = array_merge($allActiveRules, $ruleSets[$ruleName]->getRules());
+                    $foundSet = true;
+                    unset($allActiveRules[$ruleName]);
+                }
+            }
+        } while ($foundSet);
     }
 
     return array_key_exists($fixer->getName(), $allActiveRules);
