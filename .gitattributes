@@ -8,3 +8,4 @@
 .phpunit.xml.dist export-ignore
 CHANGELOG.md export-ignore
 composer.lock export-ignore
+dump_rules.* export-ignore
