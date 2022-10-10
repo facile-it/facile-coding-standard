@@ -22,6 +22,26 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 require __DIR__ . '/vendor/autoload.php';
 
+const UNDESIRED_RULES = [
+    // undesired
+    'class_keyword_remove' => true,
+    'group_import' => true,
+    // not applicable
+    'final_class' => true,
+    'header_comment' => true,
+    'no_blank_lines_before_namespace' => true,
+    // should be handled with Rector
+    'regular_callable_call' => true,
+    'simplified_if_return' => true,
+    'simplified_null_return' => true,
+    // too risky
+    'date_time_immutable' => true,
+    'nullable_type_declaration_for_default_null_value' => true,
+    'phpdoc_to_param_type' => true,
+    'phpdoc_to_property_type' => true,
+    'phpdoc_to_return_type' => true,
+];
+
 $output = __DIR__ . '/dump_rules.md';
 @unlink($output);
 
@@ -29,6 +49,10 @@ $alreadyActiveFixers = iterator_to_array(getAlreadyActiveFixers());
 
 foreach (getAllFixers() as $fixer) {
     if (isset($alreadyActiveFixers[\get_class($fixer)])) {
+        continue;
+    }
+
+    if (UNDESIRED_RULES[$fixer->getName()] ?? false) {
         continue;
     }
 
