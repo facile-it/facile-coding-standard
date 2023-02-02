@@ -1,5 +1,8 @@
 Changelog
 ---------
+## [0.5.3] - 2023-02-02
+- Removes deprecated rules no_trailing_comma_in_list_call, no_trailing_comma_in_singleline_array 
+- Adds rule no_trailing_comma_in_singleline
 
 ## [0.5.2] - 2022-05-02
 - Allow Symfony 6
