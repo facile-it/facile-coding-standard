@@ -176,6 +176,20 @@ $output = __DIR__ . '/dump_rules.md';
 @unlink($output);
 $alreadyActiveFixers = iterator_to_array(getAlreadyActiveFixers());
 
+foreach (UNDESIRED_RULES as $fixerName => $isIgnored) {
+    if (! $isIgnored) {
+        continue;
+    }
+
+    foreach ($alreadyActiveFixers as $fixer) {
+        if ($fixer->getName() === $fixerName) {
+            echo 'WARNING: ignoring already active fixer: ' . $fixerName . \PHP_EOL;
+
+            break;
+        }
+    }
+}
+
 foreach (getAllFixers() as $fixer) {
     if (isset($alreadyActiveFixers[\get_class($fixer)])) {
         continue;
