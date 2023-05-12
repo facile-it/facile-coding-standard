@@ -1,23 +1,21 @@
 <?php
 
-/** 
- * This PHP script is useful to dump rules descriptions into Markdown, 
+/**
+ * This PHP script is useful to dump rules descriptions into Markdown,
  * so that it's easier to open PRs with descriptive content aimed at
  * adding new rules to this repository ruleset.
  *
- * Launching this script with not options will dump all rules which are 
- * not alread enabled. 
- * 
- * TODO: Launching it with arguments will dump the listed rules. 
+ * Launching this script with not options will dump all rules which are
+ * not alread enabled.
+ *
+ * TODO: Launching it with arguments will dump the listed rules.
  */
 
-use Facile\CodingStandards\Rules\DefaultRulesProvider;
-use Facile\CodingStandards\Rules\RiskyRulesProvider;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -27,8 +25,10 @@ require __DIR__ . '/vendor/autoload.php';
 $output = __DIR__ . '/dump_rules.md';
 @unlink($output);
 
+$alreadyActiveFixers = iterator_to_array(getAlreadyActiveFixers());
+
 foreach (getAllFixers() as $fixer) {
-    if (isAlreadyActiveInCurrentRuleset($fixer)) {
+    if (isset($alreadyActiveFixers[\get_class($fixer)])) {
         continue;
     }
 
@@ -36,60 +36,46 @@ foreach (getAllFixers() as $fixer) {
 }
 
 /**
- * @return FixerInterface[]
+ * @return \Generator<class-string<FixerInterface>, FixerInterface>
  */
-function getAllFixers(): array
+function getAllFixers(): \Generator
 {
     $fixerFactory = new FixerFactory();
     $fixerFactory->registerBuiltInFixers();
 
-    return $fixerFactory->getFixers();
+    yield from generateWithClassNameAsKey($fixerFactory->getFixers());
 }
 
-function isAlreadyActiveInCurrentRuleset(FixerInterface $fixer): bool
+/**
+ * @return \Generator<class-string<FixerInterface>, FixerInterface>
+ */
+function getAlreadyActiveFixers(): \Generator
 {
-    static $allActiveRules;
-    if (null === $allActiveRules) {
-        $allActiveRules = array_merge(
-            (new DefaultRulesProvider())->getRules(),
-            (new RiskyRulesProvider())->getRules()
-        );
+    $providers = [
+        new Facile\CodingStandards\Rules\DefaultRulesProvider(),
+        new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    ];
 
-        $ruleSets = RuleSets::getSetDefinitions();
-        foreach ($ruleSets as $ruleSetDefinition) {
-            if (isIgnoredSet($ruleSetDefinition) || array_key_exists($ruleSetDefinition->getName(), $allActiveRules)) {
-                $allActiveRules = array_merge($allActiveRules, $ruleSetDefinition->getRules());
-            }
-        }
+    $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
 
-        do {
-            $foundSet = false;
-            foreach ($allActiveRules as $ruleName => $options) {
-                if (str_starts_with($ruleName, '@')) {
-                    $allActiveRules = array_merge($allActiveRules, $ruleSets[$ruleName]->getRules());
-                    $foundSet = true;
-                    unset($allActiveRules[$ruleName]);
-                }
-            }
-        } while ($foundSet);
-    }
+    $config = new PhpCsFixer\Config('facile-it/facile-coding-standard');
+    $config->setRules($rulesProvider->getRules());
 
-    return array_key_exists($fixer->getName(), $allActiveRules);
+    $resolver = new ConfigurationResolver($config, [], getcwd(), new ToolInfo());
+
+    yield from generateWithClassNameAsKey($resolver->getFixers());
 }
 
-function isIgnoredSet(RuleSetDescriptionInterface $ruleSetDefinition): bool
+/**
+ * @param FixerInterface[] $list
+ *
+ * @return \Generator<class-string<FixerInterface>, FixerInterface>
+ */
+function generateWithClassNameAsKey(array $list): \Generator
 {
-    // ignore PHP & PHPUnit migration sets, they should be handled on demand and with Rector
-    if (preg_match('/^@PHP(Unit)?\d+Migration/', $ruleSetDefinition->getName())) {
-        return true;
+    foreach ($list as $fixer) {
+        yield \get_class($fixer) => $fixer;
     }
-
-    // ignore Symfony & PhpCsFixer internal code styles
-    if (preg_match('/^@(Symfony|PhpCsFixer)/', $ruleSetDefinition->getName())) {
-        return true;
-    }
-
-    return false;
 }
 
 function describe(string $outputFile, FixerInterface $fixer): void
@@ -104,20 +90,20 @@ function describe(string $outputFile, FixerInterface $fixer): void
 
     $bufferedOutput = new BufferedOutput();
 
-    echo 'dumping rule ' . $fixer->getName() . '...' . PHP_EOL;
+    echo 'dumping rule ' . $fixer->getName() . '...' . \PHP_EOL;
 
     try {
         if ($application->run(new ArrayInput(['describe', 'name' => $fixer->getName()]), $bufferedOutput) !== 0) {
-            echo 'Error while describing rule ' . $fixer->getName() . PHP_EOL;
+            echo 'Error while describing rule ' . $fixer->getName() . \PHP_EOL;
             echo $bufferedOutput->fetch();
             exit(1);
         }
     } catch (\Throwable $exception) {
-        echo 'Error while running describe for rule: ' . $exception->getMessage() . PHP_EOL;
+        echo 'Error while running describe for rule: ' . $exception->getMessage() . \PHP_EOL;
         exit(1);
     }
 
-    file_put_contents($outputFile, postProcessOutput($bufferedOutput->fetch()), FILE_APPEND);
+    file_put_contents($outputFile, postProcessOutput($bufferedOutput->fetch()), \FILE_APPEND);
 }
 
 function postProcessOutput(string $output): string
@@ -136,4 +122,3 @@ function postProcessOutput(string $output): string
     // avoid linking issues by mistake
     return str_replace('Example #', 'Example ', $output);
 }
-
