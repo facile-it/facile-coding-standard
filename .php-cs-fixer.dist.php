@@ -16,7 +16,10 @@ $config->setRiskyAllowed(true);
 $finder = new PhpCsFixer\Finder();
 $autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
 $finder->in($autoloadPathProvider->getPaths());
-
+$finder->append([
+    __DIR__ . '/.php-cs-fixer.dist.php',
+    __DIR__ . '/dump_rules.php',
+]);
 $config->setFinder($finder);
 
 return $config;
