@@ -93,7 +93,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
         'phpdoc_single_line_var_spacing' => true,
-        'phpdoc_to_comment' => true,
+        'phpdoc_to_comment' => false, // to avoid false positives with PHPStan @var helpers
         'phpdoc_trim' => true,
         'phpdoc_types' => true,
         'phpdoc_var_without_name' => true,
