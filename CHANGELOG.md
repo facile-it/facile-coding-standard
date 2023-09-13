@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+## [0.5.3] - 2023-09-13
+- Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
+
 ## [0.5.2] - 2022-05-02
 - Allow Symfony 6
 
