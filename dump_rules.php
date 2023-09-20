@@ -128,6 +128,7 @@ const UNDESIRED_RULES = [
     'phpdoc_order_by_value' => true,
     'no_useless_return' => true,
     'blank_line_between_import_groups' => true,
+    'phpdoc_to_comment' => true, // disabled in 0.5.3
     // not applicable
     'final_class' => true,
     'header_comment' => true,
