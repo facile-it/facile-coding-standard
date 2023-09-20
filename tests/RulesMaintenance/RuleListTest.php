@@ -16,12 +16,12 @@ class RuleListTest extends TestCase
     {
         $sortedList = $rulesList;
         sort($sortedList);
-        
+
         $this->assertEquals($sortedList, $rulesList, 'List is not alphabetically sorted');
     }
 
     /**
-     * @return \Generator<string, array{string[]}> 
+     * @return \Generator<string, array{string[]}>
      */
     public function listMethodsDataProvider(): \Generator
     {
@@ -30,12 +30,12 @@ class RuleListTest extends TestCase
             if (! $method->isStatic()) {
                 throw new \LogicException('All methods should be static on ' . RulesList::class);
             }
-            
+
             if ($method->getName() === 'getAllMappedRules') {
                 continue;
             }
-            
-            yield $method->getName() => [array_keys($method->invoke(null))];
+
+            yield $method->getName() => [$method->invoke(null)];
         }
     }
 }
