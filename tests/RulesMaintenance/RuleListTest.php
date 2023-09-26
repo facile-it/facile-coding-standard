@@ -12,6 +12,14 @@ class RuleListTest extends TestCase
     /**
      * @dataProvider listMethodsDataProvider
      */
+    public function testGetAllMappedRules(array $rulesList): void
+    {
+        $this->assertNotEmpty(array_intersect($rulesList, RulesList::getAllMappedRules()), 'Method is getting lost in getAllMappedRules');
+    }
+
+    /**
+     * @dataProvider listMethodsDataProvider
+     */
     public function testAllListAreAlphabetical(array $rulesList): void
     {
         $sortedList = $rulesList;
@@ -29,6 +37,10 @@ class RuleListTest extends TestCase
         foreach ($reflectionClass->getMethods() as $method) {
             if (! $method->isStatic()) {
                 throw new \LogicException('All methods should be static on ' . RulesList::class);
+            }
+
+            if (! $method->isPublic()) {
+                continue;
             }
 
             if ($method->getName() === 'getAllMappedRules') {

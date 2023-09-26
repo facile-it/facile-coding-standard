@@ -15,9 +15,17 @@ class RulesList
      * The list is subdivided in submethods depending on the current status.
      * The rule name is in the key of the generator to cause failure in case of duplicates.
      *
+     * @return list<string>
+     */
+    public static function getAllMappedRules(): array
+    {
+        return iterator_to_array(self::joinAllMappedRules(), false);
+    }
+
+    /**
      * @return \Generator<string>
      */
-    public static function getAllMappedRules(): \Generator
+    private static function joinAllMappedRules(): \Generator
     {
         yield from self::getToBeImplementedRules();
         yield from self::getToBeDiscussedRules();

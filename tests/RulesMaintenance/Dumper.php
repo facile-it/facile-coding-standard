@@ -40,7 +40,7 @@ class Dumper
                 continue;
             }
 
-            if ($allMappedRules[$fixer->getName()] ?? false) {
+            if (\in_array($fixer->getName(), $allMappedRules, true)) {
                 continue;
             }
 
