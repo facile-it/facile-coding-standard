@@ -20,7 +20,7 @@ $output = __DIR__ . '/dump_rules.md';
 
 $dumper = new Dumper();
 
-foreach ($dumper->getUnlistedRulesDescription() as $ruleName => $ruleDescription) {
+foreach ($dumper->getUnlistedRulesDescription(true) as $ruleName => $ruleDescription) {
     if (str_starts_with($ruleName, 'warning')) {
         echo $ruleDescription;
     } else {

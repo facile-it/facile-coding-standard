@@ -18,19 +18,24 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class Dumper
 {
     /**
+     * @param $listWarnings
+     *
      * @return \Generator<string, string>
      */
-    public function getUnlistedRulesDescription(): \Generator
+    public function getUnlistedRulesDescription(bool $listWarnings = false): \Generator
     {
         $alreadyActiveFixers = iterator_to_array($this->getAlreadyActiveFixers());
 
         $allMappedRules = RulesList::getAllMappedRules();
-        foreach ($allMappedRules as $fixerName) {
-            foreach ($alreadyActiveFixers as $fixer) {
-                if ($fixer->getName() === $fixerName) {
-                    yield 'warning for ' . $fixerName => 'WARNING: ignoring already active fixer: ' . $fixerName . \PHP_EOL;
 
-                    break;
+        if ($listWarnings) {
+            foreach ($allMappedRules as $fixerName) {
+                foreach ($alreadyActiveFixers as $fixer) {
+                    if ($fixer->getName() === $fixerName) {
+                        yield 'warning for ' . $fixerName => 'WARNING: ignoring already active fixer: ' . $fixerName . \PHP_EOL;
+
+                        break;
+                    }
                 }
             }
         }
