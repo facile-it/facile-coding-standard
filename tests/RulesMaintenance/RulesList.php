@@ -4,7 +4,7 @@ namespace Facile\CodingStandardsTest\RulesMaintenance;
 
 /**
  * This is a class that verifies the ruleset against all the existing rules in PHP-CS-Fixer; it is useful to keep tabs on new
- * rules, and keep a todo-list of new reles that we want to adopt.
+ * rules, and keep a todo-list of new rules that we want to adopt.
  *
  * All the private methods at the top of this class
  */
@@ -46,12 +46,14 @@ class RulesList
             'array_push',
             'assign_null_coalescing_to_coalesce_equal',
             'backtick_to_shell_exec',
+            'blank_lines_before_namespace',
             'class_reference_name_casing',
             'combine_consecutive_issets',
             'combine_consecutive_unsets',
             'combine_nested_dirname',
             'control_structure_braces',
             'control_structure_continuation_position',
+            'curly_braces_position',
             'declare_parentheses',
             'doctrine_annotation_braces', // with braces?
             'doctrine_annotation_indentation',
@@ -64,6 +66,7 @@ class RulesList
             'lambda_not_used_import',
             'linebreak_after_opening_tag',
             'list_syntax',
+            'long_to_shorthand_operator',
             'lowercase_static_reference',
             'magic_constant_casing',
             'magic_method_casing',
@@ -75,14 +78,17 @@ class RulesList
             'no_multiple_statements_per_line',
             'no_superfluous_elseif',
             'no_superfluous_phpdoc_tags',
+            'no_trailing_comma_in_singleline',
             'no_trailing_comma_in_singleline_function_call',
             'no_unneeded_curly_braces', // with namespaces => false
             'no_unneeded_import_alias',
             'no_unset_cast',
             'no_useless_else',
             'no_useless_sprintf',
+            'nullable_type_declaration',
             'octal_notation',
             'ordered_traits',
+            'php_unit_data_provider_static', // with force => false
             'php_unit_dedicate_assert_internal_type',
             'php_unit_expectation',
             'php_unit_fqcn_annotation',
@@ -92,13 +98,17 @@ class RulesList
             'phpdoc_tag_casing',
             'phpdoc_trim_consecutive_blank_line_separation',
             'phpdoc_var_annotation_correct_order',
+            'return_to_yield_from',
             'semicolon_after_instruction',
             'set_type_to_cast',
             'single_line_comment_spacing',
+            'single_line_empty_body',
+            'single_space_around_construct',
             'single_trait_insert_per_statement',
             'statement_indentation',
             'switch_continue_to_break',
             'ternary_to_elvis_operator',
+            'type_declaration_spaces',
             'types_spaces',
         ];
     }
@@ -112,7 +122,7 @@ class RulesList
     public static function getToBeDiscussedRules(): array
     {
         return [
-            'curly_braces_position',
+            'attribute_empty_parentheses',
             'doctrine_annotation_array_assignment',
             'echo_tag_syntax',
             'escape_implicit_backslashes',
@@ -122,10 +132,13 @@ class RulesList
             'heredoc_indentation',
             'heredoc_to_nowdoc',
             'multiline_whitespace_before_semicolons', // with new_line_for_chained_calls
+            'no_useless_concat_operator',
             'operator_linebreak',
+            'ordered_types',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
             'phpdoc_inline_tag_normalizer',
+            'phpdoc_param_order',
             'phpdoc_summary',
             'phpdoc_tag_type',
             'self_static_accessor',
@@ -143,6 +156,7 @@ class RulesList
     {
         return [
             'blank_line_between_import_groups',
+            'braces', // deprecated
             'class_keyword_remove',
             'empty_loop_condition',
             'final_internal_class',
@@ -153,10 +167,12 @@ class RulesList
             'no_alias_language_construct_call',
             'no_binary_string',
             'no_null_property_initialization',
+            'no_spaces_inside_parenthesis', // deprecated
             'no_unneeded_final_method',
             'no_useless_return',
             'not_operator_with_space',
             'ordered_class_elements',
+            'php_unit_data_provider_return_type',
             'php_unit_internal_class',
             'php_unit_size_class',
             'php_unit_test_class_requires_covers',
@@ -169,6 +185,7 @@ class RulesList
             'single_line_throw',
             'single_space_after_construct',
             'standardize_increment',
+            'yield_from_array_to_yields',
             'yoda_style',
         ];
     }
@@ -232,6 +249,7 @@ class RulesList
             'no_useless_nullsafe_operator',
             'nullable_type_declaration_for_default_null_value',
             'ordered_interfaces',
+            'php_unit_data_provider_name',
             'php_unit_strict',
             'php_unit_test_annotation',
             'phpdoc_return_self_reference',
