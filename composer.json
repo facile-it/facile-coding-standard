@@ -30,6 +30,7 @@
         "composer/semver": "^3.0",
         "mikey179/vfsstream": "^1.6.8",
         "phpspec/prophecy": "^1.10",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5.28",
         "vimeo/psalm": "^4.9"
     },
