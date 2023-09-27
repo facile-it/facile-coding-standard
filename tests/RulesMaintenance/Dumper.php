@@ -24,7 +24,7 @@ class Dumper
     {
         $alreadyActiveFixers = iterator_to_array($this->getAlreadyActiveFixers());
 
-        $allMappedRules = iterator_to_array(RulesList::getAllMappedRules());
+        $allMappedRules = RulesList::getAllMappedRules();
         foreach ($allMappedRules as $fixerName) {
             foreach ($alreadyActiveFixers as $fixer) {
                 if ($fixer->getName() === $fixerName) {
