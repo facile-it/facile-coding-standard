@@ -51,13 +51,7 @@ class RulesList
             'combine_consecutive_issets',
             'combine_consecutive_unsets',
             'combine_nested_dirname',
-            'control_structure_braces',
-            'control_structure_continuation_position',
-            'curly_braces_position',
             'declare_parentheses',
-            'doctrine_annotation_braces', // with braces?
-            'doctrine_annotation_indentation',
-            'doctrine_annotation_spaces',
             'empty_loop_body',
             'ereg_to_preg',
             'get_class_to_class_keyword',
@@ -75,7 +69,6 @@ class RulesList
             'no_alternative_syntax',
             'no_blank_lines_after_class_opening',
             'no_homoglyph_names',
-            'no_multiple_statements_per_line',
             'no_superfluous_elseif',
             'no_superfluous_phpdoc_tags',
             'no_trailing_comma_in_singleline',
@@ -105,7 +98,6 @@ class RulesList
             'single_line_empty_body',
             'single_space_around_construct',
             'single_trait_insert_per_statement',
-            'statement_indentation',
             'switch_continue_to_break',
             'ternary_to_elvis_operator',
             'type_declaration_spaces',
@@ -123,7 +115,6 @@ class RulesList
     {
         return [
             'attribute_empty_parentheses',
-            'doctrine_annotation_array_assignment',
             'echo_tag_syntax',
             'escape_implicit_backslashes',
             'explicit_indirect_variable',
