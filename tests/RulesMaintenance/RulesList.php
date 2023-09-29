@@ -52,6 +52,7 @@ class RulesList
             'combine_consecutive_issets',
             'combine_consecutive_unsets',
             'combine_nested_dirname',
+            'curly_braces_position',
             'declare_parentheses',
             'empty_loop_body',
             'ereg_to_preg',
@@ -67,6 +68,7 @@ class RulesList
             'magic_method_casing',
             'modernize_strpos',
             'native_function_type_declaration_casing',
+            'native_type_declaration_casing',
             'no_alternative_syntax',
             'no_blank_lines_after_class_opening',
             'no_homoglyph_names',
@@ -74,6 +76,7 @@ class RulesList
             'no_superfluous_phpdoc_tags',
             'no_trailing_comma_in_singleline',
             'no_trailing_comma_in_singleline_function_call',
+            'no_unneeded_braces',
             'no_unneeded_curly_braces', // with namespaces => false
             'no_unneeded_import_alias',
             'no_unset_cast',
