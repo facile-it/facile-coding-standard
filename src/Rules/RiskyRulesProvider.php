@@ -21,6 +21,7 @@ final class RiskyRulesProvider implements RulesProviderInterface
         'native_constant_invocation' => true,
         'native_function_invocation' => true,
         'no_alias_functions' => true,
+        'no_homoglyph_names' => true,
         'no_php4_constructor' => true,
         'non_printable_character' => true,
         'php_unit_construct' => true,
@@ -32,6 +33,7 @@ final class RiskyRulesProvider implements RulesProviderInterface
         'psr_autoloading' => true,
         'random_api_migration' => true,
         'self_accessor' => true,
+        'set_type_to_cast' => true,
         'void_return' => true,
     ];
 
