@@ -26,7 +26,7 @@ class DumperTest extends TestCase
         if ($this->isPreferLowest()) {
             $this->markTestSkipped('This test is not reliable with older PHP-CS-Fixer version, due to new rules being added, or included in sets');
         }
-        
+
         $dumper = new Dumper();
         $unlistedFixerNames = array_keys(iterator_to_array($dumper->getUnlistedRulesDescription()));
         sort($unlistedFixerNames);
