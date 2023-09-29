@@ -14,6 +14,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
      */
     private static $rules = [
         '@PSR2' => true,
+        '@DoctrineAnnotation' => true,
         'align_multiline_comment' => true,
         'array_indentation' => true,
         'array_syntax' => [
