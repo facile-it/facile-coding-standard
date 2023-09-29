@@ -89,9 +89,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function activate(Composer $composer, IOInterface $io): void
-    {
-    }
+    public function activate(Composer $composer, IOInterface $io): void {}
 
     /**
      * @param Composer    $composer
@@ -206,11 +204,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
         ];
     }
 
-    public function deactivate(Composer $composer, IOInterface $io): void
-    {
-    }
+    public function deactivate(Composer $composer, IOInterface $io): void {}
 
-    public function uninstall(Composer $composer, IOInterface $io): void
-    {
-    }
+    public function uninstall(Composer $composer, IOInterface $io): void {}
 }

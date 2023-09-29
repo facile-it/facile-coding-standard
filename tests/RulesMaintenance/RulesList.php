@@ -141,6 +141,7 @@ class RulesList
             'phpdoc_to_comment', // disabled in 0.5.3
             'phpdoc_types_order',
             'simple_to_complex_string_variable',
+            'single_blank_line_before_namespace', // deprecated, replaced with blank_lines_before_namespace
             'single_line_throw',
             'single_space_after_construct',
             'standardize_increment',
