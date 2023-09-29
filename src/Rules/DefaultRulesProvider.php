@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandards\Rules;
 
+use PhpCsFixer\Console\Application;
+
 /**
  * Class DefaultRulesProvider.
  */
@@ -38,6 +40,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         ],
         'class_attributes_separation' => true,
         'compact_nullable_typehint' => true,
+        'compact_nullable_type_declaration' => true,
         'concat_space' => [
             'spacing' => 'one',
         ],
@@ -52,6 +55,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
+        'new_with_parentheses' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
@@ -122,6 +126,38 @@ final class DefaultRulesProvider implements RulesProviderInterface
      */
     public function getRules(): array
     {
-        return static::$rules;
+        $rules = self::$rules;
+
+        if ($this->isAtLeastVersion('3.11.0')) {
+            unset(
+                $rules['no_trailing_comma_in_list_call'],
+                $rules['no_trailing_comma_in_singleline_array'],
+            );
+        }
+
+        if ($this->isAtLeastVersion('3.18.0')) {
+            unset($rules['single_blank_line_before_namespace']);
+        }
+
+        if ($this->isAtLeastVersion('3.21.0')) {
+            unset($rules['function_typehint_space']);
+        }
+
+        if ($this->isAtLeastVersion('3.32.0')) {
+            unset(
+                $rules['compact_nullable_typehint'],
+                $rules['new_with_braces']
+            );
+        }
+
+        return $rules;
+    }
+
+    /**
+     * @psalm-suppress InternalClass
+     */
+    private function isAtLeastVersion(string $version): bool
+    {
+        return version_compare(Application::VERSION, $version, '>=');
     }
 }
