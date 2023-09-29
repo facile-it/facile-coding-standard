@@ -5,6 +5,10 @@ Changelog
 - Bumping minimum PHP version required to 7.4
 - Bumping minimum PHP-CS-Fixer version required to 3.11
 
+### New rules
+The following rules or groups have been added to the default rule set:
+- `@DoctrineAnnotation`
+
 ## [0.5.3] - 2023-09-13
 - Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
 
