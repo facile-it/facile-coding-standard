@@ -33,7 +33,6 @@ class RulesList
         yield from self::getUnapplicableRules();
         yield from self::getBestHandledWithRectorRules();
         yield from self::getTooRiskyRules();
-        yield from self::getDeprecatedRules();
     }
 
     /**
@@ -47,43 +46,18 @@ class RulesList
             'array_push',
             'assign_null_coalescing_to_coalesce_equal',
             'backtick_to_shell_exec',
-            'blank_lines_before_namespace',
-            'class_reference_name_casing',
             'combine_consecutive_issets',
             'combine_consecutive_unsets',
             'combine_nested_dirname',
-            'curly_braces_position',
-            'declare_parentheses',
-            'empty_loop_body',
             'ereg_to_preg',
             'get_class_to_class_keyword',
             'implode_call',
-            'integer_literal_case',
             'lambda_not_used_import',
-            'linebreak_after_opening_tag',
-            'list_syntax',
-            'long_to_shorthand_operator',
-            'lowercase_static_reference',
-            'magic_constant_casing',
-            'magic_method_casing',
             'modernize_strpos',
-            'native_function_type_declaration_casing',
-            'native_type_declaration_casing',
-            'no_alternative_syntax',
-            'no_blank_lines_after_class_opening',
-            'no_homoglyph_names',
             'no_superfluous_elseif',
             'no_superfluous_phpdoc_tags',
-            'no_trailing_comma_in_singleline',
-            'no_trailing_comma_in_singleline_function_call',
-            'no_unneeded_braces',
-            'no_unneeded_curly_braces', // with namespaces => false
-            'no_unneeded_import_alias',
-            'no_unset_cast',
             'no_useless_else',
             'no_useless_sprintf',
-            'nullable_type_declaration',
-            'octal_notation',
             'ordered_traits',
             'php_unit_data_provider_static', // with force => false
             'php_unit_dedicate_assert_internal_type',
@@ -92,20 +66,9 @@ class RulesList
             'php_unit_mock_short_will_return',
             'phpdoc_align', // with left align
             'phpdoc_no_alias_tag',
-            'phpdoc_tag_casing',
-            'phpdoc_trim_consecutive_blank_line_separation',
             'phpdoc_var_annotation_correct_order',
-            'return_to_yield_from',
-            'semicolon_after_instruction',
-            'set_type_to_cast',
-            'single_line_comment_spacing',
-            'single_line_empty_body',
-            'single_space_around_construct',
-            'single_trait_insert_per_statement',
             'switch_continue_to_break',
             'ternary_to_elvis_operator',
-            'type_declaration_spaces',
-            'types_spaces',
         ];
     }
 
@@ -177,6 +140,7 @@ class RulesList
             'phpdoc_to_comment', // disabled in 0.5.3
             'phpdoc_types_order',
             'simple_to_complex_string_variable',
+            'single_blank_line_before_namespace', // deprecated, replaced with blank_lines_before_namespace
             'single_line_throw',
             'single_space_after_construct',
             'standardize_increment',
@@ -258,24 +222,6 @@ class RulesList
             'strict_param',
             'string_length_to_empty',
             'string_line_ending',
-        ];
-    }
-
-    /**
-     * Rules that are being deprecated by PHP-CS-Fixer
-     * Those are being progressively handled by {@see \Facile\CodingStandards\Rules\DefaultRulesProvider::getRules}
-     *
-     * @return string[]
-     */
-    public static function getDeprecatedRules(): array
-    {
-        return [
-            'compact_nullable_typehint',
-            'function_typehint_space',
-            'new_with_braces',
-            'no_trailing_comma_in_list_call',
-            'no_trailing_comma_in_singleline_array',
-            'single_blank_line_before_namespace',
         ];
     }
 }
