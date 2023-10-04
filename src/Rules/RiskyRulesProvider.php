@@ -12,7 +12,8 @@ final class RiskyRulesProvider implements RulesProviderInterface
     /**
      * @var array<string, mixed>
      */
-    private static $rules = [
+    private static array $rules = [
+        '@PER-CS2.0:risky' => true,
         'dir_constant' => true,
         'function_to_constant' => true,
         'is_null' => true,

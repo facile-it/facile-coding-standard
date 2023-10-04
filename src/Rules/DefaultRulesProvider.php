@@ -6,16 +6,13 @@ namespace Facile\CodingStandards\Rules;
 
 use PhpCsFixer\Console\Application;
 
-/**
- * Class DefaultRulesProvider.
- */
 final class DefaultRulesProvider implements RulesProviderInterface
 {
     /**
      * @var array<string, mixed>
      */
-    private static $rules = [
-        '@PSR2' => true,
+    private static array $rules = [
+        '@PER-CS2.0' => true,
         '@DoctrineAnnotation' => true,
         'align_multiline_comment' => true,
         'array_indentation' => true,

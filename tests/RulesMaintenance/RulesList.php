@@ -113,7 +113,6 @@ class RulesList
     public static function getUndesirableRules(): array
     {
         return [
-            'blank_line_between_import_groups',
             'braces', // deprecated
             'class_keyword_remove',
             'empty_loop_condition',
@@ -129,7 +128,6 @@ class RulesList
             'no_unneeded_final_method',
             'no_useless_return',
             'not_operator_with_space',
-            'ordered_class_elements',
             'php_unit_data_provider_return_type',
             'php_unit_internal_class',
             'php_unit_size_class',
@@ -202,8 +200,6 @@ class RulesList
             'fopen_flag_order',
             'fopen_flags',
             'mb_str_functions',
-            'no_trailing_whitespace_in_string',
-            'no_unreachable_default_argument_value',
             'no_unset_on_property',
             'no_useless_nullsafe_operator',
             'nullable_type_declaration_for_default_null_value',

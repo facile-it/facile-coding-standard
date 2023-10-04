@@ -8,6 +8,8 @@ Changelog
 
 ### New rules
 The following rules or groups have been added to the default rule set:
+- `@PER-CS2.0` (replacing `@PSR2`)
+- `@PER-CS2.0:risky` (in `RiskyRulesProvider`)
 - `@DoctrineAnnotation`
 - `blank_lines_before_namespace`
 - `class_reference_name_casing`
