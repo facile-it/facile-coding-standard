@@ -40,7 +40,7 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
  * Additional rules or rules to override.
  * These rules will be added to default rules or will override them if the same key already exists.
  */
- 
+
 $rulesProviderConfig
 
 \$config = new PhpCsFixer\Config();
