@@ -23,12 +23,9 @@ jobs:
         deps:
           - "lowest"
           - "highest"
-        coverage:
-          - "false"
         include:
           - deps: "highest"
             php-version: "7.4"
-            coverage: "true"
 
     steps:
       - name: "Checkout"
@@ -50,16 +47,10 @@ jobs:
           composer-options: --prefer-dist
 
       - name: "Run PHPUnit"
-        run: "vendor/bin/phpunit"
-        if: "${{ matrix.coverage != 'true' }}"
-
-      - name: "Run PHPUnit with coverage"
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
-        if: "${{ matrix.coverage == 'true' }}"
 
       - name: "Upload coverage"
         uses: codecov/codecov-action@v1
-        if: "${{ matrix.coverage == 'true' }}"
         with:
           file: './coverage.xml'
           fail_ci_if_error: true
