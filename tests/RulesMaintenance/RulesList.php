@@ -33,7 +33,6 @@ class RulesList
         yield from self::getUnapplicableRules();
         yield from self::getBestHandledWithRectorRules();
         yield from self::getTooRiskyRules();
-        yield from self::getDeprecatedRules();
     }
 
     /**
@@ -223,24 +222,6 @@ class RulesList
             'strict_param',
             'string_length_to_empty',
             'string_line_ending',
-        ];
-    }
-
-    /**
-     * Rules that are being deprecated by PHP-CS-Fixer
-     * Those are being progressively handled by {@see \Facile\CodingStandards\Rules\DefaultRulesProvider::getRules}
-     *
-     * @return string[]
-     */
-    public static function getDeprecatedRules(): array
-    {
-        return [
-            'compact_nullable_typehint',
-            'function_typehint_space',
-            'new_with_braces',
-            'no_trailing_comma_in_list_call',
-            'no_trailing_comma_in_singleline_array',
-            'single_blank_line_before_namespace',
         ];
     }
 }

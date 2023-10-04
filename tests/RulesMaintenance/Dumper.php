@@ -8,6 +8,7 @@ use Facile\CodingStandards\Rules\RiskyRulesProvider;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\ToolInfo;
@@ -46,6 +47,10 @@ class Dumper
             }
 
             if (\in_array($fixer->getName(), $allMappedRules, true)) {
+                continue;
+            }
+
+            if ($fixer instanceof DeprecatedFixerInterface) {
                 continue;
             }
 
