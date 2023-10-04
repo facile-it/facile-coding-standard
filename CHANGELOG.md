@@ -3,7 +3,7 @@ Changelog
 
 ## [1.0.0] - TBA
 - Bumping minimum PHP version required to 7.4
-- Bumping minimum PHP-CS-Fixer version required to 3.11
+- Bumping minimum PHP-CS-Fixer version required to 3.4
 
 ### New rules
 The following rules or groups have been added to the default rule set:
