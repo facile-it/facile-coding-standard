@@ -120,6 +120,30 @@ final class DefaultRulesProvider implements RulesProviderInterface
     ];
 
     /**
+     * This array maps the deprecations of PHP-CS-Fixer rules, allowing us a flexible approach: both the deprecated and
+     * the new rules are defined inside {@see self::$rules}, and this map allows us to remove one of the two depending
+     * on the PHP-CS-Fixer version detected at runtime.
+     *
+     * The map has the following format: [ version => [ oldRuleName => newRuleName ] ]
+     */
+    private const DEPRECATION_MAP = [
+        '3.11.0' => [
+            'no_trailing_comma_in_list_call' => 'no_trailing_comma_in_singleline',
+            'no_trailing_comma_in_singleline_array' => 'no_trailing_comma_in_singleline',
+        ],
+        '3.18.0' => [
+            'single_blank_line_before_namespace' => 'blank_lines_before_namespace',
+        ],
+        '3.21.0' => [
+            'function_typehint_space' => 'type_declaration_spaces',
+        ],
+        '3.32.0' => [
+            'compact_nullable_typehint' => 'compact_nullable_type_declaration',
+            'new_with_braces' => 'new_with_parentheses',
+        ],
+    ];
+
+    /**
      * Get default rules.
      *
      * @return array<string, mixed>
@@ -128,26 +152,14 @@ final class DefaultRulesProvider implements RulesProviderInterface
     {
         $rules = self::$rules;
 
-        if ($this->isAtLeastVersion('3.11.0')) {
-            unset(
-                $rules['no_trailing_comma_in_list_call'],
-                $rules['no_trailing_comma_in_singleline_array'],
-            );
-        }
-
-        if ($this->isAtLeastVersion('3.18.0')) {
-            unset($rules['single_blank_line_before_namespace']);
-        }
-
-        if ($this->isAtLeastVersion('3.21.0')) {
-            unset($rules['function_typehint_space']);
-        }
-
-        if ($this->isAtLeastVersion('3.32.0')) {
-            unset(
-                $rules['compact_nullable_typehint'],
-                $rules['new_with_braces']
-            );
+        foreach (self::DEPRECATION_MAP as $version => $ruleMap) {
+            foreach ($ruleMap as $oldRule => $newRule) {
+                if ($this->isAtLeastVersion($version)) {
+                    unset($rules[$oldRule]);
+                } else {
+                    unset($rules[$newRule]);
+                }
+            }
         }
 
         return $rules;
