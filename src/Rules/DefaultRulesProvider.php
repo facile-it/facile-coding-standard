@@ -46,6 +46,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'concat_space' => [
             'spacing' => 'one',
         ],
+        'curly_braces_position' => true,
         'declare_equal_normalize' => true,
         'declare_parentheses' => true,
         'empty_loop_body' => true,
@@ -66,6 +67,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'native_function_type_declaration_casing' => true,
+        'native_type_declaration_casing' => true,
         'new_with_braces' => true,
         'new_with_parentheses' => true,
         'no_alternative_syntax' => true,
@@ -100,6 +102,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         'no_unneeded_curly_braces' => true,
         'no_unneeded_control_parentheses' => true,
         'no_unneeded_import_alias' => true,
+        'no_unneeded_braces' => true,
         'no_unset_cast' => true,
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
