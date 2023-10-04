@@ -164,6 +164,7 @@ final class DefaultRulesProvider implements RulesProviderInterface
         '3.11.0' => [
             'no_trailing_comma_in_list_call' => 'no_trailing_comma_in_singleline',
             'no_trailing_comma_in_singleline_array' => 'no_trailing_comma_in_singleline',
+            'no_trailing_comma_in_singleline_function_call' => 'no_trailing_comma_in_singleline',
         ],
         '3.18.0' => [
             'single_blank_line_before_namespace' => 'blank_lines_before_namespace',
@@ -173,12 +174,36 @@ final class DefaultRulesProvider implements RulesProviderInterface
         ],
         '3.32.0' => [
             'compact_nullable_typehint' => 'compact_nullable_type_declaration',
+            'curly_braces_position' => 'braces_position',
             'new_with_braces' => 'new_with_parentheses',
         ],
     ];
 
     /**
-     * Get default rules.
+     * This array maps the introduction of new rules in PHP-CS-Fixer, when no deprecated counterpart is present
+     * for older versions.
+     */
+    private const INTRODUCTION_MAP = [
+        '3.6.0' => [
+            'class_reference_name_casing',
+            'no_unneeded_import_alias',
+        ],
+        '3.7.0' => [
+            'no_trailing_comma_in_singleline_function_call',
+            'single_line_comment_spacing',
+        ],
+        '3.9.1' => ['curly_braces_position'],
+        '3.16.0' => ['single_space_around_construct'],
+        '3.17.0' => ['single_line_empty_body'],
+        '3.21.0' => ['nullable_type_declaration'],
+        '3.23.0' => ['return_to_yield_from'],
+        '3.27.0' => ['long_to_shorthand_operator'],
+        '3.32.0' => ['no_unneeded_braces'],
+        '3.33.0' => ['native_type_declaration_casing'],
+    ];
+
+    /**
+     * Get default rules, with a dynamic filter depending on the PHP-CS-Fixer version in use.
      *
      * @return array<string, mixed>
      */
@@ -192,6 +217,14 @@ final class DefaultRulesProvider implements RulesProviderInterface
                     unset($rules[$oldRule]);
                 } else {
                     unset($rules[$newRule]);
+                }
+            }
+        }
+
+        foreach (self::INTRODUCTION_MAP as $version => $newRules) {
+            if (! $this->isAtLeastVersion($version)) {
+                foreach ($newRules as $name) {
+                    unset($rules[$name]);
                 }
             }
         }
