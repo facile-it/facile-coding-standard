@@ -48,10 +48,11 @@ jobs:
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
 
       - name: "Upload coverage"
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           file: './coverage.xml'
           fail_ci_if_error: true
+          token: ${{ vars.CODECOV_TOKEN }}
 
       - name: "Run PHP-CS-Fixer (E2E test)"
         run: "vendor/bin/php-cs-fixer fix --dry-run --diff"
