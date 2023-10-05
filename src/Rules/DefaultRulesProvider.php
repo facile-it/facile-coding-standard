@@ -30,9 +30,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
                 ],
             ],
             'blank_lines_before_namespace' => true,
-            'cast_spaces' => [
-                'space' => 'single',
-            ],
+            'cast_spaces' => true,
             'class_attributes_separation' => true,
             'class_reference_name_casing' => true,
             'compact_nullable_typehint' => true,
@@ -46,9 +44,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'empty_loop_body' => true,
             'function_typehint_space' => true,
             'include' => true,
-            'increment_style' => [
-                'style' => 'pre',
-            ],
+            'increment_style' => true,
             'integer_literal_case' => true,
             'linebreak_after_opening_tag' => true,
             'list_syntax' => true,
@@ -82,9 +78,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             ],
             'no_leading_import_slash' => true,
             'no_leading_namespace_whitespace' => true,
-            'no_mixed_echo_print' => [
-                'use' => 'echo',
-            ],
+            'no_mixed_echo_print' => true,
             'no_multiline_whitespace_around_double_arrow' => true,
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
