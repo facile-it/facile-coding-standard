@@ -48,6 +48,9 @@ The following rules or groups have been added to the default rule set:
 - `no_homoglyph_names`
 - `set_type_to_cast`
 
+### Changes to existing rules
+- `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too
+
 ## [0.5.3] - 2023-09-13
 - Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
 
