@@ -132,7 +132,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'ternary_operator_spaces' => true,
             'ternary_to_null_coalescing' => true,
             'trailing_comma_in_multiline' => [
-                'elements' => ['arrays'],
+                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,

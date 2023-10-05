@@ -3,6 +3,11 @@
 $providers = [
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
     new Facile\CodingStandards\Rules\RiskyRulesProvider(),
+    new Facile\CodingStandards\Rules\ArrayRulesProvider([
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arrays'], // TODO: drop when PHP 8.0+ is required
+        ],
+    ]),
 ];
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
