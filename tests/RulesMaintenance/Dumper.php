@@ -19,8 +19,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class Dumper
 {
     /**
-     * @param $listWarnings
-     *
      * @return \Generator<string, string>
      */
     public function getUnlistedRulesDescription(bool $listWarnings = false): \Generator

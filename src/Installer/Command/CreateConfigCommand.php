@@ -25,17 +25,11 @@ class CreateConfigCommand extends BaseCommand
         parent::__construct($name);
     }
 
-    /**
-     * @return PhpCsConfigWriterInterface
-     */
     public function getConfigWriter(): PhpCsConfigWriterInterface
     {
         return $this->configWriter;
     }
 
-    /**
-     * @param PhpCsConfigWriterInterface $configWriter
-     */
     public function setConfigWriter(PhpCsConfigWriterInterface $configWriter): void
     {
         $this->configWriter = $configWriter;
