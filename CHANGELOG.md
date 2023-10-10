@@ -13,6 +13,7 @@ The following rules or groups have been added to the default rule set:
 - `@DoctrineAnnotation`
 - `array_push`
 - `assign_null_coalescing_to_coalesce_equal`
+- `attribute_empty_parentheses`
 - `backtick_to_shell_exec`
 - `blank_lines_before_namespace`
 - `class_reference_name_casing`
@@ -23,7 +24,10 @@ The following rules or groups have been added to the default rule set:
 - `declare_parentheses`
 - `empty_loop_body`
 - `ereg_to_preg`
+- `explicit_string_variable`
 - `get_class_to_class_keyword`
+- `heredoc_to_nowdoc`
+- `heredoc_indentation`
 - `implode_call`
 - `integer_literal_case`
 - `lambda_not_used_import`
@@ -46,10 +50,12 @@ The following rules or groups have been added to the default rule set:
 - `no_unneeded_import_alias`
 - `no_unneeded_braces`
 - `no_unset_cast`
+- `no_useless_concat_operator`
 - `no_useless_else`
 - `no_useless_sprintf`
 - `nullable_type_declaration`
 - `octal_notation`
+- `operator_linebreak`
 - `ordered_traits`
 - `phpdoc_inline_tag_normalizer`
 - `phpdoc_no_alias_tag`
@@ -76,6 +82,7 @@ The following rules or groups have been added to the default rule set:
 - `no_homoglyph_names`
 - `set_type_to_cast`
 - `ternary_to_elvis_operator`
+
 
 ### Changes to existing rules
 - `phpdoc_align` is now enabled with config `left`

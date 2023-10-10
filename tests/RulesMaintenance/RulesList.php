@@ -56,17 +56,11 @@ class RulesList
     public static function getToBeDiscussedRules(): array
     {
         return [
-            'attribute_empty_parentheses',
             'echo_tag_syntax',
             'escape_implicit_backslashes',
             'explicit_indirect_variable',
-            'explicit_string_variable',
             'global_namespace_import',
-            'heredoc_indentation',
-            'heredoc_to_nowdoc',
             'multiline_whitespace_before_semicolons', // with new_line_for_chained_calls
-            'no_useless_concat_operator',
-            'operator_linebreak',
             'ordered_types',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
