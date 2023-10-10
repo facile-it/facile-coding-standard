@@ -53,7 +53,7 @@ class CreateConfigCommandTest extends TestCase
         $this->assertSame(0, $result);
     }
 
-    public function executeProvider(): array
+    public static function executeProvider(): array
     {
         return [
             [
