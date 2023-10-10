@@ -143,7 +143,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'ternary_operator_spaces' => true,
             'ternary_to_null_coalescing' => true,
             'trailing_comma_in_multiline' => [
-                'elements' => ['arguments', 'arrays', 'parameters'],
+                'elements' => ['arrays'],
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
@@ -152,9 +152,9 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'whitespace_after_comma_in_array' => true,
         ];
 
-        if ($this->isAtLeastVersion('3.9.1')) {
+        if (\PHP_MAJOR_VERSION >= 8 && $this->isAtLeastVersion('3.9.1')) {
             /** @psalm-suppress PossiblyInvalidArrayAssignment */
-            $rules['trailing_comma_in_multiline']['elements'][] = 'match';
+            $rules['trailing_comma_in_multiline']['elements'] = ['arguments', 'arrays', 'match', 'parameters'];
         }
 
         return $this->filterRules($rules);
