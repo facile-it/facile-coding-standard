@@ -82,7 +82,7 @@ class Dumper
         $config = new Config('facile-it/facile-coding-standard');
         $config->setRules($rulesProvider->getRules());
 
-        $resolver = new ConfigurationResolver($config, [], getcwd(), new ToolInfo());
+        $resolver = new ConfigurationResolver($config, [], '/dev/null', new ToolInfo());
 
         yield from $this->generateWithClassNameAsKey($resolver->getFixers());
     }
