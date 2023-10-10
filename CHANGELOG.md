@@ -52,6 +52,11 @@ The following rules or groups have been added to the default rule set:
 - `octal_notation`
 - `ordered_traits`
 - `phpdoc_tag_casing`
+- `php_unit_data_provider_static`
+- `php_unit_dedicate_assert_internal_type`
+- `php_unit_expectation`
+- `php_unit_fqcn_annotation`
+- `php_unit_mock_short_will_return`
 - `return_to_yield_from`
 - `phpdoc_trim_consecutive_blank_line_separation`
 - `semicolon_after_instruction`

@@ -31,7 +31,7 @@ class RuleListTest extends TestCase
     /**
      * @return \Generator<string, array{string[]}>
      */
-    public function listMethodsDataProvider(): \Generator
+    public static function listMethodsDataProvider(): \Generator
     {
         $reflectionClass = new \ReflectionClass(RulesList::class);
         foreach ($reflectionClass->getMethods() as $method) {

@@ -44,11 +44,6 @@ class RulesList
     {
         return [
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
-            'php_unit_data_provider_static', // with force => false
-            'php_unit_dedicate_assert_internal_type',
-            'php_unit_expectation',
-            'php_unit_fqcn_annotation',
-            'php_unit_mock_short_will_return',
             'phpdoc_align', // with left align
             'phpdoc_no_alias_tag',
             'phpdoc_var_annotation_correct_order',

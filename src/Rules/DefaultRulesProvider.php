@@ -125,6 +125,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
             'phpdoc_tag_casing' => true,
+            'php_unit_fqcn_annotation' => true,
             'return_to_yield_from' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'return_type_declaration' => true,

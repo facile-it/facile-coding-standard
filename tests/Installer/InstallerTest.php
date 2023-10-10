@@ -44,7 +44,7 @@ class InstallerTest extends TestCase
         file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
-    public function invalidUpgradeProvider(): array
+    public static function invalidUpgradeProvider(): array
     {
         return [
             [['0.1.0.0', '0.1.0'], ['0.1.0.0', '0.1.0']],
@@ -56,7 +56,7 @@ class InstallerTest extends TestCase
         ];
     }
 
-    public function validUpgradeProvider(): array
+    public static function validUpgradeProvider(): array
     {
         return [
             [['0.1.0.0', '0.1.0'], ['0.2.0.0', '0.2.0']],
