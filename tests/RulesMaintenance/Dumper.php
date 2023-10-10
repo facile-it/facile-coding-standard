@@ -81,6 +81,7 @@ class Dumper
 
         $config = new Config('facile-it/facile-coding-standard');
         $config->setRules($rulesProvider->getRules());
+        $config->setRiskyAllowed(true);
 
         $resolver = new ConfigurationResolver($config, [], '/dev/null', new ToolInfo());
 
