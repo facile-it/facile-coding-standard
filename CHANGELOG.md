@@ -11,30 +11,46 @@ The following rules or groups have been added to the default rule set:
 - `@PER-CS2.0` (replacing `@PSR2`)
 - `@PER-CS2.0:risky` (in `RiskyRulesProvider`)
 - `@DoctrineAnnotation`
+- `array_push`
+- `assign_null_coalescing_to_coalesce_equal`
+- `backtick_to_shell_exec`
 - `blank_lines_before_namespace`
 - `class_reference_name_casing`
+- `combine_consecutive_issets`
+- `combine_consecutive_unsets`
+- `combine_nested_dirname`
 - `curly_braces_position`
 - `declare_parentheses`
 - `empty_loop_body`
+- `ereg_to_preg`
+- `get_class_to_class_keyword`
+- `implode_call`
 - `integer_literal_case`
+- `lambda_not_used_import`
 - `linebreak_after_opening_tag`
 - `list_syntax`
 - `long_to_shorthand_operator`
 - `lowercase_static_reference`
 - `magic_constant_casing`
 - `magic_method_casing`
+- `modernize_strpos`
 - `native_function_type_declaration_casing`
 - `native_type_declaration_casing`
 - `no_alternative_syntax`
 - `no_blank_lines_after_class_opening`
+- `no_superfluous_elseif`
+- `no_superfluous_phpdoc_tags`
 - `no_trailing_comma_in_singleline`
 - `no_trailing_comma_in_singleline_function_call`
 - `no_unneeded_curly_braces`
 - `no_unneeded_import_alias`
 - `no_unneeded_braces`
 - `no_unset_cast`
+- `no_useless_else`
+- `no_useless_sprintf`
 - `nullable_type_declaration`
 - `octal_notation`
+- `ordered_traits`
 - `phpdoc_tag_casing`
 - `return_to_yield_from`
 - `phpdoc_trim_consecutive_blank_line_separation`
@@ -43,13 +59,15 @@ The following rules or groups have been added to the default rule set:
 - `single_line_empty_body`
 - `single_space_around_construct`
 - `single_trait_insert_per_statement`
+- `switch_continue_to_break`
 - `type_declaration_spaces`
 - `types_spaces`
 - `no_homoglyph_names`
 - `set_type_to_cast`
+- `ternary_to_elvis_operator`
 
 ### Changes to existing rules
-- `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too
+- `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too, but only under PHP 8+
 
 ## [0.5.3] - 2023-09-13
 - Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
