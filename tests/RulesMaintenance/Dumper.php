@@ -19,8 +19,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class Dumper
 {
     /**
-     * @param $listWarnings
-     *
      * @return \Generator<string, string>
      */
     public function getUnlistedRulesDescription(bool $listWarnings = false): \Generator
@@ -83,8 +81,9 @@ class Dumper
 
         $config = new Config('facile-it/facile-coding-standard');
         $config->setRules($rulesProvider->getRules());
+        $config->setRiskyAllowed(true);
 
-        $resolver = new ConfigurationResolver($config, [], getcwd(), new ToolInfo());
+        $resolver = new ConfigurationResolver($config, [], '/dev/null', new ToolInfo());
 
         yield from $this->generateWithClassNameAsKey($resolver->getFixers());
     }

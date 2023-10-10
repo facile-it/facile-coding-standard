@@ -8,7 +8,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
 {
     public function getRules(): array
     {
-        return $this->filterRules([
+        $rules = [
             '@PER-CS2.0' => true,
             '@DoctrineAnnotation' => true,
             'align_multiline_comment' => true,
@@ -16,6 +16,8 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'array_syntax' => [
                 'syntax' => 'short',
             ],
+            'assign_null_coalescing_to_coalesce_equal' => true,
+            'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => [
                 'operators' => [
                     '=>' => null,
@@ -33,6 +35,8 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'cast_spaces' => true,
             'class_attributes_separation' => true,
             'class_reference_name_casing' => true,
+            'combine_consecutive_issets' => true,
+            'combine_consecutive_unsets' => true,
             'compact_nullable_typehint' => true,
             'compact_nullable_type_declaration' => true,
             'concat_space' => [
@@ -46,6 +50,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'include' => true,
             'increment_style' => true,
             'integer_literal_case' => true,
+            'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
             'list_syntax' => true,
             'long_to_shorthand_operator' => true,
@@ -83,6 +88,10 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
             'no_spaces_around_offset' => true,
+            'no_superfluous_elseif' => true,
+            'no_superfluous_phpdoc_tags' => [
+                'allow_mixed' => true, // needed to silence Psalm when actual mixed is used
+            ],
             'no_trailing_comma_in_list_call' => true,
             'no_trailing_comma_in_singleline' => true,
             'no_trailing_comma_in_singleline_array' => true,
@@ -93,6 +102,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'no_unneeded_braces' => true,
             'no_unset_cast' => true,
             'no_unused_imports' => true,
+            'no_useless_else' => true,
             'no_whitespace_before_comma_in_array' => true,
             'no_whitespace_in_blank_line' => true,
             'not_operator_with_successor_space' => true,
@@ -129,16 +139,24 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => true,
             'standardize_not_equals' => true,
+            'switch_continue_to_break' => true,
             'ternary_operator_spaces' => true,
             'ternary_to_null_coalescing' => true,
             'trailing_comma_in_multiline' => [
-                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+                'elements' => ['arrays'],
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
             'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
-        ]);
+        ];
+
+        if (\PHP_MAJOR_VERSION >= 8 && $this->isAtLeastVersion('3.9.1')) {
+            /** @psalm-suppress PossiblyInvalidArrayAssignment */
+            $rules['trailing_comma_in_multiline']['elements'] = ['arguments', 'arrays', 'match', 'parameters'];
+        }
+
+        return $this->filterRules($rules);
     }
 }

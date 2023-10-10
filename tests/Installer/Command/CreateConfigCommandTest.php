@@ -30,10 +30,6 @@ class CreateConfigCommandTest extends TestCase
     /**
      * @dataProvider executeProvider
      *
-     * @param array $args
-     * @param bool $noDev
-     * @param bool $noRisky
-     *
      * @throws \Exception
      */
     public function testExecute(array $args, bool $noDev, bool $noRisky): void

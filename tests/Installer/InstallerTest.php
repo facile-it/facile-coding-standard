@@ -68,9 +68,6 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider invalidUpgradeProvider
-     *
-     * @param array $currentPackageV
-     * @param array $targetPackageV
      */
     public function testCheckUpgradeTestNotNecessary(array $currentPackageV, array $targetPackageV): void
     {
@@ -99,9 +96,6 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider validUpgradeProvider
-     *
-     * @param array $currentPackageV
-     * @param array $targetPackageV
      */
     public function testCheckUpgradeTestNecessary(array $currentPackageV, array $targetPackageV): void
     {

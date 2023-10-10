@@ -43,22 +43,7 @@ class RulesList
     public static function getToBeImplementedRules(): array
     {
         return [
-            'array_push',
-            'assign_null_coalescing_to_coalesce_equal',
-            'backtick_to_shell_exec',
-            'combine_consecutive_issets',
-            'combine_consecutive_unsets',
-            'combine_nested_dirname',
-            'ereg_to_preg',
-            'get_class_to_class_keyword',
-            'implode_call',
-            'lambda_not_used_import',
-            'modernize_strpos',
-            'no_superfluous_elseif',
-            'no_superfluous_phpdoc_tags',
-            'no_useless_else',
-            'no_useless_sprintf',
-            'ordered_traits',
+            'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
             'php_unit_data_provider_static', // with force => false
             'php_unit_dedicate_assert_internal_type',
             'php_unit_expectation',
@@ -67,8 +52,6 @@ class RulesList
             'phpdoc_align', // with left align
             'phpdoc_no_alias_tag',
             'phpdoc_var_annotation_correct_order',
-            'switch_continue_to_break',
-            'ternary_to_elvis_operator',
         ];
     }
 

@@ -6,23 +6,12 @@ namespace Facile\CodingStandards\Installer\Writer;
 
 final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
 {
-    /**
-     * @param null|string $filename
-     * @param bool $noDev
-     * @param bool $noRisky
-     */
     public function writeConfigFile(?string $filename = null, bool $noDev = false, bool $noRisky = false): void
     {
         $filename = $filename ?: '.php-cs-fixer.dist.php';
         file_put_contents($filename, $this->createConfigSource($noDev, $noRisky));
     }
 
-    /**
-     * @param bool $noDev
-     * @param bool $noRisky
-     *
-     * @return string
-     */
     private function createConfigSource(bool $noDev = false, bool $noRisky = false): string
     {
         $rulesProviderConfig = $this->createRulesProviderConfig($noRisky);
