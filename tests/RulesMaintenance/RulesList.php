@@ -44,9 +44,6 @@ class RulesList
     {
         return [
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
-            'phpdoc_align', // with left align
-            'phpdoc_no_alias_tag',
-            'phpdoc_var_annotation_correct_order',
         ];
     }
 
@@ -73,10 +70,6 @@ class RulesList
             'ordered_types',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
-            'phpdoc_inline_tag_normalizer',
-            'phpdoc_param_order',
-            'phpdoc_summary',
-            'phpdoc_tag_type',
             'self_static_accessor',
             'single_line_comment_style',
         ];
