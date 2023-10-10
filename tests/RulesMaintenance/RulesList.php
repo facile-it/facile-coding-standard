@@ -36,7 +36,7 @@ class RulesList
     }
 
     /**
-     * These are desirable rules, a todo-list for this library
+     * These are desirable rules, a todo-list for this library.
      *
      * @return string[]
      */
@@ -49,7 +49,7 @@ class RulesList
 
     /**
      * There are rules on which we're not sure about; newly implemented rules in PHP-CS-Fixer should go here,
-     * until approved in a new release (or rejected and moved in another of the following lists)
+     * until approved in a new release (or rejected and moved in another of the following lists).
      *
      * @return string[]
      */
@@ -119,7 +119,7 @@ class RulesList
     }
 
     /**
-     * These rules are not applicable, because they are not useful in private projects or in a general ruleset like
+     * These rules are not applicable, because they are not useful in private projects or in a general ruleset like.
      *
      * @return string[]
      */
@@ -138,7 +138,7 @@ class RulesList
 
     /**
      * These rules are not desirable because a full-fledged SA tool like Rector (which leveradges PHPStan underneath)
-     * is more apt to such tasks
+     * is more apt to such tasks.
      *
      * @return string[]
      */

@@ -51,7 +51,13 @@ The following rules or groups have been added to the default rule set:
 - `nullable_type_declaration`
 - `octal_notation`
 - `ordered_traits`
+- `phpdoc_inline_tag_normalizer`
+- `phpdoc_no_alias_tag`
+- `phpdoc_param_order`
+- `phpdoc_summary`
 - `phpdoc_tag_casing`
+- `phpdoc_tag_type`
+- `phpdoc_var_annotation_correct_order`
 - `php_unit_data_provider_static`
 - `php_unit_dedicate_assert_internal_type`
 - `php_unit_expectation`
@@ -72,6 +78,7 @@ The following rules or groups have been added to the default rule set:
 - `ternary_to_elvis_operator`
 
 ### Changes to existing rules
+- `phpdoc_align` is now enabled with config `left`
 - `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too, but only under PHP 8+
 
 ## [0.5.3] - 2023-09-13
