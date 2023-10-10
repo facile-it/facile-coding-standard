@@ -51,7 +51,10 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
         '3.9.1' => ['curly_braces_position'],
         '3.14.0' => ['php_unit_data_provider_static'],
         '3.16.0' => ['single_space_around_construct'],
-        '3.17.0' => ['single_line_empty_body'],
+        '3.17.0' => [
+            'phpdoc_param_order',
+            'single_line_empty_body',
+        ],
         '3.21.0' => ['nullable_type_declaration'],
         '3.23.0' => ['return_to_yield_from'],
         '3.27.0' => [

@@ -7,7 +7,7 @@ namespace Facile\CodingStandards\Installer;
 class CommandProvider implements \Composer\Plugin\Capability\CommandProvider
 {
     /**
-     * Retrieves an array of commands
+     * Retrieves an array of commands.
      *
      * @return \Composer\Command\BaseCommand[]
      */

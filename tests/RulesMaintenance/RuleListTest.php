@@ -5,7 +5,7 @@ namespace Facile\CodingStandardsTest\RulesMaintenance;
 use PHPUnit\Framework\TestCase;
 
 /**
- * This test is used to keep {@see RulesList} tidy
+ * This test is used to keep {@see RulesList} tidy.
  */
 class RuleListTest extends TestCase
 {

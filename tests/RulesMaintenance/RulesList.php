@@ -36,7 +36,7 @@ class RulesList
     }
 
     /**
-     * These are desirable rules, a todo-list for this library
+     * These are desirable rules, a todo-list for this library.
      *
      * @return string[]
      */
@@ -44,15 +44,12 @@ class RulesList
     {
         return [
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
-            'phpdoc_align', // with left align
-            'phpdoc_no_alias_tag',
-            'phpdoc_var_annotation_correct_order',
         ];
     }
 
     /**
      * There are rules on which we're not sure about; newly implemented rules in PHP-CS-Fixer should go here,
-     * until approved in a new release (or rejected and moved in another of the following lists)
+     * until approved in a new release (or rejected and moved in another of the following lists).
      *
      * @return string[]
      */
@@ -73,10 +70,6 @@ class RulesList
             'ordered_types',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
-            'phpdoc_inline_tag_normalizer',
-            'phpdoc_param_order',
-            'phpdoc_summary',
-            'phpdoc_tag_type',
             'self_static_accessor',
             'single_line_comment_style',
         ];
@@ -126,7 +119,7 @@ class RulesList
     }
 
     /**
-     * These rules are not applicable, because they are not useful in private projects or in a general ruleset like
+     * These rules are not applicable, because they are not useful in private projects or in a general ruleset like.
      *
      * @return string[]
      */
@@ -145,7 +138,7 @@ class RulesList
 
     /**
      * These rules are not desirable because a full-fledged SA tool like Rector (which leveradges PHPStan underneath)
-     * is more apt to such tasks
+     * is more apt to such tasks.
      *
      * @return string[]
      */

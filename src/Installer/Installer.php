@@ -80,7 +80,7 @@ class Installer
     }
 
     /**
-     * Check if we need to do some upgrades
+     * Check if we need to do some upgrades.
      */
     public function checkUpgrade(PackageInterface $currentPackage, PackageInterface $targetPackage): void
     {
