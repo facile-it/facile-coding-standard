@@ -8,7 +8,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
 {
     public function getRules(): array
     {
-        return $this->filterRules([
+        $rules = [
             '@PER-CS2.0' => true,
             '@DoctrineAnnotation' => true,
             'align_multiline_comment' => true,
@@ -143,13 +143,20 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'ternary_operator_spaces' => true,
             'ternary_to_null_coalescing' => true,
             'trailing_comma_in_multiline' => [
-                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+                'elements' => ['arguments', 'arrays', 'parameters'],
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
             'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
-        ]);
+        ];
+
+        if ($this->isAtLeastVersion('3.9.1')) {
+            /** @psalm-suppress PossiblyInvalidArrayAssignment */
+            $rules['trailing_comma_in_multiline']['elements'][] = 'match';
+        }
+
+        return $this->filterRules($rules);
     }
 }
