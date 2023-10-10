@@ -62,6 +62,7 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
             '@PER-CS2.0:risky',
             'long_to_shorthand_operator',
         ],
+        '3.30.0' => ['attribute_empty_parentheses'],
         '3.32.0' => ['no_unneeded_braces'],
         '3.33.0' => ['native_type_declaration_casing'],
     ];
