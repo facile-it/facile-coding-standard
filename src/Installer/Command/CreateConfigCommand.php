@@ -45,9 +45,9 @@ class CreateConfigCommand extends BaseCommand
                 new InputOption('no-risky', null, InputOption::VALUE_NONE, 'Do not include risky rules'),
             ])
             ->setHelp(
-                <<<HELP
-Write config file in <comment>.php-cs-fixer.dist.php</comment>.
-HELP
+                <<<'HELP'
+                    Write config file in <comment>.php-cs-fixer.dist.php</comment>.
+                    HELP
             )
         ;
     }

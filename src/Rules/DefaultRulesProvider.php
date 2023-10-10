@@ -17,6 +17,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
                 'syntax' => 'short',
             ],
             'assign_null_coalescing_to_coalesce_equal' => true,
+            'attribute_empty_parentheses' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => [
                 'operators' => [
@@ -46,7 +47,10 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'declare_equal_normalize' => true,
             'declare_parentheses' => true,
             'empty_loop_body' => true,
+            'explicit_string_variable' => true,
             'function_typehint_space' => true,
+            'heredoc_indentation' => true,
+            'heredoc_to_nowdoc' => true,
             'include' => true,
             'increment_style' => true,
             'integer_literal_case' => true,
@@ -102,6 +106,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'no_unneeded_braces' => true,
             'no_unset_cast' => true,
             'no_unused_imports' => true,
+            'no_useless_concat_operator' => true,
             'no_useless_else' => true,
             'no_whitespace_before_comma_in_array' => true,
             'no_whitespace_in_blank_line' => true,
@@ -110,6 +115,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'nullable_type_declaration' => true,
             'object_operator_without_whitespace' => true,
             'octal_notation' => true,
+            'operator_linebreak' => true,
             'ordered_imports' => true,
             'phpdoc_align' => [
                 'align' => 'left',

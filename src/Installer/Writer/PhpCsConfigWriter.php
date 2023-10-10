@@ -23,31 +23,31 @@ final class PhpCsConfigWriter implements PhpCsConfigWriterInterface
         }
 
         return <<<FILE
-<?php
+            <?php
 
-/*
- * Additional rules or rules to override.
- * These rules will be added to default rules or will override them if the same key already exists.
- */
+            /*
+             * Additional rules or rules to override.
+             * These rules will be added to default rules or will override them if the same key already exists.
+             */
 
-$rulesProviderConfig
+            {$rulesProviderConfig}
 
-\$config = new PhpCsFixer\Config();
-\$config->setRules(\$rulesProvider->getRules());
+            \$config = new PhpCsFixer\Config();
+            \$config->setRules(\$rulesProvider->getRules());
 
-\$finder = new PhpCsFixer\Finder();
+            \$finder = new PhpCsFixer\Finder();
 
-/*
- * You can set manually these paths:
- */
-$autoloadPathProvider
-\$finder->in(\$autoloadPathProvider->getPaths());
+            /*
+             * You can set manually these paths:
+             */
+            {$autoloadPathProvider}
+            \$finder->in(\$autoloadPathProvider->getPaths());
 
-\$config->setFinder(\$finder);
+            \$config->setFinder(\$finder);
 
-return \$config;
+            return \$config;
 
-FILE;
+            FILE;
     }
 
     private function createRulesProviderConfig(bool $noRisky = false): string
@@ -65,10 +65,10 @@ FILE;
         $providersLine = implode("\n", $providersLine);
 
         return <<<TEXT
-\$additionalRules = [];
-\$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
-$providersLine
-]);
-TEXT;
+            \$additionalRules = [];
+            \$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
+            {$providersLine}
+            ]);
+            TEXT;
     }
 }
