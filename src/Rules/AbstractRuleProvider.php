@@ -37,6 +37,9 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
      * for older versions.
      */
     private const INTRODUCTION_MAP = [
+        '3.5.0' => [
+            'get_class_to_class_keyword',
+        ],
         '3.6.0' => [
             'class_reference_name_casing',
             'no_unneeded_import_alias',
