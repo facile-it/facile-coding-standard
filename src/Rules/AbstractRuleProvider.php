@@ -25,6 +25,10 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
         '3.21.0' => [
             'function_typehint_space' => 'type_declaration_spaces',
         ],
+        '3.27.0' => [
+            '@PSR12' => '@PER-CS2.0',
+            '@PSR12:risky' => '@PER-CS2.0:risky',
+        ],
         '3.32.0' => [
             'compact_nullable_typehint' => 'compact_nullable_type_declaration',
             'curly_braces_position' => 'braces_position',
@@ -58,11 +62,7 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
         ],
         '3.21.0' => ['nullable_type_declaration'],
         '3.23.0' => ['return_to_yield_from'],
-        '3.27.0' => [
-            '@PER-CS2.0',
-            '@PER-CS2.0:risky',
-            'long_to_shorthand_operator',
-        ],
+        '3.27.0' => ['long_to_shorthand_operator'],
         '3.30.0' => ['attribute_empty_parentheses'],
         '3.32.0' => ['no_unneeded_braces'],
         '3.33.0' => ['native_type_declaration_casing'],
