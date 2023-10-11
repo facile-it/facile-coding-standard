@@ -61,6 +61,30 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider ruleNamesDataProvider
+     */
+    public function testRulesDoNotOverrideRuleSets(string $ruleName): void
+    {
+        $enabledRuleSets = [];
+        foreach (self::ruleSetNamesDataProvider() as $data) {
+            $ruleSetName = $data[0];
+            $enabledRuleSets[$ruleSetName] = new RuleSet([$ruleSetName => true]);
+        }
+
+        $this->assertNotEmpty($enabledRuleSets, 'No rule sets found');
+
+        foreach ($enabledRuleSets as $name => $ruleSet) {
+            $this->assertFalse(
+                $ruleSet->hasRule($ruleName),
+                sprintf('Rule %s is being overridden while already included in %s rule set', $ruleName, $name)
+                . \PHP_EOL . 'Our config: ' . print_r(static::getRulesProvider()->getRules()[$ruleName], true)
+                . \PHP_EOL . 'Rule set config: ' . print_r($ruleSet->getRuleConfiguration($ruleName), true)
+                . \PHP_EOL . 'Default config: ' . print_r($this->getFixerByName($ruleName), true)
+            );
+        }
+    }
+
     protected static function getRulesProvider(): RulesProviderInterface
     {
         throw new \LogicException(sprintf('Override %s to provide the proper concrete instance of %s', __METHOD__, RulesProviderInterface::class));
