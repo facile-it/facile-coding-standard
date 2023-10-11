@@ -15,7 +15,6 @@ The following rules or groups have been added to the default rule set:
 - `assign_null_coalescing_to_coalesce_equal`
 - `attribute_empty_parentheses`
 - `backtick_to_shell_exec`
-- `blank_lines_before_namespace`
 - `class_reference_name_casing`
 - `combine_consecutive_issets`
 - `combine_consecutive_unsets`
@@ -34,19 +33,16 @@ The following rules or groups have been added to the default rule set:
 - `linebreak_after_opening_tag`
 - `list_syntax`
 - `long_to_shorthand_operator`
-- `lowercase_static_reference`
 - `magic_constant_casing`
 - `magic_method_casing`
 - `modernize_strpos`
 - `native_function_type_declaration_casing`
 - `native_type_declaration_casing`
 - `no_alternative_syntax`
-- `no_blank_lines_after_class_opening`
 - `no_superfluous_elseif`
 - `no_superfluous_phpdoc_tags`
 - `no_trailing_comma_in_singleline`
 - `no_trailing_comma_in_singleline_function_call`
-- `no_unneeded_curly_braces`
 - `no_unneeded_import_alias`
 - `no_unneeded_braces`
 - `no_unset_cast`
@@ -87,6 +83,21 @@ The following rules or groups have been added to the default rule set:
 ### Changes to existing rules
 - `phpdoc_align` is now enabled with config `left`
 - `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too, but only under PHP 8+
+- `ordered_imports` is now falling back to PER-CS configuration, which is not the same as the default one
+
+### Removed rules
+Multiple rules are removed (but still applied) since they're already covered in PER-CS or PSR-12 with the same configuration as before:
+- `blank_line_after_namespace`
+- `blank_line_after_opening_tag`
+- `compact_nullable_type_declaration`
+- `declare_equal_normalize`
+- `lowercase_cast`
+- `new_with_parentheses`
+- `no_leading_import_slash`
+- `no_whitespace_in_blank_line`
+- `return_type_declaration`
+- `short_scalar_cast`
+- `ternary_operator_spaces`
 
 ## [0.5.3] - 2023-09-13
 - Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
