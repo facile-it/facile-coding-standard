@@ -10,13 +10,13 @@ use const false;
 
 class DefaultRulesProviderTest extends AbstractRulesProviderTest
 {
-    public function testRulesAreAlphabeticallySorted(): void
+    protected static function getRulesProvider(): DefaultRulesProvider
     {
-        $this->assertRulesAreAlphabeticallySorted(new DefaultRulesProvider());
+        return new DefaultRulesProvider();
     }
 
-    public function testAllRulesAreNotRisky(): void
+    protected function shouldBeRisky(): bool
     {
-        $this->assertAllRulesAreRisky(false, new DefaultRulesProvider());
+        return false;
     }
 }

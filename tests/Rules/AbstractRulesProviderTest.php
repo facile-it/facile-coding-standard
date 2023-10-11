@@ -6,6 +6,7 @@ use Facile\CodingStandards\Rules\RulesProviderInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSet;
 
 abstract class AbstractRulesProviderTest extends TestCase
 {
@@ -20,6 +21,73 @@ abstract class AbstractRulesProviderTest extends TestCase
         $fixerFactory->registerBuiltInFixers();
 
         self::$fixerFactory = $fixerFactory;
+    }
+
+    abstract protected function shouldBeRisky(): bool;
+
+    public function testRulesAreAlphabeticallySorted(): void
+    {
+        $this->assertRulesAreAlphabeticallySorted(static::getRulesProvider());
+    }
+
+    /**
+     * @dataProvider ruleNamesDataProvider
+     */
+    public function testRulesAreNotRisky(string $ruleName): void
+    {
+        $fixer = $this->getFixerByName($ruleName);
+
+        $this->assertSame(
+            $this->shouldBeRisky(),
+            $fixer->isRisky(),
+            sprintf('Fixer %s is %s as expected', $ruleName, $this->shouldBeRisky() ? 'risky' : 'NOT risky')
+        );
+    }
+
+    /**
+     * @dataProvider ruleSetNamesDataProvider
+     */
+    public function testRuleSetsAreRiskyAsExpected(string $ruleSetName): void
+    {
+        $ruleSet = new RuleSet([$ruleSetName => true]);
+        foreach ($ruleSet->getRules() as $ruleName => $config) {
+            $fixer = $this->getFixerByName($ruleName);
+
+            $this->assertSame(
+                $this->shouldBeRisky(),
+                $fixer->isRisky(),
+                sprintf('Ruleset %s includes %s rules, such as %s', $ruleSetName, $this->shouldBeRisky() ? 'risky' : 'NOT risky', $ruleName)
+            );
+        }
+    }
+
+    protected static function getRulesProvider(): RulesProviderInterface
+    {
+        throw new \LogicException(sprintf('Override %s to provide the proper concrete instance of %s', __METHOD__, RulesProviderInterface::class));
+    }
+
+    /**
+     * @return \Generator<string, array{string}>
+     */
+    public static function ruleNamesDataProvider(): \Generator
+    {
+        foreach (static::getRulesProvider()->getRules() as $ruleName => $config) {
+            if (! str_starts_with($ruleName, '@')) {
+                yield $ruleName => [$ruleName];
+            }
+        }
+    }
+
+    /**
+     * @return \Generator<string, array{string}>
+     */
+    public static function ruleSetNamesDataProvider(): \Generator
+    {
+        foreach (static::getRulesProvider()->getRules() as $ruleSetName => $config) {
+            if (str_starts_with($ruleSetName, '@')) {
+                yield $ruleSetName => [$ruleSetName];
+            }
+        }
     }
 
     protected function assertRulesAreAlphabeticallySorted(RulesProviderInterface $provider): void

@@ -8,13 +8,13 @@ use Facile\CodingStandards\Rules\RiskyRulesProvider;
 
 class RiskyRulesProviderTest extends AbstractRulesProviderTest
 {
-    public function testRulesAreAlphabeticallySorted(): void
+    protected static function getRulesProvider(): RiskyRulesProvider
     {
-        $this->assertRulesAreAlphabeticallySorted(new RiskyRulesProvider());
+        return new RiskyRulesProvider();
     }
 
-    public function testAllRulesAreNotRisky(): void
+    protected function shouldBeRisky(): bool
     {
-        $this->assertAllRulesAreRisky(true, new RiskyRulesProvider());
+        return true;
     }
 }
