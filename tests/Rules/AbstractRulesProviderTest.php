@@ -2,6 +2,7 @@
 
 namespace Facile\CodingStandardsTest\Rules;
 
+use Facile\CodingStandards\Rules\AbstractRuleProvider;
 use Facile\CodingStandards\Rules\RulesProviderInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -54,6 +55,10 @@ abstract class AbstractRulesProviderTest extends TestCase
      */
     public function testRulesDoNotOverrideRuleSets(string $ruleName): void
     {
+        if ($this->ruleIsMappedAsDeprecated($ruleName)) {
+            $this->markTestSkipped($ruleName . ' rule is already mapped as deprecated in a future release (we are probably under --prefer-lowest)');
+        }
+
         $allowedOverrides = [
             'binary_operator_spaces',
             'single_class_element_per_statement',
@@ -200,5 +205,26 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
 
         return $fixers[$rule];
+    }
+
+    private function ruleIsMappedAsDeprecated(string $ruleName): bool
+    {
+        /** @var list<string> $deprecatedRules */
+        static $deprecatedRules;
+
+        if (! isset($deprecatedRules)) {
+            $reflectionClassConstant = new \ReflectionClassConstant(AbstractRuleProvider::class, 'DEPRECATION_MAP');
+            $deprecationMap = $reflectionClassConstant->getValue();
+            $this->assertIsArray($deprecationMap);
+            $this->assertNotEmpty($deprecationMap);
+
+            foreach ($deprecationMap as $version => $map) {
+                foreach ($map as $deprecatedRule => $newRule) {
+                    $deprecatedRules[] = $deprecatedRule;
+                }
+            }
+        }
+
+        return \in_array($ruleName, $deprecatedRules);
     }
 }
