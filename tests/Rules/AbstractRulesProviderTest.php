@@ -22,7 +22,7 @@ abstract class AbstractRulesProviderTest extends TestCase
     /**
      * @dataProvider ruleNamesDataProvider
      */
-    public function testRulesAreNotRisky(string $ruleName): void
+    public function testRuleAreRiskyAsExpected(string $ruleName): void
     {
         $fixer = $this->getFixerByName($ruleName);
 
@@ -68,17 +68,7 @@ abstract class AbstractRulesProviderTest extends TestCase
             $this->markTestSkipped($ruleName . 'Rule is allowed to override the rule sets configuration');
         }
 
-        $enabledRuleSets = [];
-        foreach (self::ruleSetNamesDataProvider() as $data) {
-            $ruleSetName = $data[0];
-            $enabledRuleSets[$ruleSetName] = new RuleSet([$ruleSetName => true]);
-        }
-
-        $this->assertNotEmpty($enabledRuleSets, 'No rule sets found');
-        $psr12 = new RuleSet([
-            '@PSR12' => true,
-            '@PSR12:risky' => true,
-        ]);
+        $enabledRuleSets = $this->getEnabledRuleSets();
 
         foreach ($enabledRuleSets as $name => $ruleSet) {
             if (! $ruleSet->hasRule($ruleName)) {
@@ -87,7 +77,7 @@ abstract class AbstractRulesProviderTest extends TestCase
 
             $this->assertConfigurationIsSameAsRuleSet($ruleSet, $ruleName);
 
-            if ($name === '@PER-CS2.0' && ! $psr12->hasRule($ruleName)) {
+            if ($name === '@PER-CS2.0' && $this->isNotInPsr12($ruleName)) {
                 $this->markTestSkipped(sprintf('Rule %s is part of PER-CS but NOT of PSR-12, we can drop it only in the future', $ruleName));
             }
 
@@ -186,6 +176,26 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
     }
 
+    /** @var array<string, RuleSet> */
+    private array $enabledRuleSets = [];
+
+    /**
+     * @return array<string, RuleSet>
+     */
+    private function getEnabledRuleSets(): array
+    {
+        if (empty($this->enabledRuleSets)) {
+            foreach (self::ruleSetNamesDataProvider() as $data) {
+                $ruleSetName = $data[0];
+                $this->enabledRuleSets[$ruleSetName] = new RuleSet([$ruleSetName => true]);
+            }
+
+            $this->assertNotEmpty($this->enabledRuleSets, 'No rule sets found');
+        }
+
+        return $this->enabledRuleSets;
+    }
+
     private function getFixerByName(string $rule): FixerInterface
     {
         /** @var array<string, FixerInterface> $fixers */
@@ -226,5 +236,17 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
 
         return \in_array($ruleName, $deprecatedRules);
+    }
+
+    private function isNotInPsr12(string $ruleName): bool
+    {
+        static $psr12;
+
+        $psr12 ??= new RuleSet([
+            '@PSR12' => true,
+            '@PSR12:risky' => true,
+        ]);
+
+        return ! $psr12->hasRule($ruleName);
     }
 }
