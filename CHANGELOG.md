@@ -8,8 +8,8 @@ Changelog
 
 ### New rules
 The following rules or groups have been added to the default rule set:
-- `@PER-CS2.0` (replacing `@PSR2`)
-- `@PER-CS2.0:risky` (in `RiskyRulesProvider`)
+- `@PER-CS2.0` (with `@PSR12` as fallback)
+- `@PER-CS2.0:risky` (with `@PSR12:risky` as fallback)
 - `@DoctrineAnnotation`
 - `array_push`
 - `assign_null_coalescing_to_coalesce_equal`
