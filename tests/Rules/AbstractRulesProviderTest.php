@@ -4,25 +4,13 @@ namespace Facile\CodingStandardsTest\Rules;
 
 use Facile\CodingStandards\Rules\RulesProviderInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 
 abstract class AbstractRulesProviderTest extends TestCase
 {
-    /** @psalm-suppress PrivateClass */
-    protected static FixerFactory $fixerFactory;
-
-    public static function setUpBeforeClass(): void
-    {
-        TestCase::setUpBeforeClass();
-
-        $fixerFactory = new FixerFactory();
-        $fixerFactory->registerBuiltInFixers();
-
-        self::$fixerFactory = $fixerFactory;
-    }
-
     abstract protected function shouldBeRisky(): bool;
 
     public function testRulesAreAlphabeticallySorted(): void
@@ -66,6 +54,15 @@ abstract class AbstractRulesProviderTest extends TestCase
      */
     public function testRulesDoNotOverrideRuleSets(string $ruleName): void
     {
+        $allowedOverrides = [
+            'binary_operator_spaces',
+            'single_class_element_per_statement',
+        ];
+
+        if (\in_array($ruleName, $allowedOverrides)) {
+            $this->markTestSkipped($ruleName . 'Rule is allowed to override the rule sets configuration');
+        }
+
         $enabledRuleSets = [];
         foreach (self::ruleSetNamesDataProvider() as $data) {
             $ruleSetName = $data[0];
@@ -73,15 +70,23 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
 
         $this->assertNotEmpty($enabledRuleSets, 'No rule sets found');
+        $psr12 = new RuleSet([
+            '@PSR12' => true,
+            '@PSR12:risky' => true,
+        ]);
 
         foreach ($enabledRuleSets as $name => $ruleSet) {
-            $this->assertFalse(
-                $ruleSet->hasRule($ruleName),
-                sprintf('Rule %s is being overridden while already included in %s rule set', $ruleName, $name)
-                . \PHP_EOL . 'Our config: ' . print_r(static::getRulesProvider()->getRules()[$ruleName], true)
-                . \PHP_EOL . 'Rule set config: ' . print_r($ruleSet->getRuleConfiguration($ruleName), true)
-                . \PHP_EOL . 'Default config: ' . print_r($this->getFixerByName($ruleName), true)
-            );
+            if (! $ruleSet->hasRule($ruleName)) {
+                continue;
+            }
+
+            $this->assertConfigurationIsSameAsRuleSet($ruleSet, $ruleName);
+
+            if ($name === '@PER-CS2.0' && ! $psr12->hasRule($ruleName)) {
+                $this->markTestSkipped(sprintf('Rule %s is part of PER-CS but NOT of PSR-12, we can drop it only in the future', $ruleName));
+            }
+
+            $this->fail(sprintf('Rule %s is being overridden while already included in %s rule set, with the same config', $ruleName, $name));
         }
     }
 
@@ -140,14 +145,60 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
     }
 
+    private function assertConfigurationIsSameAsRuleSet(RuleSet $ruleSet, string $ruleName): void
+    {
+        $fixer = $this->getFixerByName($ruleName);
+        if (! $fixer instanceof ConfigurableFixerInterface) {
+            return;
+        }
+
+        $rulesProvider = static::getRulesProvider();
+        $ruleConfiguration = $rulesProvider->getRules()[$ruleName];
+        $ruleSetConfiguration = $ruleSet->getRuleConfiguration($ruleName);
+        $defaultConfiguration = $fixer->getConfigurationDefinition()->resolve([]);
+        $this->assertNotEmpty($defaultConfiguration, 'Empty default configuration?');
+
+        if ($ruleSetConfiguration === null) {
+            if ($ruleConfiguration === true) {
+                return;
+            }
+
+            $this->assertEquals($defaultConfiguration, $ruleConfiguration, sprintf(
+                'Ruleset relies on default configuration for rule %s, but it is being overridden',
+                $ruleName
+            ));
+        } elseif ($ruleConfiguration === true) {
+            $this->assertEquals($ruleSetConfiguration, $defaultConfiguration, sprintf(
+                'Ruleset does not use the default config for rule %s, and it is being overridden with "true" in %s',
+                $ruleName,
+                \get_class($rulesProvider)
+            ));
+        } else {
+            $this->assertEquals($ruleSetConfiguration, $ruleConfiguration, sprintf(
+                'Rule %s has a different configuration from the one from ruleset',
+                $ruleName
+            ));
+        }
+    }
+
     private function getFixerByName(string $rule): FixerInterface
     {
-        foreach (self::$fixerFactory->getFixers() as $fixer) {
-            if ($fixer->getName() === $rule) {
-                return $fixer;
+        /** @var array<string, FixerInterface> $fixers */
+        static $fixers;
+
+        if (! isset($fixers)) {
+            $fixerFactory = new FixerFactory();
+            $fixerFactory->registerBuiltInFixers();
+
+            foreach ($fixerFactory->getFixers() as $fixer) {
+                $fixers[$fixer->getName()] = $fixer;
             }
         }
 
-        throw new \InvalidArgumentException('Fixer not found: ' . $rule);
+        if (! isset($fixers[$rule])) {
+            throw new \InvalidArgumentException('Fixer not found: ' . $rule);
+        }
+
+        return $fixers[$rule];
     }
 }
