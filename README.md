@@ -1,4 +1,4 @@
-# Facile.it Coding Standard
+# Facile.it PHP Coding Standard
 
 ![PHP Version](https://img.shields.io/badge/php-%5E7.4%20%7C%7C%20%5E8.0-blue)
 [![Build status](https://github.com/facile-it/facile-coding-standard/workflows/Continuous%20Integration/badge.svg)]( https://github.com/facile-it/facile-coding-standard/actions?query=workflow%3A%22Continuous+Integration%22+branch%3A1.x)
@@ -10,7 +10,7 @@
 [![License](https://poser.pugx.org/facile-it/facile-coding-standard/license)](https://packagist.org/packages/facile-it/facile-coding-standard)
 [![composer.lock](https://poser.pugx.org/facile-it/facile-coding-standard/composerlock)](https://packagist.org/packages/facile-it/facile-coding-standard)
 
-Repository with all coding standard ruleset.
+Repository with PHP coding standard ruleset, based on PHP-CS-Fixer.
 
 ## Installation
 
@@ -79,10 +79,7 @@ See [PhpCsFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) GitHub page.
 
 ## Risky rules
 
-Risky rules are dangerous. Starting from version `0.3.1` we removed
-them from default configuration.
-
-If you want to add these rules, you can create your own `.php-cs-fixer.php`
+Risky rules may be unstable, and cause unintended behavioral changes to your code. If you want to add these rules, you can create your own `.php-cs-fixer.php`
 configuration:
 
 ```php
@@ -123,42 +120,4 @@ Usage:
 Options:
       --no-dev                   Do not include autoload-dev directories
       --no-risky                 Do not include risky rules
-```
-
-## Migrating to 0.3
-
-Updating the plugin from v0.2 to v0.3 will not automatically update your
-configuration. Since your previous configuration should be committed into 
-your Git repository, we suggest to temporarily delete it and just run the
-update, asking the plugin to create a new one; this way, you can use the
-diff afterwards to merge your personal modifications onto the new 
-configuration format.
-
-### v0.3 default configuration
-
-```
-<?php
-
-/*
- * Additional rules or rules to override.
- * These rules will be added to default rules or will override them if the same key already exists.
- */
-$additionalRules = [];
-
-$rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider([
-    new Facile\CodingStandards\Rules\DefaultRulesProvider(),
-    // new Facile\CodingStandards\Rules\RiskyRulesProvider(), // risky rules
-    new Facile\CodingStandards\Rules\ArrayRulesProvider($additionalRules),
-]);
-
-$config = PhpCsFixer\Config::create();
-$config->setRules($rulesProvider->getRules());
-
-$finder = PhpCsFixer\Finder::create();
-$autoloadPathProvider = new Facile\CodingStandards\AutoloadPathProvider();
-$finder->in($autoloadPathProvider->getPaths());
-
-$config->setFinder($finder);
-
-return $config;
 ```
