@@ -14,7 +14,7 @@ $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($provid
 $config = new PhpCsFixer\Config('facile-it/facile-coding-standard');
 $config->setRules($rulesProvider->getRules());
 
-$config->setUsingCache(false);
+$config->setUsingCache(true);
 $config->setRiskyAllowed(true);
 
 $finder = new PhpCsFixer\Finder();
