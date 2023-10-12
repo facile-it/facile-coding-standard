@@ -11,7 +11,7 @@ class ArrayRulesProviderTest extends TestCase
 {
     public function testGetRules(): void
     {
-        $rules = ['foo', 'bar'];
+        $rules = ['foo' => true, 'bar' => ['baz' => 'foobar']];
 
         $provider = new ArrayRulesProvider($rules);
 

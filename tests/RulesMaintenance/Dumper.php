@@ -16,6 +16,10 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
+/**
+ * @psalm-suppress InternalClass
+ * @psalm-suppress InternalMethod
+ */
 class Dumper
 {
     /**
@@ -102,6 +106,7 @@ class Dumper
 
     private function describe(FixerInterface $fixer): string
     {
+        /** @var Application|null $application */
         static $application;
         if (null === $application) {
             $command = new DescribeCommand();
@@ -115,7 +120,7 @@ class Dumper
         try {
             $exitCode = $application->run(new ArrayInput(['describe', 'name' => $fixer->getName()]), $bufferedOutput);
         } catch (\Throwable $exception) {
-            throw new \RuntimeException('Error while running describe for rule: ' . $exception->getMessage(), null, $exception);
+            throw new \RuntimeException('Error while running describe for rule: ' . $exception->getMessage(), 0, $exception);
         }
 
         if ($exitCode !== 0) {

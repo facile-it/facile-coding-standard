@@ -44,6 +44,9 @@ class InstallerTest extends TestCase
         file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
+    /**
+     * @return array{array{string, string}, array{string, string}}[]
+     */
     public static function invalidUpgradeProvider(): array
     {
         return [
@@ -56,6 +59,9 @@ class InstallerTest extends TestCase
         ];
     }
 
+    /**
+     * @return array{array{string, string}, array{string, string}}[]
+     */
     public static function validUpgradeProvider(): array
     {
         return [
@@ -68,6 +74,9 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider invalidUpgradeProvider
+     *
+     * @param array{string, string} $currentPackageV
+     * @param array{string, string} $targetPackageV
      */
     public function testCheckUpgradeTestNotNecessary(array $currentPackageV, array $targetPackageV): void
     {
@@ -96,6 +105,9 @@ class InstallerTest extends TestCase
 
     /**
      * @dataProvider validUpgradeProvider
+     *
+     * @param array{string, string} $currentPackageV
+     * @param array{string, string} $targetPackageV
      */
     public function testCheckUpgradeTestNecessary(array $currentPackageV, array $targetPackageV): void
     {

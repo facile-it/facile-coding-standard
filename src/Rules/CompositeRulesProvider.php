@@ -28,11 +28,6 @@ final class CompositeRulesProvider implements RulesProviderInterface
         $this->providers[] = $provider;
     }
 
-    /**
-     * Get rules.
-     *
-     * @return array<string, mixed>
-     */
     public function getRules(): array
     {
         $rules = [];

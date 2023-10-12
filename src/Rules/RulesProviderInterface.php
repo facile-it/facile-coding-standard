@@ -9,7 +9,7 @@ interface RulesProviderInterface
     /**
      * Get rules.
      *
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>|bool>
      */
     public function getRules(): array;
 }

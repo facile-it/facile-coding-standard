@@ -10,6 +10,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 
+/**
+ * @psalm-suppress InternalClass
+ * @psalm-suppress InternalMethod
+ */
 abstract class AbstractRulesProviderTest extends TestCase
 {
     abstract protected function shouldBeRisky(): bool;
@@ -39,7 +43,7 @@ abstract class AbstractRulesProviderTest extends TestCase
     public function testRuleSetsAreRiskyAsExpected(string $ruleSetName): void
     {
         $ruleSet = new RuleSet([$ruleSetName => true]);
-        foreach ($ruleSet->getRules() as $ruleName => $config) {
+        foreach (array_keys($ruleSet->getRules()) as $ruleName) {
             $fixer = $this->getFixerByName($ruleName);
 
             $this->assertSame(
@@ -95,7 +99,7 @@ abstract class AbstractRulesProviderTest extends TestCase
      */
     public static function ruleNamesDataProvider(): \Generator
     {
-        foreach (static::getRulesProvider()->getRules() as $ruleName => $config) {
+        foreach (array_keys(static::getRulesProvider()->getRules()) as $ruleName) {
             if (! str_starts_with($ruleName, '@')) {
                 yield $ruleName => [$ruleName];
             }
@@ -107,7 +111,7 @@ abstract class AbstractRulesProviderTest extends TestCase
      */
     public static function ruleSetNamesDataProvider(): \Generator
     {
-        foreach (static::getRulesProvider()->getRules() as $ruleSetName => $config) {
+        foreach (array_keys(static::getRulesProvider()->getRules()) as $ruleSetName) {
             if (str_starts_with($ruleSetName, '@')) {
                 yield $ruleSetName => [$ruleSetName];
             }
@@ -126,10 +130,10 @@ abstract class AbstractRulesProviderTest extends TestCase
 
     protected function assertAllRulesAreRisky(bool $expected, RulesProviderInterface $rulesProvider): void
     {
-        $rules = $rulesProvider->getRules();
+        $rules = array_keys($rulesProvider->getRules());
         $this->assertNotEmpty($rules, 'No rules from the provider!');
 
-        foreach ($rules as $ruleName => $config) {
+        foreach ($rules as $ruleName) {
             if (str_starts_with($ruleName, '@')) {
                 continue;
             }
@@ -198,7 +202,7 @@ abstract class AbstractRulesProviderTest extends TestCase
 
     private function getFixerByName(string $rule): FixerInterface
     {
-        /** @var array<string, FixerInterface> $fixers */
+        /** @var array<string, FixerInterface>|null $fixers */
         static $fixers;
 
         if (! isset($fixers)) {
@@ -219,20 +223,21 @@ abstract class AbstractRulesProviderTest extends TestCase
 
     private function ruleIsMappedAsDeprecated(string $ruleName): bool
     {
-        /** @var list<string> $deprecatedRules */
+        /** @var list<string>|null $deprecatedRules */
         static $deprecatedRules;
 
         if (! isset($deprecatedRules)) {
             $reflectionClassConstant = new \ReflectionClassConstant(AbstractRuleProvider::class, 'DEPRECATION_MAP');
+            /** @var array<string, array<string, string>> $deprecationMap */
             $deprecationMap = $reflectionClassConstant->getValue();
-            $this->assertIsArray($deprecationMap);
-            $this->assertNotEmpty($deprecationMap);
 
-            foreach ($deprecationMap as $version => $map) {
-                foreach ($map as $deprecatedRule => $newRule) {
+            foreach ($deprecationMap as $map) {
+                foreach (array_keys($map) as $deprecatedRule) {
                     $deprecatedRules[] = $deprecatedRule;
                 }
             }
+
+            $this->assertNotEmpty($deprecatedRules);
         }
 
         return \in_array($ruleName, $deprecatedRules);
@@ -240,6 +245,7 @@ abstract class AbstractRulesProviderTest extends TestCase
 
     private function isNotInPsr12(string $ruleName): bool
     {
+        /** @var RuleSet|null $psr12 */
         static $psr12;
 
         $psr12 ??= new RuleSet([

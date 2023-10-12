@@ -47,7 +47,10 @@ class RuleListTest extends TestCase
                 continue;
             }
 
-            yield $method->getName() => [$method->invoke(null)];
+            /** @var string[] $result */
+            $result = $method->invoke(null);
+
+            yield $method->getName() => [$result];
         }
     }
 }
