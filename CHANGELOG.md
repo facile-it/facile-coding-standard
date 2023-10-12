@@ -82,7 +82,6 @@ The following rules or groups have been added to the default rule set:
 
 ### Changes to existing rules
 - `phpdoc_align` is now enabled with config `left`
-- `trailing_comma_in_multiline` now applies on `'arguments', 'match', 'parameters'` elements too, but only under PHP 8+
 - `ordered_imports` is now falling back to PER-CS configuration, which is not the same as the default one
 
 ### Removed rules

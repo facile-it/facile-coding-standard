@@ -151,11 +151,6 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'whitespace_after_comma_in_array' => true,
         ];
 
-        if (\PHP_MAJOR_VERSION >= 8 && $this->isAtLeastVersion('3.9.1')) {
-            /** @psalm-suppress PossiblyInvalidArrayAssignment */
-            $rules['trailing_comma_in_multiline']['elements'] = ['arguments', 'arrays', 'match', 'parameters'];
-        }
-
         return $this->filterRules($rules);
     }
 }
