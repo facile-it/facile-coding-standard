@@ -172,6 +172,7 @@ class RulesList
             'php_unit_data_provider_name',
             'php_unit_strict',
             'php_unit_test_annotation',
+            'phpdoc_readonly_class_comment_to_keyword',
             'phpdoc_return_self_reference',
             'phpdoc_to_param_type',
             'phpdoc_to_property_type',
