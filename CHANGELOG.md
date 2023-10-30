@@ -97,6 +97,7 @@ Multiple rules are removed (but still applied) since they're already covered in 
 - `return_type_declaration`
 - `short_scalar_cast`
 - `ternary_operator_spaces`
+- `unary_operator_spaces`
 
 ## [0.5.3] - 2023-09-13
 - Disable "phpdoc_to_comment" option to avoid false positives with PHPStan @var helpers #46
