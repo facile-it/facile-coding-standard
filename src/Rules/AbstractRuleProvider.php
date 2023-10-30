@@ -69,6 +69,14 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
     ];
 
     /**
+     * This array maps the usage of rules into rulesets (like PER-CS) in new versions of PHP-CS-Fixer, hence avoiding the
+     * overriding.
+     */
+    private const INCLUSION_MAP = [
+        '3.36.0' => ['unary_operator_spaces'],
+    ];
+
+    /**
      * Filter rules, with a dynamic filter depending on the PHP-CS-Fixer version in use.
      *
      * @template T of array<string, mixed>
@@ -85,6 +93,14 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
                     unset($rules[$oldRule]);
                 } else {
                     unset($rules[$newRule]);
+                }
+            }
+        }
+
+        foreach (self::INCLUSION_MAP as $version => $newRules) {
+            if ($this->isAtLeastVersion($version)) {
+                foreach ($newRules as $name) {
+                    unset($rules[$name]);
                 }
             }
         }
