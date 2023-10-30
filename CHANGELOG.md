@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## [1.0.0] - TBA
+## [1.0.0] - 2023-10-30
 - Bumping minimum PHP version required to 7.4
 - Bumping minimum PHP-CS-Fixer version required to 3.4
 - Dynamically replace deprecated rules depending on the PHP-CS-Fixer version in use
