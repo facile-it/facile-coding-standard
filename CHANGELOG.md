@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+## [1.0.1] - TBA
+- Move `long_to_shorthand_operator` to `RiskyRulesProvider` (#62)
+
 ## [1.0.0] - 2023-10-30
 - Bumping minimum PHP version required to 7.4
 - Bumping minimum PHP-CS-Fixer version required to 3.4
