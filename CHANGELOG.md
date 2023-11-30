@@ -1,7 +1,8 @@
 Changelog
 ---------
 
-## [1.0.1] - TBA
+## [1.0.1] - 2023-11-30
+- Allow Symfony 7
 - Move `long_to_shorthand_operator` to `RiskyRulesProvider` (#62)
 
 ## [1.0.0] - 2023-10-30
