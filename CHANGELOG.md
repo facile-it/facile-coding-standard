@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## [1.1.0] - 2023-12-28
+- Add new risky `class_keyword` rule (#64)
+  NB: the rule is experimental, and relies on runtime autoload to determine if a FCQN refers to an existing class
+
 ## [1.0.1] - 2023-11-30
 - Allow Symfony 7
 - Move `long_to_shorthand_operator` to `RiskyRulesProvider` (#62)
