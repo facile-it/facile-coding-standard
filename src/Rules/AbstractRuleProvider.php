@@ -66,6 +66,7 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
         '3.30.0' => ['attribute_empty_parentheses'],
         '3.32.0' => ['no_unneeded_braces'],
         '3.33.0' => ['native_type_declaration_casing'],
+        '3.42.0' => ['class_keyword'],
     ];
 
     /**

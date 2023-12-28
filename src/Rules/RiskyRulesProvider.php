@@ -12,6 +12,7 @@ final class RiskyRulesProvider extends AbstractRuleProvider
             '@PER-CS2.0:risky' => true,
             '@PSR12:risky' => true,
             'array_push' => true,
+            'class_keyword' => true,
             'combine_nested_dirname' => true,
             'dir_constant' => true,
             'ereg_to_preg' => true,
