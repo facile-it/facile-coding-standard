@@ -101,6 +101,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'not_operator_with_successor_space' => true,
             'normalize_index_brace' => true,
             'nullable_type_declaration' => true,
+            'numeric_literal_separator' => true,
             'object_operator_without_whitespace' => true,
             'octal_notation' => true,
             'operator_linebreak' => true,
