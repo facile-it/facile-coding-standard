@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## [1.2.0] - 2024-01-22
+- Add new `numeric_literal_separator` rule (#65)
+- Map new heredoc rules as "to be discussed" (`heredoc_closing_marker`, `multiline_string_to_heredoc`) 
+
 ## [1.1.0] - 2023-12-28
 - Add new risky `class_keyword` rule (#64)
   NB: the rule is experimental, and relies on runtime autoload to determine if a FCQN refers to an existing class
