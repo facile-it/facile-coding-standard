@@ -60,6 +60,8 @@ class RulesList
             'escape_implicit_backslashes',
             'explicit_indirect_variable',
             'global_namespace_import',
+            'heredoc_closing_marker', // possibly undesired?
+            'multiline_string_to_heredoc', // possibly undesired?
             'multiline_whitespace_before_semicolons', // with new_line_for_chained_calls
             'ordered_types',
             'php_unit_method_casing',
