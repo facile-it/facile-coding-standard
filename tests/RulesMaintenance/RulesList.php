@@ -68,6 +68,7 @@ class RulesList
             'php_unit_test_case_static_method_calls',
             'self_static_accessor',
             'single_line_comment_style',
+            'string_implicit_backslashes',
         ];
     }
 
@@ -101,6 +102,7 @@ class RulesList
             'php_unit_test_class_requires_covers',
             'phpdoc_add_missing_param_annotation',
             'phpdoc_line_span',
+            'phpdoc_list_type',
             'phpdoc_order_by_value',
             'phpdoc_to_comment', // disabled in 0.5.3
             'phpdoc_types_order',
