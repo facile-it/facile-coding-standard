@@ -23,9 +23,9 @@ class AutoloadPathProvider
 
     public function __construct(?string $composerFile = null, ?string $projectRoot = null, bool $dev = true)
     {
-        $this->composerPath = $composerFile ?: trim(getenv('COMPOSER') ?: '') ?: './composer.json';
+        $this->composerPath = $composerFile ?? $this->getComposerFilePath();
 
-        $projectRootPath = $projectRoot ?: realpath(\dirname($this->composerPath));
+        $projectRootPath = $projectRoot ?? realpath(\dirname($this->composerPath));
 
         if (false === $projectRootPath) {
             throw new \RuntimeException('Unable to get project root.');
@@ -33,6 +33,17 @@ class AutoloadPathProvider
 
         $this->projectRoot = rtrim($projectRootPath, '/\\');
         $this->dev = $dev;
+    }
+
+    private function getComposerFilePath(): string
+    {
+        $path = getenv('COMPOSER');
+
+        if (\is_string($path) && $path !== '') {
+            return trim($path);
+        }
+
+        return './composer.json';
     }
 
     /**

@@ -63,6 +63,14 @@ class AutoloadPathProviderTest extends TestCase
         $this->assertSame($expected, $provider->getPaths());
     }
 
+    public function testGetPathsWithDefault(): void
+    {
+        $provider = new AutoloadPathProvider();
+
+        $expected = ['src/', 'tests/'];
+        $this->assertSame($expected, $provider->getPaths());
+    }
+
     public function testGetPathsWithWrongComposerJsonPath(): void
     {
         $provider = new AutoloadPathProvider(__DIR__ . '/composer.json');
