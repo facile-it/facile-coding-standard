@@ -128,22 +128,6 @@ abstract class AbstractRulesProviderTest extends TestCase
         $this->assertEquals($sortedRules, $rules, 'Rules are not alphabetically sorted');
     }
 
-    protected function assertAllRulesAreRisky(bool $expected, RulesProviderInterface $rulesProvider): void
-    {
-        $rules = array_keys($rulesProvider->getRules());
-        $this->assertNotEmpty($rules, 'No rules from the provider!');
-
-        foreach ($rules as $ruleName) {
-            if (str_starts_with($ruleName, '@')) {
-                continue;
-            }
-
-            $fixer = $this->getFixerByName($ruleName);
-
-            $this->assertSame($expected, $fixer->isRisky(), 'Fixer is risky: ' . $ruleName);
-        }
-    }
-
     private function assertConfigurationIsSameAsRuleSet(RuleSet $ruleSet, string $ruleName): void
     {
         $fixer = $this->getFixerByName($ruleName);

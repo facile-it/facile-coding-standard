@@ -41,6 +41,8 @@ class Installer
     private $phpCsWriter;
 
     /**
+     * @psalm-suppress PossiblyUnusedParam
+     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -133,6 +135,10 @@ class Installer
         return true;
     }
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     * @psalm-suppress PossiblyUnusedParam
+     */
     public function setPhpCsWriter(PhpCsConfigWriterInterface $phpCsWriter): void
     {
         $this->phpCsWriter = $phpCsWriter;
