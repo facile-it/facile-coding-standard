@@ -55,9 +55,9 @@ class Installer
         // Get composer.json location
         $composerFile = $composerPath ?? Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary
-        $projectRootPath = $projectRoot ?: realpath(\dirname($composerFile));
+        $projectRootPath = $projectRoot ?? realpath(\dirname($composerFile));
 
-        if (! $projectRootPath) {
+        if ($projectRootPath === false) {
             throw new \RuntimeException('Unable to get project root.');
         }
 
