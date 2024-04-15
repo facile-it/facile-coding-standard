@@ -66,6 +66,7 @@ abstract class AbstractRulesProviderTest extends TestCase
         $allowedOverrides = [
             'binary_operator_spaces',
             'single_class_element_per_statement',
+            'trailing_comma_in_multiline', // see #72
         ];
 
         if (\in_array($ruleName, $allowedOverrides)) {
