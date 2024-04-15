@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## [1.3.0] - TBA
+- Drop support for Symfony below 5.4 (#72)
+- Require PHP-CS-Fixer 3.53+ (#72)
+
 ## [1.2.0] - 2024-01-22
 - Add new `numeric_literal_separator` rule (#65)
 - Map new heredoc rules as "to be discussed" (`heredoc_closing_marker`, `multiline_string_to_heredoc`) 

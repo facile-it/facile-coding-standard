@@ -141,7 +141,6 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'standardize_not_equals' => true,
             'switch_continue_to_break' => true,
             'ternary_to_null_coalescing' => true,
-            'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
             'types_spaces' => true,
