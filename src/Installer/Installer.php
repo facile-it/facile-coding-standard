@@ -51,7 +51,7 @@ class Installer
         Composer $composer,
         ?string $projectRoot = null,
         ?string $composerPath = null,
-        ?PhpCsConfigWriterInterface $phpCsWriter = null
+        ?PhpCsConfigWriterInterface $phpCsWriter = null,
     ) {
         $this->io = $io;
         // Get composer.json location
@@ -100,7 +100,7 @@ class Installer
             '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
             sprintf(
                 '  <question>%s</question>',
-                'Do you want to write the new configuration? (Y/n)'
+                'Do you want to write the new configuration? (Y/n)',
             ),
         ];
 
@@ -170,7 +170,7 @@ class Installer
         $question = [
             sprintf(
                 "  <question>%s</question>\n",
-                'Do you want to create the CS configuration in your project root? (Y/n)'
+                'Do you want to create the CS configuration in your project root? (Y/n)',
             ),
             '  <info>It will create a .php-cs-fixer.dist.php file in your project root directory.</info> ',
         ];
@@ -205,7 +205,7 @@ class Installer
         $question = [
             sprintf(
                 "  <question>%s</question>\n",
-                'Do you want to add scripts to composer.json? (Y/n)'
+                'Do you want to add scripts to composer.json? (Y/n)',
             ),
             '  <info>It will add two scripts:</info>',
             '  - <info>cs-check</info>',

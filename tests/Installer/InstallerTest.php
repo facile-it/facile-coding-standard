@@ -92,7 +92,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $io->isInteractive()
@@ -123,7 +123,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $io->isInteractive()
@@ -149,7 +149,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $io->isInteractive()
@@ -179,7 +179,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $io->isInteractive()
@@ -215,7 +215,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
         $installer->requestCreateCsConfig();
     }
@@ -238,7 +238,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $installer->requestCreateCsConfig();
@@ -264,7 +264,7 @@ class InstallerTest extends TestCase
             $composer->reveal(),
             $this->projectRoot,
             $this->composerFilePath,
-            $phpCsWriter->reveal()
+            $phpCsWriter->reveal(),
         );
 
         $installer->requestCreateCsConfig();

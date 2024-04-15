@@ -44,7 +44,7 @@ class AutoloadPathProviderTest extends TestCase
         $provider = new AutoloadPathProvider(
             $this->composerFilePath,
             $this->projectRoot,
-            true
+            true,
         );
 
         $expected = ['src/', 'tests/'];
@@ -56,7 +56,7 @@ class AutoloadPathProviderTest extends TestCase
         $provider = new AutoloadPathProvider(
             $this->composerFilePath,
             $this->projectRoot,
-            false
+            false,
         );
 
         $expected = ['src/'];
@@ -86,7 +86,7 @@ class AutoloadPathProviderTest extends TestCase
         $provider = new AutoloadPathProvider(
             $this->composerFilePath,
             $this->projectRoot,
-            false
+            false,
         );
 
         file_put_contents($this->composerFilePath, '');
