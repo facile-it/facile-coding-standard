@@ -143,6 +143,7 @@ class RulesList
     public static function getBestHandledWithRectorRules(): array
     {
         return [
+            'php_unit_attributes',
             'php_unit_no_expectation_annotation',
             'regular_callable_call',
             'simplified_if_return',
