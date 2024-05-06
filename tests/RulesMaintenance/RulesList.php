@@ -63,6 +63,7 @@ class RulesList
             'heredoc_closing_marker', // possibly undesired?
             'multiline_string_to_heredoc', // possibly undesired?
             'multiline_whitespace_before_semicolons', // with new_line_for_chained_calls
+            'ordered_attributes',
             'ordered_types',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
