@@ -44,7 +44,7 @@ class CreateConfigCommandTest extends TestCase
         $writer->writeConfigFile(
             '.php-cs-fixer.dist.php',
             $noDev,
-            $noRisky
+            $noRisky,
         )
             ->shouldBeCalled();
 
