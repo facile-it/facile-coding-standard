@@ -98,7 +98,7 @@ class Installer
 
         $question = [
             '  <error>You are upgrading "' . $currentPackage->getPrettyName() . '" with possible BC breaks.</error>',
-            sprintf(
+            \sprintf(
                 '  <question>%s</question>',
                 'Do you want to write the new configuration? (Y/n)'
             ),
@@ -168,7 +168,7 @@ class Installer
         }
 
         $question = [
-            sprintf(
+            \sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to create the CS configuration in your project root? (Y/n)'
             ),
@@ -203,7 +203,7 @@ class Installer
         }
 
         $question = [
-            sprintf(
+            \sprintf(
                 "  <question>%s</question>\n",
                 'Do you want to add scripts to composer.json? (Y/n)'
             ),
@@ -226,9 +226,9 @@ class Installer
         foreach ($scripts as $key => $command) {
             if (isset($this->composerDefinition['scripts'][$key]) && $this->composerDefinition['scripts'][$key] !== $command) {
                 $this->io->write([
-                    sprintf('  <error>Another script "%s" exists!</error>', $key),
+                    \sprintf('  <error>Another script "%s" exists!</error>', $key),
                     '  If you want, you can replace it manually with:',
-                    sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
+                    \sprintf("\n  <comment>\"%s\": \"%s\"</comment>", $key, $command),
                 ]);
                 continue;
             }

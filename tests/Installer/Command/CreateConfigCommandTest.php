@@ -29,6 +29,7 @@ class CreateConfigCommandTest extends TestCase
 
     /**
      * @dataProvider executeProvider
+     * @param list<string> $args
      *
      * @throws \Exception
      */
@@ -54,7 +55,7 @@ class CreateConfigCommandTest extends TestCase
     }
 
     /**
-     * @return array{string[], bool, bool}[]
+     * @return array{list<string>, bool, bool}[]
      */
     public static function executeProvider(): array
     {
