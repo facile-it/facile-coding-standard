@@ -147,14 +147,15 @@ abstract class AbstractRulesProviderTest extends TestCase
         $rulesProvider = static::getRulesProvider();
         $ruleConfiguration = $rulesProvider->getRules()[$ruleName];
         $ruleSetConfiguration = $ruleSet->getRuleConfiguration($ruleName);
-        $defaultConfiguration = $fixer->getConfigurationDefinition()->resolve([]);
+        $defaultConfiguration = $this->getPerCsConfigurationFor($fixer)
+            ?? $fixer->getConfigurationDefinition()->resolve([]);
         $this->assertNotEmpty($defaultConfiguration, 'Empty default configuration?');
 
-        if ($ruleConfiguration === true) {
-            return;
-        }
-
         if ($ruleSetConfiguration === null) {
+            if ($ruleConfiguration === true) {
+                return;
+            }
+
             $this->assertEquals($defaultConfiguration, $ruleConfiguration, \sprintf(
                 'Ruleset relies on default configuration for rule %s, but it is being overridden',
                 $ruleName
@@ -247,5 +248,21 @@ abstract class AbstractRulesProviderTest extends TestCase
         ]);
 
         return ! $psr12->hasRule($ruleName);
+    }
+
+    private function getPerCsConfigurationFor(FixerInterface $fixer): ?array
+    {
+        /** @var RuleSet|null $perCs */
+        static $perCs;
+
+        $perCs ??= new RuleSet([
+            '@PER-CS2.0' => true,
+        ]);
+
+        if (! $perCs->hasRule($fixer->getName())) {
+            return null;
+        }
+
+        return $perCs->getRuleConfiguration($fixer->getName());
     }
 }
