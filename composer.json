@@ -32,7 +32,7 @@
         "mikey179/vfsstream": "^1.6.8",
         "phpspec/prophecy": "^1.10",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.5.28",
+        "phpunit/phpunit": "^9.5.28 || ^10.5.36",
         "psalm/plugin-phpunit": "^0.19.0",
         "vimeo/psalm": "^5.23"
     },
