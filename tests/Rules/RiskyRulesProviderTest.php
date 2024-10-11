@@ -6,7 +6,7 @@ namespace Facile\CodingStandardsTest\Rules;
 
 use Facile\CodingStandards\Rules\RiskyRulesProvider;
 
-class RiskyRulesProviderTest extends AbstractRulesProviderTest
+class RiskyRulesProviderTest extends AbstractRulesProviderTestCase
 {
     protected static function getRulesProvider(): RiskyRulesProvider
     {
