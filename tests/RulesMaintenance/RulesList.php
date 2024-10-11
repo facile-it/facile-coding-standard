@@ -44,6 +44,7 @@ class RulesList
     {
         return [
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
+            'php_unit_assert_new_names', // requires PHPUnit 9.1
         ];
     }
 

@@ -12,6 +12,7 @@ $providers = [
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
 
 $config = new PhpCsFixer\Config('facile-it/facile-coding-standard');
+$config->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect());
 $config->setRules($rulesProvider->getRules());
 
 $config->setUsingCache(true);
