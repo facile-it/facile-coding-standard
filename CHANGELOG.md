@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+## [1.3.0] - TBA
+- Drop support to Composer 1.x (#77)
+
 ## [1.2.0] - 2024-01-22
 - Add new `numeric_literal_separator` rule (#65)
 - Map new heredoc rules as "to be discussed" (`heredoc_closing_marker`, `multiline_string_to_heredoc`) 
