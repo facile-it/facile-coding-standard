@@ -29,6 +29,7 @@ class CreateConfigCommandTest extends TestCase
 
     /**
      * @dataProvider executeProvider
+     *
      * @param list<string> $args
      *
      * @throws \Exception

@@ -90,7 +90,7 @@ abstract class AbstractRulesProviderTest extends TestCase
             $recentlyIncludedRules = [
                 'single_space_around_construct', // since 3.64.0 (#8171)
             ];
-            if (in_array($ruleName, $recentlyIncludedRules, true)) {
+            if (\in_array($ruleName, $recentlyIncludedRules, true)) {
                 $this->markTestSkipped(\sprintf('Rule %s was included in PER-CS ruleset recently, we can drop it only in the future', $ruleName));
             }
 
@@ -155,7 +155,6 @@ abstract class AbstractRulesProviderTest extends TestCase
         }
 
         if ($ruleSetConfiguration === null) {
-
             $this->assertEquals($defaultConfiguration, $ruleConfiguration, \sprintf(
                 'Ruleset relies on default configuration for rule %s, but it is being overridden',
                 $ruleName
