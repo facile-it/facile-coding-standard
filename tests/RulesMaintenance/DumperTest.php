@@ -18,7 +18,7 @@ class DumperTest extends TestCase
     }
 
     /**
-     * This test may break a lot when new rules are introducted in PHP-CS-Fixer
+     * This test may break a lot when new rules are introduced in PHP-CS-Fixer
      * An easy fix is to add them to {@see RulesList::getToBeDiscussedRules()}.
      */
     public function testNoRuleIsUnlisted(): void
