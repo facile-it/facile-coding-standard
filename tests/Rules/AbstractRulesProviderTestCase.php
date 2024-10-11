@@ -14,7 +14,7 @@ use PhpCsFixer\RuleSet\RuleSet;
  * @psalm-suppress InternalClass
  * @psalm-suppress InternalMethod
  */
-abstract class AbstractRulesProviderTest extends TestCase
+abstract class AbstractRulesProviderTestCase extends TestCase
 {
     abstract protected function shouldBeRisky(): bool;
 

@@ -8,7 +8,7 @@ use Facile\CodingStandards\Rules\DefaultRulesProvider;
 
 use const false;
 
-class DefaultRulesProviderTest extends AbstractRulesProviderTest
+class DefaultRulesProviderTest extends AbstractRulesProviderTestCase
 {
     protected static function getRulesProvider(): DefaultRulesProvider
     {
