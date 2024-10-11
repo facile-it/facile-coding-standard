@@ -1,5 +1,6 @@
 Changelog
 ---------
+- Add PHP 8.4 support (#74)
 
 ## [1.2.0] - 2024-01-22
 - Add new `numeric_literal_separator` rule (#65)
