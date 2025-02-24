@@ -66,6 +66,7 @@ class RulesList
             'multiline_whitespace_before_semicolons', // with new_line_for_chained_calls
             'ordered_attributes',
             'ordered_types',
+            'php_unit_data_provider_method_order',
             'php_unit_method_casing',
             'php_unit_test_case_static_method_calls',
             'self_static_accessor',
