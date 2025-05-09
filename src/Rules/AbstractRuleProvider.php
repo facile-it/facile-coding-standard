@@ -34,6 +34,9 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
             'curly_braces_position' => 'braces_position',
             'new_with_braces' => 'new_with_parentheses',
         ],
+        '3.33.0' => [
+            'native_function_type_declaration_casing' => 'native_type_declaration_casing',
+        ],
     ];
 
     /**
