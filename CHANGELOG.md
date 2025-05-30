@@ -1,5 +1,8 @@
 Changelog
 ---------
+## [1.3.1] - 2025-05-31
+- Fix deprecation of `native_function_type_declaration_casing` (#80)
+
 ## [1.3.0] - 2024-11-07
 - Add PHP 8.4 support (#74)
 - Drop support to Composer 1.x (#77)
