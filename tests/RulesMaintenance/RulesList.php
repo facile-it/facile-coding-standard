@@ -44,6 +44,8 @@ class RulesList
     {
         return [
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
+            'multiline_promoted_properties',
+            'new_expression_parentheses',
             'php_unit_assert_new_names', // requires PHPUnit 9.1
         ];
     }
@@ -114,6 +116,7 @@ class RulesList
             'single_line_throw',
             'single_space_after_construct',
             'standardize_increment',
+            'static_private_method',
             'yield_from_array_to_yields',
             'yoda_style',
         ];
