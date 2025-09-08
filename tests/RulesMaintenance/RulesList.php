@@ -139,6 +139,7 @@ class RulesList
             'no_blank_lines_before_namespace',
             'phpdoc_no_access',
             'phpdoc_no_empty_return', // we already want no_superfluous_phpdoc_tags
+            'phpdoc_tag_no_named_arguments',
         ];
     }
 
