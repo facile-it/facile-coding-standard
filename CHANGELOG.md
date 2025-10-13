@@ -1,5 +1,10 @@
 Changelog
 ---------
+## [1.4.0] - 2025-10-13
+- Adopt PER-CS 3.0 (in place of 2.0 and PSR-12)
+- Bump minimum version of PHP-CS-Fixer to 3.88
+- Bump minimum version of `symfony/console` to 5.4
+
 ## [1.3.1] - 2025-05-31
 - Fix deprecation of `native_function_type_declaration_casing` (#80)
 
