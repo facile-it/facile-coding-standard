@@ -31,6 +31,8 @@ jobs:
             deps: "lowest"
           - php-version: "8.4"
             composer-options: "--prefer-dist --ignore-platform-req=php+"
+          - php-version: "8.5"
+            composer-options: "--prefer-dist --ignore-platform-req=php+"
             
 
     steps:
