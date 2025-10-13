@@ -9,8 +9,7 @@ final class DefaultRulesProvider extends AbstractRuleProvider
     public function getRules(): array
     {
         $rules = [
-            '@PER-CS2.0' => true,
-            '@PSR12' => true,
+            '@PER-CS3x0' => true,
             '@DoctrineAnnotation' => true,
             'align_multiline_comment' => true,
             'array_indentation' => true,
