@@ -9,14 +9,9 @@ final class DefaultRulesProvider extends AbstractRuleProvider
     public function getRules(): array
     {
         $rules = [
-            '@PER-CS2.0' => true,
-            '@PSR12' => true,
+            '@PER-CS3x0' => true,
             '@DoctrineAnnotation' => true,
             'align_multiline_comment' => true,
-            'array_indentation' => true,
-            'array_syntax' => [
-                'syntax' => 'short',
-            ],
             'assign_null_coalescing_to_coalesce_equal' => true,
             'attribute_empty_parentheses' => true,
             'backtick_to_shell_exec' => true,
@@ -31,15 +26,11 @@ final class DefaultRulesProvider extends AbstractRuleProvider
                     'return',
                 ],
             ],
-            'cast_spaces' => true,
             'class_attributes_separation' => true,
             'class_reference_name_casing' => true,
             'combine_consecutive_issets' => true,
             'combine_consecutive_unsets' => true,
             'compact_nullable_typehint' => true,
-            'concat_space' => [
-                'spacing' => 'one',
-            ],
             'curly_braces_position' => true,
             'declare_parentheses' => true,
             'empty_loop_body' => true,
@@ -100,11 +91,9 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'no_whitespace_before_comma_in_array' => true,
             'not_operator_with_successor_space' => true,
             'normalize_index_brace' => true,
-            'nullable_type_declaration' => true,
             'numeric_literal_separator' => true,
             'object_operator_without_whitespace' => true,
             'octal_notation' => true,
-            'operator_linebreak' => true,
             'phpdoc_align' => [
                 'align' => 'left',
             ],
@@ -134,7 +123,6 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
             'single_line_comment_spacing' => true,
-            'single_line_empty_body' => true,
             'single_quote' => true,
             'single_space_around_construct' => true,
             'space_after_semicolon' => true,
@@ -146,7 +134,6 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
-            'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
         ];
