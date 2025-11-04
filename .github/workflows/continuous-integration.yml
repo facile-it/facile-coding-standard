@@ -33,7 +33,10 @@ jobs:
             composer-options: "--prefer-dist --ignore-platform-req=php+"
           - php-version: "8.5"
             composer-options: "--prefer-dist --ignore-platform-req=php+"
-            
+          - php-version: "8.4"
+            composer-options: "--prefer-dist --ignore-platform-req=php+"
+            composer-minimum-stability: "dev"
+            symfony-version: "8.0.x-dev"
 
     steps:
       - name: "Checkout"
@@ -48,11 +51,23 @@ jobs:
           coverage: "pcov"
           ini-values: "zend.assertions=1"
 
+      - name: Configure Composer minimum-stability
+        if: matrix.composer-minimum-stability
+        run: composer config minimum-stability ${{ matrix.composer-minimum-stability }}
+
+      - name: Install Symfony Flex
+        if: matrix.symfony-version
+        run: |
+            composer global config --no-plugins allow-plugins.symfony/flex true
+            composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
       - name: "Install dependencies"
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.deps }}
           composer-options: ${{ matrix.composer-options }}
+        env:
+            SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
       - name: "Run PHPUnit"
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
