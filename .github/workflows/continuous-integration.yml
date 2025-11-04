@@ -33,7 +33,10 @@ jobs:
             composer-options: "--prefer-dist --ignore-platform-req=php+"
           - php-version: "8.5"
             composer-options: "--prefer-dist --ignore-platform-req=php+"
-            
+          - php-version: "8.4"
+            composer-options: "--prefer-dist --ignore-platform-req=php+"
+            composer-minimum-stability: "beta"
+            symfony-version: "^8.0.0-BETA1"
 
     steps:
       - name: "Checkout"
@@ -47,12 +50,20 @@ jobs:
           php-version: "${{ matrix.php-version }}"
           coverage: "pcov"
           ini-values: "zend.assertions=1"
+          tools: flex
+
+      - name: Configure Composer minimum-stability
+        if: matrix.composer-minimum-stability
+        run: composer config minimum-stability ${{ matrix.composer-minimum-stability }}
+
 
       - name: "Install dependencies"
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.deps }}
           composer-options: ${{ matrix.composer-options }}
+        env:
+            SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
       - name: "Run PHPUnit"
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
