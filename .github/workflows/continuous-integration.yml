@@ -22,6 +22,7 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         deps:
           - "highest"
         composer-options:
@@ -29,8 +30,6 @@ jobs:
         include:
           - php-version: "7.4"
             deps: "lowest"
-          - php-version: "8.4"
-            composer-options: "--prefer-dist --ignore-platform-req=php+"
           - php-version: "8.5"
             composer-options: "--prefer-dist --ignore-platform-req=php+"
           - php-version: "8.4"
@@ -56,6 +55,9 @@ jobs:
         if: matrix.composer-minimum-stability
         run: composer config minimum-stability ${{ matrix.composer-minimum-stability }}
 
+      - name: Remove Psalm during tests
+        if: matrix.composer-minimum-stability
+        run: composer remove --dev --no-update vimeo/psalm psalm/plugin-phpunit
 
       - name: "Install dependencies"
         uses: ramsey/composer-install@v3
