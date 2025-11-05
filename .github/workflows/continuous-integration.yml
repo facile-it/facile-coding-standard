@@ -26,14 +26,14 @@ jobs:
         deps:
           - "highest"
         composer-options:
-          - "--prefer-dist"
+          - ""
         include:
           - php-version: "7.4"
             deps: "lowest"
           - php-version: "8.5"
-            composer-options: "--prefer-dist --ignore-platform-req=php+"
+            composer-options: "--ignore-platform-req=php+"
           - php-version: "8.4"
-            composer-options: "--prefer-dist --ignore-platform-req=php+"
+            composer-options: "--ignore-platform-req=php+"
             composer-minimum-stability: "beta"
             symfony-version: "^8.0.0-BETA1"
 
@@ -63,7 +63,7 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.deps }}
-          composer-options: ${{ matrix.composer-options }}
+          composer-options: "--prefer-dist ${{ matrix.composer-options }}"
         env:
             SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
