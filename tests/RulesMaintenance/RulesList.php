@@ -75,6 +75,7 @@ class RulesList
             'self_static_accessor',
             'single_line_comment_style',
             'string_implicit_backslashes',
+            'stringable_for_to_string',
         ];
     }
 
