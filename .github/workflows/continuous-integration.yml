@@ -23,19 +23,12 @@ jobs:
           - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
         deps:
           - "highest"
-        composer-options:
-          - ""
         include:
           - php-version: "7.4"
             deps: "lowest"
-          - php-version: "8.5"
-            composer-options: "--ignore-platform-req=php+"
-          - php-version: "8.4"
-            composer-options: "--ignore-platform-req=php+"
-            composer-minimum-stability: "beta"
-            symfony-version: "^8.0.0-BETA1"
 
     steps:
       - name: "Checkout"
@@ -51,10 +44,6 @@ jobs:
           ini-values: "zend.assertions=1"
           tools: flex
 
-      - name: Configure Composer minimum-stability
-        if: matrix.composer-minimum-stability
-        run: composer config minimum-stability ${{ matrix.composer-minimum-stability }}
-
       - name: Remove Psalm during tests
         if: ${{ matrix.composer-minimum-stability || matrix.php-version == '8.4' }}
         run: composer remove --dev --no-update vimeo/psalm psalm/plugin-phpunit
@@ -63,9 +52,9 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.deps }}
-          composer-options: "--prefer-dist ${{ matrix.composer-options }}"
+          composer-options: "--prefer-dist"
         env:
-            SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
+          COMPOSER_NO_SECURITY_BLOCKING: "1"
 
       - name: "Run PHPUnit"
         run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
