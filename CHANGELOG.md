@@ -1,5 +1,8 @@
 Changelog
 ---------
+## [1.4.1] - 2025-12-05
+- Add Symfony 8 support (#84, thanks @Kocal)
+
 ## [1.4.0] - 2025-10-13
 - Adopt PER-CS 3.0 (in place of 2.0 and PSR-12)
 - Bump minimum version of PHP-CS-Fixer to 3.88
