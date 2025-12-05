@@ -45,7 +45,6 @@ jobs:
           tools: flex
 
       - name: Remove Psalm during tests
-        if: ${{ matrix.composer-minimum-stability || matrix.php-version == '8.4' }}
         run: composer remove --dev --no-update vimeo/psalm psalm/plugin-phpunit
 
       - name: "Install dependencies"
