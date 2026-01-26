@@ -46,8 +46,10 @@ class RulesList
             'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
             'multiline_promoted_properties',
             'new_expression_parentheses',
+            'no_redundant_readonly_property',
             'no_useless_printf',
             'php_unit_assert_new_names', // requires PHPUnit 9.1
+            'phpdoc_types_no_duplicates',
         ];
     }
 
@@ -180,6 +182,7 @@ class RulesList
             'fopen_flag_order',
             'fopen_flags',
             'mb_str_functions',
+            'modern_serialization_methods',
             'no_unset_on_property',
             'no_useless_nullsafe_operator',
             'nullable_type_declaration_for_default_null_value',
