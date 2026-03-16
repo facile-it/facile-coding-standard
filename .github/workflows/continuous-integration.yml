@@ -48,7 +48,7 @@ jobs:
         run: composer remove --dev --no-update vimeo/psalm psalm/plugin-phpunit
 
       - name: "Install dependencies"
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           dependency-versions: ${{ matrix.deps }}
           composer-options: "--prefer-dist"
@@ -85,7 +85,7 @@ jobs:
           php-version: "8.0"
 
       - name: "Install dependencies"
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
 
       - name: "Run Psalm"
         run: "vendor/bin/psalm"
