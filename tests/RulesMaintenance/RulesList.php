@@ -48,10 +48,10 @@ class RulesList
             'new_expression_parentheses',
             'no_redundant_readonly_property',
             'no_useless_printf',
-            'php_unit_assert_new_names', // requires PHPUnit 9.1
-            'phpdoc_types_no_duplicates',
             'no_whitespace_in_empty_array',
+            'php_unit_assert_new_names', // requires PHPUnit 9.1
             'phpdoc_no_duplicate_types',
+            'phpdoc_types_no_duplicates',
         ];
     }
 
