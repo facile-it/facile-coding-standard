@@ -1,7 +1,7 @@
 /vendor/
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
-/.phpunit.result.cache
+/.phpunit.cache
 /phpunit.xml
 composer.lock
 dump_rules.md
