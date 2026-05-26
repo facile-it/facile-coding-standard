@@ -9,7 +9,7 @@ final class CompositeRulesProvider implements RulesProviderInterface
     /**
      * @var RulesProviderInterface[]
      */
-    private $providers = [];
+    private array $providers = [];
 
     /**
      * CompositeRulesProvider constructor.

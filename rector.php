@@ -15,6 +15,6 @@ return RectorConfig::configure()
         phpunit: true
     )
     ->withImportNames(importShortClasses: false)
-    ->withTypeCoverageLevel(40)
-    ->withDeadCodeLevel(40)
-    ->withCodeQualityLevel(40);
+    ->withTypeCoverageLevel(60)
+    ->withDeadCodeLevel(60)
+    ->withCodeQualityLevel(60);

@@ -7,32 +7,23 @@ namespace Facile\CodingStandardsTest;
 use Facile\CodingStandards\AutoloadPathProvider;
 use Facile\CodingStandardsTest\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 
 class AutoloadPathProviderTest extends TestCase
 {
     private string $composerFilePath;
 
-    /**
-     * @var string
-     */
-    private $projectRoot;
-
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $vfsRoot;
+    private string $projectRoot;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->vfsRoot = vfsStream::setup();
+        $vfsRoot = vfsStream::setup();
 
-        $this->projectRoot = $this->vfsRoot->url();
-        $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
-        mkdir($this->vfsRoot->url() . '/src');
-        mkdir($this->vfsRoot->url() . '/tests');
+        $this->projectRoot = $vfsRoot->url();
+        $this->composerFilePath = $vfsRoot->url() . '/composer.json';
+        mkdir($vfsRoot->url() . '/src');
+        mkdir($vfsRoot->url() . '/tests');
         file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 

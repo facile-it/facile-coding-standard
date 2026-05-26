@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateConfigCommand extends BaseCommand
 {
-    /**
-     * @var PhpCsConfigWriterInterface
-     */
-    private $configWriter;
+    private PhpCsConfigWriterInterface $configWriter;
 
     public function __construct(?string $name = null)
     {

@@ -14,31 +14,22 @@ use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
 use Facile\CodingStandardsTest\Util;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
 
 class InstallerTest extends TestCase
 {
     private string $composerFilePath;
 
-    /**
-     * @var string
-     */
-    private $projectRoot;
-
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $vfsRoot;
+    private string $projectRoot;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->vfsRoot = vfsStream::setup();
+        $vfsRoot = vfsStream::setup();
 
-        $this->projectRoot = $this->vfsRoot->url();
-        $this->composerFilePath = $this->vfsRoot->url() . '/composer.json';
+        $this->projectRoot = $vfsRoot->url();
+        $this->composerFilePath = $vfsRoot->url() . '/composer.json';
         file_put_contents($this->composerFilePath, Util::getComposerContent());
     }
 
