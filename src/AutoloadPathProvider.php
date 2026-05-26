@@ -107,7 +107,7 @@ class AutoloadPathProvider
         return array_reduce(
             $autoload,
             \Closure::fromCallable([$this, 'autoloadReducer']),
-            []
+            [],
         );
     }
 

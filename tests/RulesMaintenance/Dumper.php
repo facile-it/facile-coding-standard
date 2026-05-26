@@ -44,7 +44,7 @@ class Dumper
         }
 
         foreach ($this->getAllFixers() as $fixer) {
-            if (isset($alreadyActiveFixers[\get_class($fixer)])) {
+            if (isset($alreadyActiveFixers[$fixer::class])) {
                 continue;
             }
 
@@ -100,7 +100,7 @@ class Dumper
     private function generateWithClassNameAsKey(array $list): \Generator
     {
         foreach ($list as $fixer) {
-            yield \get_class($fixer) => $fixer;
+            yield $fixer::class => $fixer;
         }
     }
 

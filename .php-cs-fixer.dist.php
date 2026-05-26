@@ -3,10 +3,6 @@
 $providers = [
     new Facile\CodingStandards\Rules\DefaultRulesProvider(),
     new Facile\CodingStandards\Rules\RiskyRulesProvider(),
-    // TODO: drop when PHP 8.0+ is required
-    new Facile\CodingStandards\Rules\ArrayRulesProvider([
-        'get_class_to_class_keyword' => false,
-    ]),
 ];
 
 $rulesProvider = new Facile\CodingStandards\Rules\CompositeRulesProvider($providers);
