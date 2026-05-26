@@ -1,5 +1,8 @@
 Changelog
 ---------
+## [1.5.0] - TBD
+- Disable override of `trailing_comma_in_multiline` rule (this applies trailing commas everywhere, following PER-CS rules)
+
 ## [1.4.1] - 2025-12-05
 - Add Symfony 8 support (#84, thanks @Kocal)
 
