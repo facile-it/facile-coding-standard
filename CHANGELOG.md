@@ -1,7 +1,11 @@
 Changelog
 ---------
 ## [1.5.0] - TBD
-- Disable override of `trailing_comma_in_multiline` rule (this applies trailing commas everywhere, following PER-CS rules)
+- Drop support to PHP 7.4 and 8.0 (#88)
+- Align rules to PER-CS 3.0 defaults (#88)
+    - `trailing_comma_in_multiline`: applies trailing commas in all multi-line statements, not only arrays
+    - `single_class_element_per_statement`: no changes
+- [internal] Upgrade to PHPUnit 10+ and Psalm 6 (#88)
 
 ## [1.4.1] - 2025-12-05
 - Add Symfony 8 support (#84, thanks @Kocal)
