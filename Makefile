@@ -9,7 +9,10 @@ cs-dry-run:
 psalm:
 	vendor/bin/psalm
 
+rector:
+	vendor/bin/rector
+
 test:
 	vendor/bin/phpunit
 
-pre-commit-check: cs psalm test
+pre-commit-check: rector cs psalm test
