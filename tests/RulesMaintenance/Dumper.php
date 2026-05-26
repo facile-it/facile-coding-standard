@@ -111,7 +111,7 @@ class Dumper
         if (null === $application) {
             $command = new DescribeCommand();
             $application = new Application();
-            $application->add($command);
+            $application->addCommands([$command]);
             $application->setAutoExit(false);
         }
 
@@ -133,15 +133,15 @@ class Dumper
     private function postProcessOutput(string $output): string
     {
         // replace first line with heading
-        $output = preg_replace('/Description of ([\w_]+) rule\./', '## `$1`', $output);
+        $output = preg_replace('/Description of ([\w_]+) rule\./', '## `$1`', $output) ?? '';
         // replace diffs opening with fenced typed code snippet
-        $output = preg_replace('/ +-+ begin diff -+/', '```diff', $output);
+        $output = preg_replace('/ +-+ begin diff -+/', '```diff', $output) ?? '';
         // replace diffs closing with fenced code snippet
-        $output = preg_replace('/ *\n +-+ end diff -+/', '```', $output);
+        $output = preg_replace('/ *\n +-+ end diff -+/', '```', $output) ?? '';
         // remove additional diff labels
-        $output = preg_replace('/ +(--- Original|\+\+\+ New|@@ .+ @@)\n/', '', $output);
+        $output = preg_replace('/ +(--- Original|\+\+\+ New|@@ .+ @@)\n/', '', $output) ?? '';
         // try to de-indent diff snippets
-        $output = preg_replace('/\n {3}/', "\n", $output);
+        $output = preg_replace('/\n {3}/', "\n", $output) ?? '';
 
         // avoid linking issues by mistake
         return str_replace('Example #', 'Example ', $output);
