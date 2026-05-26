@@ -82,7 +82,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
      */
     public function getInstaller(Composer $composer, IOInterface $io): Installer
     {
-        if (! $this->installer) {
+        if (! $this->installer instanceof Installer) {
             $this->installer = new Installer($io, $composer);
         }
 

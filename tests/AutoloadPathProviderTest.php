@@ -11,10 +11,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 
 class AutoloadPathProviderTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $composerFilePath;
+    private string $composerFilePath;
 
     /**
      * @var string

@@ -19,10 +19,7 @@ use Prophecy\Argument;
 
 class InstallerTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $composerFilePath;
+    private string $composerFilePath;
 
     /**
      * @var string

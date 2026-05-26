@@ -15,25 +15,16 @@ use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 
 class Installer
 {
-    /**
-     * @var string
-     */
-    private $projectRoot;
+    private readonly string $projectRoot;
 
     /**
      * @var array<string, mixed>
      */
     private $composerDefinition;
 
-    /**
-     * @var JsonFile
-     */
-    private $composerJson;
+    private JsonFile $composerJson;
 
-    /**
-     * @var PhpCsConfigWriterInterface
-     */
-    private $phpCsWriter;
+    private PhpCsConfigWriterInterface $phpCsWriter;
 
     /**
      * @psalm-suppress PossiblyUnusedParam
@@ -61,7 +52,7 @@ class Installer
 
         // Parse the composer.json
         $this->parseComposerDefinition($composerFile);
-        $this->phpCsWriter = $phpCsWriter ?: new PhpCsConfigWriter();
+        $this->phpCsWriter = $phpCsWriter ?? new PhpCsConfigWriter();
     }
 
     /**
@@ -120,13 +111,11 @@ class Installer
             $constraint = '^' . $constraint;
         }
 
-        if ($targetPackage->getVersion() && Semver::satisfies($targetPackage->getVersion(), $constraint)) {
-            // it needs an immediate semver-compliant upgrade
-            return false;
-        }
-
-        // it needs an upgrade but has potential BC breaks so is not urgent
-        return true;
+        // does it need an immediate semver-compliant upgrade
+        return ! (
+            $targetPackage->getVersion()
+            && Semver::satisfies($targetPackage->getVersion(), $constraint)
+        );
     }
 
     /**

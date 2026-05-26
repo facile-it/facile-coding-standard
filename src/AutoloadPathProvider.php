@@ -6,15 +6,9 @@ namespace Facile\CodingStandards;
 
 class AutoloadPathProvider
 {
-    /**
-     * @var string
-     */
-    private $composerPath;
+    private readonly string $composerPath;
 
-    /**
-     * @var string
-     */
-    private $projectRoot;
+    private readonly string $projectRoot;
 
     public function __construct(
         ?string $composerFile = null,
@@ -87,9 +81,10 @@ class AutoloadPathProvider
 
         $autoloadPaths = $this->reduceAutoload($autoloads);
 
-        $autoloadPaths = array_filter($autoloadPaths, fn(string $path): bool => is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path));
-
-        return $autoloadPaths;
+        return array_filter(
+            $autoloadPaths,
+            fn(string $path): bool => is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path),
+        );
     }
 
     /**
