@@ -121,7 +121,6 @@ final class DefaultRulesProvider extends AbstractRuleProvider
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'semicolon_after_instruction' => true,
             'single_blank_line_before_namespace' => true,
-            'single_class_element_per_statement' => true,
             'single_line_comment_spacing' => true,
             'single_quote' => true,
             'single_space_around_construct' => true,

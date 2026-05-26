@@ -66,12 +66,11 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         $allowedOverrides = [
             'binary_operator_spaces',
             'no_extra_blank_lines',
-            'single_class_element_per_statement',
-            'trailing_comma_in_multiline', // see #72
+            'single_space_around_construct',
         ];
 
         if (\in_array($ruleName, $allowedOverrides)) {
-            $this->markTestSkipped($ruleName . 'Rule is allowed to override the rule sets configuration');
+            $this->markTestSkipped($ruleName . ' rule is allowed to override the rule sets configuration');
         }
 
         $enabledRuleSets = $this->getEnabledRuleSets();
@@ -85,13 +84,6 @@ abstract class AbstractRulesProviderTestCase extends TestCase
 
             if ($name === '@PER-CS2.0' && $this->isNotInPsr12($ruleName)) {
                 $this->markTestSkipped(\sprintf('Rule %s is part of PER-CS but NOT of PSR-12, we can drop it only in the future', $ruleName));
-            }
-
-            $recentlyIncludedRules = [
-                'single_space_around_construct', // since 3.64.0 (#8171)
-            ];
-            if (\in_array($ruleName, $recentlyIncludedRules, true)) {
-                $this->markTestSkipped(\sprintf('Rule %s was included in PER-CS ruleset recently, we can drop it only in the future', $ruleName));
             }
 
             $this->fail(\sprintf('Rule %s is being overridden while already included in %s rule set, with the same config', $ruleName, $name));
