@@ -11,7 +11,10 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withPhpSets()
-    ->withComposerBased()
+    ->withComposerBased(
+        phpunit: true
+    )
+    ->withImportNames(importShortClasses: false)
     ->withTypeCoverageLevel(0)
     ->withDeadCodeLevel(0)
     ->withCodeQualityLevel(0);

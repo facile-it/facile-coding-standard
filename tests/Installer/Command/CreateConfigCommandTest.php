@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandardsTest\Installer\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Facile\CodingStandards\Installer\Command\CreateConfigCommand;
 use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
@@ -28,12 +29,11 @@ class CreateConfigCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider executeProvider
-     *
      * @param list<string> $args
      *
      * @throws \Exception
      */
+    #[DataProvider('executeProvider')]
     public function testExecute(array $args, bool $noDev, bool $noRisky): void
     {
         $command = new CreateConfigCommand();

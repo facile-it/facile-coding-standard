@@ -2,6 +2,7 @@
 
 namespace Facile\CodingStandardsTest\RulesMaintenance;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -9,17 +10,13 @@ use PHPUnit\Framework\TestCase;
  */
 class RuleListTest extends TestCase
 {
-    /**
-     * @dataProvider listMethodsDataProvider
-     */
+    #[DataProvider('listMethodsDataProvider')]
     public function testGetAllMappedRules(array $rulesList): void
     {
         $this->assertNotEmpty(array_intersect($rulesList, RulesList::getAllMappedRules()), 'Method is getting lost in getAllMappedRules');
     }
 
-    /**
-     * @dataProvider listMethodsDataProvider
-     */
+    #[DataProvider('listMethodsDataProvider')]
     public function testAllListAreAlphabetical(array $rulesList): void
     {
         $sortedList = $rulesList;

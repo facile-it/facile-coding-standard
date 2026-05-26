@@ -2,6 +2,7 @@
 
 namespace Facile\CodingStandardsTest\Rules;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Facile\CodingStandards\Rules\AbstractRuleProvider;
 use Facile\CodingStandards\Rules\RulesProviderInterface;
 use Facile\CodingStandardsTest\Framework\TestCase;
@@ -23,9 +24,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         $this->assertRulesAreAlphabeticallySorted(static::getRulesProvider());
     }
 
-    /**
-     * @dataProvider ruleNamesDataProvider
-     */
+    #[DataProvider('ruleNamesDataProvider')]
     public function testRuleAreRiskyAsExpected(string $ruleName): void
     {
         $fixer = $this->getFixerByName($ruleName);
@@ -37,9 +36,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         );
     }
 
-    /**
-     * @dataProvider ruleSetNamesDataProvider
-     */
+    #[DataProvider('ruleSetNamesDataProvider')]
     public function testRuleSetsAreRiskyAsExpected(string $ruleSetName): void
     {
         $ruleSet = new RuleSet([$ruleSetName => true]);
@@ -54,9 +51,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         }
     }
 
-    /**
-     * @dataProvider ruleNamesDataProvider
-     */
+    #[DataProvider('ruleNamesDataProvider')]
     public function testRulesDoNotOverrideRuleSets(string $ruleName): void
     {
         if ($this->ruleIsMappedAsDeprecated($ruleName)) {

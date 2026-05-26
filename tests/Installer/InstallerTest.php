@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Facile\CodingStandardsTest\Installer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
@@ -73,11 +74,10 @@ class InstallerTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidUpgradeProvider
-     *
      * @param array{string, string} $currentPackageV
      * @param array{string, string} $targetPackageV
      */
+    #[DataProvider('invalidUpgradeProvider')]
     public function testCheckUpgradeTestNotNecessary(array $currentPackageV, array $targetPackageV): void
     {
         $currentPackage = new Package('dummy', $currentPackageV[0], $currentPackageV[1]);
@@ -104,11 +104,10 @@ class InstallerTest extends TestCase
     }
 
     /**
-     * @dataProvider validUpgradeProvider
-     *
      * @param array{string, string} $currentPackageV
      * @param array{string, string} $targetPackageV
      */
+    #[DataProvider('validUpgradeProvider')]
     public function testCheckUpgradeTestNecessary(array $currentPackageV, array $targetPackageV): void
     {
         $currentPackage = new Package('dummy', $currentPackageV[0], $currentPackageV[1]);
