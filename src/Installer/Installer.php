@@ -16,11 +16,6 @@ use Facile\CodingStandards\Installer\Writer\PhpCsConfigWriterInterface;
 class Installer
 {
     /**
-     * @var IOInterface
-     */
-    private $io;
-
-    /**
      * @var string
      */
     private $projectRoot;
@@ -47,13 +42,12 @@ class Installer
      * @throws \InvalidArgumentException
      */
     public function __construct(
-        IOInterface $io,
+        private readonly IOInterface $io,
         Composer $composer,
         ?string $projectRoot = null,
         ?string $composerPath = null,
         ?PhpCsConfigWriterInterface $phpCsWriter = null,
     ) {
-        $this->io = $io;
         // Get composer.json location
         $composerFile = $composerPath ?? Factory::getComposerFile();
         // Calculate project root from composer.json, if necessary

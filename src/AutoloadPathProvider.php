@@ -16,13 +16,11 @@ class AutoloadPathProvider
      */
     private $projectRoot;
 
-    /**
-     * @var bool
-     */
-    private $dev;
-
-    public function __construct(?string $composerFile = null, ?string $projectRoot = null, bool $dev = true)
-    {
+    public function __construct(
+        ?string $composerFile = null,
+        ?string $projectRoot = null,
+        private readonly bool $dev = true,
+    ) {
         $this->composerPath = $composerFile ?? $this->getComposerFilePath();
 
         $projectRootPath = $projectRoot ?? realpath(\dirname($this->composerPath));
@@ -32,7 +30,6 @@ class AutoloadPathProvider
         }
 
         $this->projectRoot = rtrim($projectRootPath, '/\\');
-        $this->dev = $dev;
     }
 
     private function getComposerFilePath(): string
@@ -90,9 +87,7 @@ class AutoloadPathProvider
 
         $autoloadPaths = $this->reduceAutoload($autoloads);
 
-        $autoloadPaths = array_filter($autoloadPaths, function (string $path): bool {
-            return is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path);
-        });
+        $autoloadPaths = array_filter($autoloadPaths, fn(string $path): bool => is_dir($this->projectRoot . \DIRECTORY_SEPARATOR . $path));
 
         return $autoloadPaths;
     }
@@ -106,7 +101,7 @@ class AutoloadPathProvider
     {
         return array_reduce(
             $autoload,
-            \Closure::fromCallable([$this, 'autoloadReducer']),
+            $this->autoloadReducer(...),
             [],
         );
     }
