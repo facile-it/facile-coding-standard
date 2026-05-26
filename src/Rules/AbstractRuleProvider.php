@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Facile\CodingStandards\Rules;
 
 use PhpCsFixer\Console\Application;

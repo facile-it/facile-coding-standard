@@ -169,7 +169,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
      */
     private function getEnabledRuleSets(): array
     {
-        if (empty($this->enabledRuleSets)) {
+        if ($this->enabledRuleSets === []) {
             foreach (self::ruleSetNamesDataProvider() as $data) {
                 $ruleSetName = $data[0];
                 $this->enabledRuleSets[$ruleSetName] = new RuleSet([$ruleSetName => true]);
