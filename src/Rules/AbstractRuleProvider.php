@@ -16,28 +16,8 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
      * The map has the following format: [ version => [ oldRuleName => newRuleName ] ]
      */
     private const DEPRECATION_MAP = [
-        '3.11.0' => [
-            'no_trailing_comma_in_list_call' => 'no_trailing_comma_in_singleline',
-            'no_trailing_comma_in_singleline_array' => 'no_trailing_comma_in_singleline',
-            'no_trailing_comma_in_singleline_function_call' => 'no_trailing_comma_in_singleline',
-        ],
-        '3.18.0' => [
-            'single_blank_line_before_namespace' => 'blank_lines_before_namespace',
-        ],
-        '3.21.0' => [
-            'function_typehint_space' => 'type_declaration_spaces',
-        ],
-        '3.27.0' => [
-            '@PSR12' => '@PER-CS2.0',
-            '@PSR12:risky' => '@PER-CS2.0:risky',
-        ],
-        '3.32.0' => [
-            'compact_nullable_typehint' => 'compact_nullable_type_declaration',
-            'curly_braces_position' => 'braces_position',
-            'new_with_braces' => 'new_with_parentheses',
-        ],
-        '3.33.0' => [
-            'native_function_type_declaration_casing' => 'native_type_declaration_casing',
+        '3.0.0' => [
+            'deprecated_rule_name' => 'new_rule_name',
         ],
     ];
 
