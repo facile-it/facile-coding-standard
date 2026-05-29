@@ -6,6 +6,7 @@ Changelog
     - `trailing_comma_in_multiline`: applies trailing commas in all multi-line statements, not only arrays
     - `single_class_element_per_statement`: no changes
 - [internal] Upgrade to PHPUnit 10+ and Psalm 6 (#88)
+- [internal] Add Rector (#88)
 
 ## [1.4.1] - 2025-12-05
 - Add Symfony 8 support (#84, thanks @Kocal)
