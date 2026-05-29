@@ -53,6 +53,11 @@ abstract class AbstractRuleProvider implements RulesProviderInterface
         '3.33.0' => ['native_type_declaration_casing'],
         '3.42.0' => ['class_keyword'],
         '3.47.0' => ['numeric_literal_separator'],
+        '3.93.0' => ['no_redundant_readonly_property'],
+        '3.95.0' => [
+            'no_whitespace_in_empty_array',
+            'phpdoc_no_duplicate_types',
+        ],
     ];
 
     /**
