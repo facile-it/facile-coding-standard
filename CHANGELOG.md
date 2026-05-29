@@ -1,6 +1,17 @@
 Changelog
 ---------
-## [1.5.0] - TBD
+## [1.5.0] - 2026-05-30
+The following rules or groups have been added to the default rule set:
+- `multiline_promoted_properties`
+- `no_redundant_readonly_property`
+- `no_whitespace_in_empty_array`
+- `phpdoc_no_duplicate_types`
+
+The following rules or groups have been added to the risky rule set:
+- `@PER-CS3x0:risky` (in place of `@PER-CS2.0:risky`, which was also deprecated)
+- `no_useless_printf`
+
+Additional changes:
 - Drop support to PHP 7.4 and 8.0 (#88)
 - Align rules to PER-CS 3.0 defaults (#88)
     - `trailing_comma_in_multiline`: applies trailing commas in all multi-line statements, not only arrays

@@ -25,7 +25,9 @@ class Plugin implements EventSubscriberInterface, PluginInterface, Capable
      *
      * Optionally accept the project root into which to install.
      */
-    public function __construct(private ?Installer $installer = null) {}
+    public function __construct(
+        private ?Installer $installer = null,
+    ) {}
 
     /**
      * Return this package name.

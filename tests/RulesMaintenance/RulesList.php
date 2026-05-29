@@ -45,15 +45,7 @@ class RulesList
     public static function getToBeImplementedRules(): array
     {
         return [
-            'get_class_to_class_keyword', // already active, shut off here due to PHP 7.4 support
-            'multiline_promoted_properties',
-            'new_expression_parentheses',
-            'no_redundant_readonly_property',
-            'no_useless_printf',
-            'no_whitespace_in_empty_array',
-            'php_unit_assert_new_names', // requires PHPUnit 9.1
-            'phpdoc_no_duplicate_types',
-            'phpdoc_types_no_duplicates',
+            'placeholder_rule',
         ];
     }
 
@@ -81,7 +73,6 @@ class RulesList
             'self_static_accessor',
             'single_line_comment_style',
             'string_implicit_backslashes',
-            'stringable_for_to_string',
         ];
     }
 
@@ -159,11 +150,14 @@ class RulesList
     public static function getBestHandledWithRectorRules(): array
     {
         return [
+            'new_expression_parentheses',
+            'php_unit_assert_new_names', // requires PHPUnit 9.1
             'php_unit_attributes',
             'php_unit_no_expectation_annotation',
             'regular_callable_call',
             'simplified_if_return',
             'simplified_null_return',
+            'stringable_for_to_string',
             'use_arrow_functions',
         ];
     }

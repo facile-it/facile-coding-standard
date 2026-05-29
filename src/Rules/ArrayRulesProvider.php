@@ -9,7 +9,9 @@ final class ArrayRulesProvider implements RulesProviderInterface
     /**
      * @param array<string, array<string, mixed>|bool> $rules
      */
-    public function __construct(private readonly array $rules) {}
+    public function __construct(
+        private readonly array $rules,
+    ) {}
 
     public function getRules(): array
     {

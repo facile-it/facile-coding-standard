@@ -9,7 +9,7 @@ final class RiskyRulesProvider extends AbstractRuleProvider
     public function getRules(): array
     {
         return $this->filterRules([
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS3x0:risky' => true,
             '@PSR12:risky' => true,
             'array_push' => true,
             'class_keyword' => true,
@@ -29,6 +29,7 @@ final class RiskyRulesProvider extends AbstractRuleProvider
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'no_php4_constructor' => true,
+            'no_useless_printf' => true,
             'no_useless_sprintf' => true,
             'non_printable_character' => true,
             'ordered_traits' => true,
