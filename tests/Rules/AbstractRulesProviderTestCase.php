@@ -208,6 +208,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         static $deprecatedRules;
 
         if (! isset($deprecatedRules)) {
+            $deprecatedRules = [];
             $reflectionClassConstant = new \ReflectionClassConstant(AbstractRuleProvider::class, 'DEPRECATION_MAP');
             /** @var array<string, array<string, string>> $deprecationMap */
             $deprecationMap = $reflectionClassConstant->getValue();
