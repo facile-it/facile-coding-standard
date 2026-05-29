@@ -32,7 +32,7 @@ abstract class AbstractRulesProviderTestCase extends TestCase
         $this->assertSame(
             $this->shouldBeRisky(),
             $fixer->isRisky(),
-            \sprintf('Fixer %s is %s as expected', $ruleName, $this->shouldBeRisky() ? 'risky' : 'NOT risky'),
+            \sprintf('Fixer %s is %s as expected', $ruleName, $this->shouldBeRisky() ? 'NOT risky' : 'risky, NOT'),
         );
     }
 
