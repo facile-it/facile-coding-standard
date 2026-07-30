@@ -112,10 +112,8 @@ class Installer
         }
 
         // does it need an immediate semver-compliant upgrade
-        return ! (
-            $targetPackage->getVersion()
-            && Semver::satisfies($targetPackage->getVersion(), $constraint)
-        );
+        return ! $targetPackage->getVersion() 
+            || ! Semver::satisfies($targetPackage->getVersion(), $constraint);
     }
 
     /**
