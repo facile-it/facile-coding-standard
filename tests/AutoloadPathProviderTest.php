@@ -64,7 +64,7 @@ class AutoloadPathProviderTest extends TestCase
         $provider = new AutoloadPathProvider(__DIR__ . '/composer.json');
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to find composer.json');
+        $this->expectExceptionMessageIsOrContains('Unable to find composer.json');
 
         $provider->getPaths();
     }
@@ -80,7 +80,7 @@ class AutoloadPathProviderTest extends TestCase
         file_put_contents($this->composerFilePath, '');
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Invalid composer.json file');
+        $this->expectExceptionMessageIsOrContains('Invalid composer.json file');
 
         $provider->getPaths();
     }
@@ -88,7 +88,7 @@ class AutoloadPathProviderTest extends TestCase
     public function testWrongComposerPathLeadsToBrokenProjectPath(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to get project root');
+        $this->expectExceptionMessageIsOrContains('Unable to get project root');
 
         new AutoloadPathProvider('wrong/composer/path/');
     }
